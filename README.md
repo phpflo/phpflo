@@ -181,3 +181,7 @@ PhpFlo development happens on GitHub. Just fork the [main repository](https://gi
 To run the unit tests you need PHPUnit. Run the tests with:
 
     $ phpunit
+
+### Some ideas
+
+* Use [phpDaemon](http://phpdaemon.net/) to make the network run asynchronously, Node.js -like
