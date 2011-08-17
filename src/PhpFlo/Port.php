@@ -44,6 +44,10 @@ class Port extends EventEmitter
 
     public function send($data)
     {
+        if (!$this->socket) {
+            throw new \RuntimeException("This port is not connected");
+        }
+
         if ($this->isConnected()) {
             return $this->socket->send($data);
         }
