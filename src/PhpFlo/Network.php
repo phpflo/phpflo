@@ -69,6 +69,11 @@ class Network
         return $this->processes[$id];
     }
 
+    public function getGraph()
+    {
+        return $this->graph;
+    }
+
     private function connectPort(SocketInterface $socket, array $process, $port, $inbound)
     {
         if ($inbound) {
