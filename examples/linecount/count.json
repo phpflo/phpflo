@@ -18,13 +18,6 @@
     },
     "connections": [
         {
-            "data": "README.md",
-            "tgt": {
-                "process": "ReadFile",
-                "port": "source"
-            }
-        },
-        {
             "src": {
                 "process": "ReadFile",
                 "port": "out"
