@@ -18,7 +18,7 @@
     },
     "connections": [
         {
-            "data": "package.json",
+            "data": "README.md",
             "tgt": {
                 "process": "ReadFile",
                 "port": "source"

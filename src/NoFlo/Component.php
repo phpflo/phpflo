@@ -1,10 +1,10 @@
 <?php
 namespace NoFlo;
 
-class Component
+class Component implements ComponentInterface
 {
-    protected $inPorts = array();
-    protected $outPorts = array();
+    public $inPorts = array();
+    public $outPorts = array();
     protected $description = "";
 
     public function getDescription()

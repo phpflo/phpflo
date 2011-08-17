@@ -6,9 +6,9 @@ use Evenement\EventEmitter;
 class Graph extends EventEmitter
 {
     private $name = "";
-    private $nodes = array();
-    private $edges = array();
-    private $initializers = array();
+    public $nodes = array();
+    public $edges = array();
+    public $initializers = array();
 
     public function __construct($name)
     {
@@ -23,7 +23,7 @@ class Graph extends EventEmitter
         );
 
         $this->nodes[$id] = $node;
-        $this->emit('addNode', array('node'=> $node));
+        $this->emit('addNode', array($node));
     }
 
     public function removeNode($id)
@@ -44,7 +44,7 @@ class Graph extends EventEmitter
         }
 
         $node = $this->nodes[$id];
-        $this->emit('removeNode', array('node' => $node));
+        $this->emit('removeNode', array($node));
         unset($this->nodes[$id]);
     }
 
@@ -70,26 +70,26 @@ class Graph extends EventEmitter
         );
 
         $this->edges[] = $edge;
-        $this->emit('addEdge', array('edge' => $edge));
+        $this->emit('addEdge', array($edge));
     }
 
     public function removeEdge($node, $port)
     {
         foreach ($this->edges as $index => $edge) {
             if ($edge['from']['node'] == $node && $edge['from']['port'] == $port) {
-                $thia->emit('removeEdge', array('edge' => $edge));
+                $thia->emit('removeEdge', array($edge));
                 $this->edges = array_splice($this->edges, $index, 1); 
             }
 
             if ($edge['to']['node'] == $node && $edge['to']['port'] == $port) {
-                $thia->emit('removeEdge', array('edge' => $edge));
+                $thia->emit('removeEdge', array($edge));
                 $this->edges = array_splice($this->edges, $index, 1);
             }
         }
 
         foreach ($this->initializers as $index => $initializer) {
             if ($initializer['to']['node'] == $node && $initializer['to']['port'] == $port) {
-                $thia->emit('removeEdge', array('edge' => $initializer));
+                $thia->emit('removeEdge', array($initializer));
                 $this->initializers = array_splice($this->initializers, $index, 1);
             }
         }
@@ -108,7 +108,7 @@ class Graph extends EventEmitter
         );
 
         $this->initializers[] = $initializer;
-        $this->emit('addEdge', array('edge' => $initializer));
+        $this->emit('addEdge', array($initializer));
     }
 
     public static function loadFile($file)

@@ -9,7 +9,7 @@ class Port extends EventEmitter
     private $socket = null;
     private $from = null;
 
-    public function __construct($name)
+    public function __construct($name = '')
     {
         $this->name = $name;
     }
@@ -17,7 +17,7 @@ class Port extends EventEmitter
     public function attach(SocketInterface $socket)
     {
         if ($this->socket) {
-            throw new \InvalidArgumentException("{$this->name}: socket already attached {$this->socket->getId()}");
+            throw new \InvalidArgumentException("{$this->name} socket already attached {$this->socket->getId()}");
         }
 
         $this->socket = $socket;
@@ -26,7 +26,7 @@ class Port extends EventEmitter
 
     protected function attachSocket(SocketInterface $socket)
     {
-        $this->emit('attach', array('socket' => $socket));
+        $this->emit('attach', array($socket));
 
         $this->from = $socket->from;
 
@@ -37,7 +37,7 @@ class Port extends EventEmitter
 
     public function detach(SocketInterface $socket)
     {
-        $this->emit('detach', array('socket' => $socket));
+        $this->emit('detach', array($socket));
         $this->from = null;
         $this->socket = null; 
     }
@@ -48,10 +48,10 @@ class Port extends EventEmitter
             return $this->socket->send($data);
         }
 
-        $sendOnce = function($socketData) use ($data, &$sendOnce)
+        $sendOnce = function(SocketInterface $socket) use ($data, &$sendOnce)
         {
-            $socketData['socket']->send($data);
-            $socketData['socket']->removeListener('connect', $sendOnce);
+            $socket->send($data);
+            $socket->removeListener('connect', $sendOnce);
         };
 
         $this->socket->on('connect', $sendOnce);
@@ -83,18 +83,18 @@ class Port extends EventEmitter
         return $this->socket->isConnected();
     }
 
-    public function onConnect(array $data)
+    public function onConnect(SocketInterface $socket)
     {
-        $this->emit('connect', $data);
+        $this->emit('connect', array($socket));
     }
 
-    public function onData(array $data)
+    public function onData($data)
     {
-        $this->emit('data', $data);
+        $this->emit('data', array($data));
     }
 
-    public function onDisconnect(array $data)
+    public function onDisconnect(SocketInterface $socket)
     {
-        $this->emit('disconnect', $data);
+        $this->emit('disconnect', array($socket));
     }
 }

@@ -7,7 +7,7 @@ interface SocketInterface
 
     public function connect();
 
-    public function send();
+    public function send($data);
 
     public function disconnect();
 
