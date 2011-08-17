@@ -29,6 +29,8 @@ $graph->addEdge("Count Lines", "count", "Display", "in");
 // Kick-start the process by sending filename to Read File
 $graph->addInitial($fileName, "Read File", "source");
 
+echo $graph->toJSON();
+
 // Make the graph "live"
 $network = PhpFlo\Network::create($graph);
 ?>
