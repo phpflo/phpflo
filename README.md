@@ -178,7 +178,7 @@ To run a graph file, load it via the PhpFlow API:
 
     $network = PhpFlo\Network::loadFile('example.json');
 
-Note that after this the graph is _live_, meaning that you can add and remove nodes and connections, or send new _initial data_ to it.
+Note that after this the graph is _live_, meaning that you can add and remove nodes and connections, or send new _initial data_ to it. See [example](https://github.com/bergie/phpflo/blob/master/examples/linecount/countFromJson.php).
 
 ## Development
 
