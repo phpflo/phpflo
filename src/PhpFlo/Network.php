@@ -1,5 +1,5 @@
 <?php
-namespace NoFlo;
+namespace PhpFlo;
 
 class Network
 {
@@ -36,14 +36,14 @@ class Network
         if (isset($node['component'])) {
             $componentClass = $node['component'];
             if (!class_exists($componentClass) && strpos($componentClass, '\\') === false) {
-                $componentClass = "NoFlo\\Component\\{$componentClass}";
+                $componentClass = "PhpFlo\\Component\\{$componentClass}";
                 if (!class_exists($componentClass)) {
                     throw new \InvalidArgumentException("Component class {$componentClass} not found");
                 }
             }
             $component = new $componentClass();
             if (!$component instanceof ComponentInterface) {
-                throw new \InvalidArgumentException("Component {$node['component']} doesn't appear to be a valid NoFlo component");
+                throw new \InvalidArgumentException("Component {$node['component']} doesn't appear to be a valid PhpFlo component");
             }
             $process['component'] = new $componentClass();
         }

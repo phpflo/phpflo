@@ -1,2 +1,2 @@
-NoFlo-PHP: Flow-based programming for PHP 5.3+
+PhpFlo: Flow-based programming for PHP 5.3+
 ==============================================

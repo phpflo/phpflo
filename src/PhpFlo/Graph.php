@@ -1,5 +1,5 @@
 <?php
-namespace NoFlo;
+namespace PhpFlo;
 
 use Evenement\EventEmitter;
 
@@ -119,7 +119,7 @@ class Graph extends EventEmitter
 
         $definition = @json_decode(file_get_contents($file));
         if (!$definition) {
-            throw new \InvalidArgumentException("Failed to parse NoFlo graph definition file {$file}");
+            throw new \InvalidArgumentException("Failed to parse PhpFlo graph definition file {$file}");
         }
 
         $graph = new Graph($definition->properties->name);

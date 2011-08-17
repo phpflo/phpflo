@@ -1,5 +1,5 @@
 <?php
-namespace NoFlo;
+namespace PhpFlo;
 
 class Component implements ComponentInterface
 {

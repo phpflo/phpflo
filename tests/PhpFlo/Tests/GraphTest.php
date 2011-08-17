@@ -1,7 +1,7 @@
 <?php
-namespace NoFlo\Tests;
+namespace PhpFlo\Tests;
 
-use NoFlo\Graph;
+use PhpFlo\Graph;
 
 class GraphTest extends \PHPUnit_Framework_TestCase
 {

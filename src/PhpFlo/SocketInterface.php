@@ -1,5 +1,5 @@
 <?php
-namespace NoFlo;
+namespace PhpFlo;
 
 interface SocketInterface
 {

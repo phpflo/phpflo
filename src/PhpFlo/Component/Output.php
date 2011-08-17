@@ -1,8 +1,8 @@
 <?php
-namespace NoFlo\Component;
+namespace PhpFlo\Component;
 
-use NoFlo\Component;
-use NoFlo\ArrayPort;
+use PhpFlo\Component;
+use PhpFlo\ArrayPort;
 
 class Output extends Component
 {

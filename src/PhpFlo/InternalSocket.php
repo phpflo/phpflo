@@ -1,5 +1,5 @@
 <?php
-namespace NoFlo;
+namespace PhpFlo;
 
 use Evenement\EventEmitter;
 

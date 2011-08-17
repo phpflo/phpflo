@@ -1,8 +1,8 @@
 <?php
-namespace NoFlo\Component;
+namespace PhpFlo\Component;
 
-use NoFlo\Component;
-use NoFlo\Port;
+use PhpFlo\Component;
+use PhpFlo\Port;
 
 class Counter extends Component
 {

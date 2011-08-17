@@ -12,8 +12,8 @@
          bootstrap="tests/bootstrap.php"
 >
     <testsuites>
-        <testsuite name="NoFlo-PHP Test Suite">
-            <directory>./tests/NoFlo/</directory>
+        <testsuite name="PhpFlo Test Suite">
+            <directory>./tests/PhpFlo/</directory>
         </testsuite>
         <testsuite name="Evenement Test Suite">
             <directory>./vendor/Evenement/tests/Evenement/</directory>
