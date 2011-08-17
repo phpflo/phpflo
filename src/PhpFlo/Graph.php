@@ -150,7 +150,17 @@ class Graph extends EventEmitter
             );            
         }
 
+        // TODO: JSON_PRETTY_PRINT support in PHP 5.4
         return json_encode($json);
+    }
+
+    public static function save($file)
+    {
+        $stat = file_put_contents($file, $this->toJSON());
+        if ($stat === false) {
+            return false;
+        }
+        return true;
     }
 
     public static function loadFile($file)
