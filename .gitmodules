@@ -1,0 +1,3 @@
+[submodule "vendor/Evenement"]
+	path = vendor/Evenement
+	url = https://github.com/igorw/Evenement.git
