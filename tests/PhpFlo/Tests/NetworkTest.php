@@ -7,7 +7,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoadFile()
     {
-        $network = Network::loadFile(__DIR__.'/count.json');
+        $network = Network::loadFile(__DIR__.'/../../../examples/linecount/count.json');
         $readFile = $network->getNode('ReadFile');
         $this->assertEquals('ReadFile', $readFile['id']);
     }
