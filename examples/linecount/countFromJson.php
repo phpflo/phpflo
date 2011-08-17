@@ -10,12 +10,8 @@ if (!isset($_SERVER['argv'][1])) {
 }
 $fileName = $_SERVER['argv'][1];
 
-// Autoloading
-require_once __DIR__.'/../../vendor/symfony/Component/ClassLoader/UniversalClassLoader.php';
-$loader = new Symfony\Component\ClassLoader\UniversalClassLoader();
-$loader->registerNamespace('PhpFlo', __DIR__.'/../../src');
-$loader->registerNamespace('Evenement', __DIR__.'/../../vendor/Evenement/src');
-$loader->register();
+// Include standard autoloader
+require(__DIR__.'/../autoloader.php');
 
 // Load network from graph file
 $network = PhpFlo\Network::loadFile(__DIR__.'/count.json');
