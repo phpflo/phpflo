@@ -35,6 +35,12 @@ To use PhpFlo, you need a [PHP Standards Group -compatible autoloader](http://gr
     $loader->register();
     ?>
 
+## Running the examples
+
+File line count using _embedded_ PhpFlo:
+
+    $ ./examples/linecount/count.php somefile.txt
+
 ## Terminology
 
 * Component: individual, pluggable and reusable piece of software. In this case a PHP class implementing `PhpFlo\ComponentInterface`
