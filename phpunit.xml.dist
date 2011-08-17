@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false"
+         bootstrap="tests/bootstrap.php"
+>
+    <testsuites>
+        <testsuite name="NoFlo-PHP Test Suite">
+            <directory>./tests/NoFlo/</directory>
+        </testsuite>
+        <testsuite name="Evenement Test Suite">
+            <directory>./vendor/Evenement/tests/Evenement/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
