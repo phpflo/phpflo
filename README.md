@@ -135,7 +135,7 @@ When a port has no connections, meaning that it was initialized without a connec
 
 ## Graph file format
 
-In addition to using PhpFlo in _embedded mode_ where you create the FBP graph programmatically, you can also initialize and run graphs defined using a JSON file.
+In addition to using PhpFlo in _embedded mode_ where you create the FBP graph programmatically (see [example](https://github.com/bergie/phpflo/blob/master/examples/linecount/count.php)), you can also initialize and run graphs defined using a JSON file.
 
 The PhpFlo JSON files declare the processes used in the FBP graph, and the connections between them. The file format is shared between PhpFlo and NoFlo, and looks like the following:
 
