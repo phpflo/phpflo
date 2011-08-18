@@ -52,13 +52,11 @@ class Port extends EventEmitter
             return $this->socket->send($data);
         }
 
-        $sendOnce = function(SocketInterface $socket) use ($data, &$sendOnce)
+        $this->socket->once('connect', function(SocketInterface $socket) use ($data)
         {
             $socket->send($data);
-            $socket->removeListener('connect', $sendOnce);
-        };
+        });
 
-        $this->socket->on('connect', $sendOnce);
         $this->socket->connect();
     }
 
