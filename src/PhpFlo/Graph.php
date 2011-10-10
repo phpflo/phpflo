@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package PhpFlo
+ */
 namespace PhpFlo;
 
 use Evenement\EventEmitter;
