@@ -19,10 +19,28 @@ PhpFlo is still quite experimental, but may be useful for implementing flow cont
 
 ## Installing
 
+### Installing with Composer
+
+PhpFlo can be installed from [Packagist.org](http://packagist.org/view/PhpFlo/PhpFlo) with the [composer](https://github.com/composer/composer) package manager. Just ensure your `composer.json` has the following:
+
+    {
+        "require": {
+            "PhpFlo/PhpFlo": ">=0.0.2"
+        }
+    }
+
+and run:
+
+    $ php composer.phar install
+
+### Installing with Git
+
 PhpFlo requires the [Evenement](https://github.com/igorw/Evenement) event handling library. To get it, check out this repository, and then run:
 
     $ git submodule init
     $ git submodule update
+
+## Autoloading
 
 To use PhpFlo, you need a [PHP Standards Group -compatible autoloader](http://groups.google.com/group/php-standards/web/psr-0-final-proposal). This repository includes Symfony's version of it, and you can use it by:
 
