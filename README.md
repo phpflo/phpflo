@@ -40,6 +40,13 @@ PhpFlo requires the [Evenement](https://github.com/igorw/Evenement) event handli
     $ git submodule init
     $ git submodule update
 
+### Installing with Composer
+
+PhpFlo can also be installed with Composer:
+
+    $ wget http://getcomposer.org/composer.phar 
+    $ php composer.phar install
+
 ## Autoloading
 
 To use PhpFlo, you need a [PHP Standards Group -compatible autoloader](http://groups.google.com/group/php-standards/web/psr-0-final-proposal). This repository includes Symfony's version of it, and you can use it by:
