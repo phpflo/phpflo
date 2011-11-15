@@ -10,5 +10,7 @@ class GraphTest extends \PHPUnit_Framework_TestCase
         $graph = Graph::loadFile(__DIR__.'/../../../examples/linecount/count.json');
         $readFile = $graph->getNode('ReadFile');
         $this->assertEquals('ReadFile', $readFile['id']);
+
+        $this->assertEquals(4, count($graph->nodes));
     }
 }
