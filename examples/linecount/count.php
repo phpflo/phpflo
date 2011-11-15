@@ -11,7 +11,7 @@ if (!isset($_SERVER['argv'][1])) {
 $fileName = $_SERVER['argv'][1];
 
 // Include standard autoloader
-require(__DIR__.'/../autoloader.php');
+require __DIR__ . '/../../vendor/.composer/autoload.php';
 
 // Add nodes to the graph
 $graph = new PhpFlo\Graph("linecount");
@@ -29,7 +29,7 @@ $graph->addEdge("Count Lines", "count", "Display", "in");
 // Kick-start the process by sending filename to Read File
 $graph->addInitial($fileName, "Read File", "source");
 
-echo $graph->toJSON();
+//echo $graph->toJSON();
 
 // Make the graph "live"
 $network = PhpFlo\Network::create($graph);

@@ -15,8 +15,5 @@
         <testsuite name="PhpFlo Test Suite">
             <directory>./tests/PhpFlo/</directory>
         </testsuite>
-        <testsuite name="Evenement Test Suite">
-            <directory>./vendor/Evenement/tests/Evenement/</directory>
-        </testsuite>
     </testsuites>
 </phpunit>

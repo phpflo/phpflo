@@ -1,6 +1,0 @@
-[submodule "vendor/Evenement"]
-	path = vendor/Evenement
-	url = https://github.com/igorw/Evenement.git
-[submodule "vendor/symfony/Component/ClassLoader"]
-	path = vendor/symfony/Component/ClassLoader
-	url = https://github.com/symfony/ClassLoader.git
