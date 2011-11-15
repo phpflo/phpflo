@@ -7,3 +7,6 @@ before_script:
   - ./tests/travis.sh
 
 script: phpunit
+
+notifications:
+    irc: "irc.freenode.org#fbp"
