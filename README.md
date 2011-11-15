@@ -191,6 +191,10 @@ To run the unit tests you need PHPUnit. Run the tests with:
 
     $ phpunit
 
+PhpFlo has a Continuous Integration environment set up on [Travis](http://travis-ci.org/bergie/phpflo). Current status is:
+
+[![Build Status](https://secure.travis-ci.org/bergie/phpflo.png)](http://travis-ci.org/bergie/phpflo)
+
 ### Some ideas
 
 * Use [phpDaemon](http://phpdaemon.net/) to make the network run asynchronously, Node.js -like
