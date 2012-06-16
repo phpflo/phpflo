@@ -11,7 +11,7 @@ if (!isset($_SERVER['argv'][1])) {
 $fileName = $_SERVER['argv'][1];
 
 // Include standard autoloader
-require __DIR__ . '/../../vendor/.composer/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 // Add nodes to the graph
 $graph = new PhpFlo\Graph("linecount");
