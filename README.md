@@ -13,7 +13,7 @@ It also fits well in Alan Kay's [original idea of object-oriented programming](h
 
 > I thought of objects being like biological cells and/or individual computers on a network, only able to communicate with messages (so messaging came at the very beginning -- it took a while to see how to do messaging in a programming language efficiently enough to be useful).
 
-The system has been heavily inspired by [J. Paul Morrison's](http://www.jpaulmorrison.com/) book [Flow-Based Programming](http://www.jpaulmorrison.com/fbp/#More). 
+The system has been heavily inspired by [J. Paul Morrison's](http://www.jpaulmorrison.com/) book [Flow-Based Programming](http://www.jpaulmorrison.com/fbp/#More).
 
 PhpFlo is still quite experimental, but may be useful for implementing flow control in PHP applications.
 
@@ -29,14 +29,14 @@ PhpFlo can be installed from [Packagist.org](http://packagist.org/view/PhpFlo/Ph
 
 and run:
 
-    $ wget http://getcomposer.org/composer.phar 
+    $ wget http://getcomposer.org/composer.phar
     $ php composer.phar install
 
 ## Autoloading
 
 To use PhpFlo, you need a [PHP Standards Group -compatible autoloader](http://groups.google.com/group/php-standards/web/psr-0-final-proposal). You can use the Composer-supplied autoloader:
 
-    require 'vendor/.composer/autoload.php';
+    require 'vendor/autoload.php';
 
 ## Running the examples
 
