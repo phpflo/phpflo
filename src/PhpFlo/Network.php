@@ -74,21 +74,22 @@ class Network
         return $this->graph;
     }
 
-    private function connectPort(SocketInterface $socket, array $process, $port, $inbound)
+    private function connectInboundPort(SocketInterface $socket, array $process, $port)
     {
-        if ($inbound) {
-            $socket->to = array(
-                'process' => $process,
-                'port' => $port,
-            );
+        $socket->to = array(
+            'process' => $process,
+            'port' => $port,
+        );
 
-            if (!isset($process['component']->inPorts[$port])) {
-                throw new \InvalidArgumentException("No inport {$port} defined for process {$process['id']}");
-            }
-
-            return $process['component']->inPorts[$port]->attach($socket);
+        if (!isset($process['component']->inPorts[$port])) {
+            throw new \InvalidArgumentException("No inport {$port} defined for process {$process['id']}");
         }
 
+        return $process['component']->inPorts[$port]->attach($socket);
+    }
+
+    private function connectOutgoingPort(SocketInterface $socket, array $process, $port)
+    {
         $socket->from = array(
             'process' => $process,
             'port' => $port,
@@ -118,8 +119,8 @@ class Network
             throw new \InvalidArgumentException("No process defined for inbound node {$edge['to']['node']}");
         }
 
-        $this->connectPort($socket, $from, $edge['from']['port'], false);
-        $this->connectPort($socket, $to, $edge['to']['port'], true);
+        $this->connectOutgoingPort($socket, $from, $edge['from']['port']);
+        $this->connectInboundPort($socket, $to, $edge['to']['port']);
 
         $this->connections[] = $socket;
     }
@@ -148,7 +149,7 @@ class Network
             throw new \InvalidArgumentException("No process defined for inbound node {$initializer['to']['node']}");
         }
 
-        $this->connectPort($socket, $to, $initializer['to']['port'], true);
+        $this->connectInboundPort($socket, $to, $initializer['to']['port']);
         $socket->connect();
         $socket->send($initializer['from']['data']);
         $socket->disconnect();
