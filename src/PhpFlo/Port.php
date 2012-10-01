@@ -39,7 +39,7 @@ class Port extends EventEmitter
     {
         $this->emit('detach', array($socket));
         $this->from = null;
-        $this->socket = null; 
+        $this->socket = null;
     }
 
     public function send($data)
@@ -52,8 +52,7 @@ class Port extends EventEmitter
             return $this->socket->send($data);
         }
 
-        $this->socket->once('connect', function(SocketInterface $socket) use ($data)
-        {
+        $this->socket->once('connect', function(SocketInterface $socket) use ($data) {
             $socket->send($data);
         });
 
@@ -82,6 +81,7 @@ class Port extends EventEmitter
         if (!$this->socket) {
             return false;
         }
+
         return $this->socket->isConnected();
     }
 

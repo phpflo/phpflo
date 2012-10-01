@@ -56,6 +56,7 @@ class Graph extends EventEmitter
         if (!isset($this->nodes[$id])) {
             return null;
         }
+
         return $this->nodes[$id];
     }
 
@@ -81,7 +82,7 @@ class Graph extends EventEmitter
         foreach ($this->edges as $index => $edge) {
             if ($edge['from']['node'] == $node && $edge['from']['port'] == $port) {
                 $thia->emit('removeEdge', array($edge));
-                $this->edges = array_splice($this->edges, $index, 1); 
+                $this->edges = array_splice($this->edges, $index, 1);
             }
 
             if ($edge['to']['node'] == $node && $edge['to']['port'] == $port) {
@@ -150,7 +151,7 @@ class Graph extends EventEmitter
                     'process' => $initializer['to']['node'],
                     'port' => $initializer['to']['port'],
                 ),
-            );            
+            );
         }
 
         // TODO: JSON_PRETTY_PRINT support in PHP 5.4
@@ -163,6 +164,7 @@ class Graph extends EventEmitter
         if ($stat === false) {
             return false;
         }
+
         return true;
     }
 
