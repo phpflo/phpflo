@@ -32,10 +32,9 @@ class ArrayPort extends Port
             return $this->sockets[$socketId]->send($data);
         }
 
-        $this->sockets[$socketId]->once('connect', function(SocketInterface $socket) use ($data)
-        {
+        $this->sockets[$socketId]->once('connect', function(SocketInterface $socket) use ($data) {
             $socket->send($data);
-        }); 
+        });
         $this->sockets[$socketId]->connect();
     }
 

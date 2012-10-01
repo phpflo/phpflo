@@ -19,6 +19,7 @@ class ReadFile extends Component
     {
         if (!file_exists($data)) {
             $this->outPorts['error']->send("File {$data} doesn't exist");
+
             return;
         }
 
