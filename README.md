@@ -21,28 +21,38 @@ PhpFlo is still quite experimental, but may be useful for implementing flow cont
 
 PhpFlo can be installed from [Packagist.org](http://packagist.org/view/PhpFlo/PhpFlo) with the [composer](https://github.com/composer/composer) package manager. Just ensure your `composer.json` has the following:
 
-    {
-        "require": {
-            "PhpFlo/PhpFlo": ">=0.0.2"
-        }
+```json
+{
+    "require": {
+        "PhpFlo/PhpFlo": ">=0.0.2"
     }
+}
+```
 
 and run:
 
-    $ wget http://getcomposer.org/composer.phar
-    $ php composer.phar install
+```sh
+$ wget http://getcomposer.org/composer.phar
+$ php composer.phar install
+```
 
 ## Autoloading
 
 To use PhpFlo, you need a [PHP Standards Group -compatible autoloader](http://groups.google.com/group/php-standards/web/psr-0-final-proposal). You can use the Composer-supplied autoloader:
 
-    require 'vendor/autoload.php';
+```php
+<?php
+
+require 'vendor/autoload.php';
+```
 
 ## Running the examples
 
 File line count using _embedded_ PhpFlo:
 
-    $ ./examples/linecount/count.php somefile.txt
+```sh
+$ ./examples/linecount/count.php somefile.txt
+```
 
 ## Terminology
 
@@ -70,37 +80,40 @@ Functionality a component provides:
 
 A minimal component would look like the following:
 
-    <?php
-    use PhpFlo\Component;
-    use PhpFlo\Port;
+```php
+<?php
 
-    class Forwarder extends Component
+use PhpFlo\Component;
+use PhpFlo\Port;
+
+class Forwarder extends Component
+{
+    protected $description = "This component receives data on a single input port and sends the same data out to the output port";
+
+    public function __construct()
     {
-        protected $description = "This component receives data on a single input port and sends the same data out to the output port";
+        // Register ports
+        $this->inPorts['in'] = new Port();
+        $this->outPorts['out'] = new Port();
 
-        public function __construct()
-        {
-            // Register ports
-            $this->inPorts['in'] = new Port();
-            $this->outPorts['out'] = new Port();
+        // Forward data when we receive it
+        $this->inPorts['in']->on('data', array($this, 'forward'));
 
-            // Forward data when we receive it
-            $this->inPorts['in']->on('data', array($this, 'forward'));
-
-            // Disconnect output port when input port disconnects
-            $this->inPorts['in']->on('disconnect', array($this, 'disconnect'));
-        }
-
-        public function forward($data)
-        {
-            $this->outPorts['out']->send($data);
-        }
-
-        public function disconnect()
-        {
-            $this->outPorts['out']->disconnect();
-        }
+        // Disconnect output port when input port disconnects
+        $this->inPorts['in']->on('disconnect', array($this, 'disconnect'));
     }
+
+    public function forward($data)
+    {
+        $this->outPorts['out']->send($data);
+    }
+
+    public function disconnect()
+    {
+        $this->outPorts['out']->disconnect();
+    }
+}
+```
 
 This example component register two ports: _in_ and _out_. When it receives data in the _in_ port, it opens the _out_ port and sends the same data there. When the _in_ connection closes, it will also close the _out_ connection. So basically this component would be a simple repeater.
 
@@ -142,44 +155,50 @@ In addition to using PhpFlo in _embedded mode_ where you create the FBP graph pr
 
 The PhpFlo JSON files declare the processes used in the FBP graph, and the connections between them. The file format is shared between PhpFlo and NoFlo, and looks like the following:
 
-    {
-        "properties": {
-            "name": "Count lines in a file"
+```json
+{
+    "properties": {
+        "name": "Count lines in a file"
+    },
+    "processes": {
+        "Read File": {
+            "component": "ReadFile"
         },
-        "processes": {
-            "Read File": {
-                "component": "ReadFile"
-            },
-            "Split by Lines": {
-                "component": "SplitStr"
-            },
-            ...
+        "Split by Lines": {
+            "component": "SplitStr"
         },
-        "connections": [
-            {
-                "data": "README.md",
-                "tgt": {
-                    "process": "Read File",
-                    "port": "source"
-                }
+        ...
+    },
+    "connections": [
+        {
+            "data": "README.md",
+            "tgt": {
+                "process": "Read File",
+                "port": "source"
+            }
+        },
+        {
+            "src": {
+                "process": "Read File",
+                "port": "out"
             },
-            {
-                "src": {
-                    "process": "Read File",
-                    "port": "out"
-                },
-                "tgt": {
-                    "process": "Split by Lines",
-                    "port": "in"
-                }
-            },
-            ...
-        ]
-    }
+            "tgt": {
+                "process": "Split by Lines",
+                "port": "in"
+            }
+        },
+        ...
+    ]
+}
+```
 
 To run a graph file, load it via the PhpFlow API:
 
-    $network = PhpFlo\Network::loadFile('example.json');
+```php
+<?php
+
+$network = PhpFlo\Network::loadFile('example.json');
+```
 
 Note that after this the graph is _live_, meaning that you can add and remove nodes and connections, or send new _initial data_ to it. See [example](https://github.com/bergie/phpflo/blob/master/examples/linecount/countFromJson.php).
 
@@ -189,7 +208,9 @@ PhpFlo development happens on GitHub. Just fork the [main repository](https://gi
 
 To run the unit tests you need PHPUnit. Run the tests with:
 
-    $ phpunit
+```sh
+$ phpunit
+```
 
 PhpFlo has a Continuous Integration environment set up on [Travis](http://travis-ci.org/bergie/phpflo). Current status is:
 
