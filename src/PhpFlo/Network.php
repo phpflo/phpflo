@@ -125,7 +125,8 @@ class Network
         $this->connections[] = $socket;
     }
 
-    public function removeEdge(array $edge) {
+    public function removeEdge(array $edge)
+    {
         foreach ($this->connections as $index => $connection) {
             if ($edge['to']['node'] == $connection->to['process']['id'] && $edge['to']['port'] == $connection->to['process']['port']) {
                 $connection->to['process']['component']->inPorts[$edge['to']['port']]->detach($connection);
@@ -179,6 +180,7 @@ class Network
     public static function loadFile($file)
     {
         $graph = Graph::loadFile($file);
+
         return Network::create($graph);
     }
 }

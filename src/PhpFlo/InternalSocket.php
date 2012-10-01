@@ -17,6 +17,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
         if (!$this->from) {
             return "ANON:{$this->to['process']['id']}.{$this->to['port']}";
         }
+
         return "{$this->from['process']['id']}.{$this->from['port']}:{$this->to['process']['id']}.{$this->to['port']}";
     }
 
