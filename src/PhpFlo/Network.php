@@ -1,6 +1,8 @@
 <?php
 namespace PhpFlo;
 
+use DateTime;
+
 class Network
 {
     private $processes = array();
@@ -11,7 +13,7 @@ class Network
     public function __construct(Graph $graph)
     {
         $this->graph = $graph;
-        $this->startupDate = new \DateTime();
+        $this->startupDate = $this->createDateTimeWithMilliseconds();
 
         $this->graph->on('addNode', array($this, 'addNode'));
         $this->graph->on('removeNode', array($this, 'removeNode'));
@@ -21,7 +23,7 @@ class Network
 
     public function uptime()
     {
-        return $this->startupDate->diff(new \DateTime());
+        return $this->startupDate->diff($this->createDateTimeWithMilliseconds());
     }
 
     public function addNode(array $node)
@@ -182,5 +184,10 @@ class Network
         $graph = Graph::loadFile($file);
 
         return Network::create($graph);
+    }
+
+    private function createDateTimeWithMilliseconds()
+    {
+        return DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
     }
 }
