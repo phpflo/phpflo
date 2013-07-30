@@ -24,8 +24,9 @@ PhpFlo can be installed from [Packagist.org](http://packagist.org/view/PhpFlo/Ph
 ```json
 {
     "require": {
-        "PhpFlo/PhpFlo": ">=0.0.2"
-    }
+        "phpflo/phpflo": "dev-master"
+    },
+    "minimum-stability": "dev"
 }
 ```
 
