@@ -219,4 +219,4 @@ PhpFlo has a Continuous Integration environment set up on [Travis](http://travis
 
 ### Some ideas
 
-* Use [phpDaemon](http://phpdaemon.net/) to make the network run asynchronously, Node.js -like
+* Use [phpDaemon](http://daemon.io/) to make the network run asynchronously, Node.js -like
