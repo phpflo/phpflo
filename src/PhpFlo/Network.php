@@ -179,6 +179,25 @@ class Network
         return $network;
     }
 
+    /**
+     * Load PhpFlo graph definition from string.
+     *
+     * @param string $string
+     * @return \PhpFlo\Network
+     */
+    public static function loadString($string)
+    {
+        $graph = Graph::loadString($string);
+
+        return Network::create($graph);
+    }
+
+    /**
+     * Load PhpFlo graph definition from file.
+     *
+     * @param string $file
+     * @return \PhpFlo\Network
+     */
     public static function loadFile($file)
     {
         $graph = Graph::loadFile($file);
