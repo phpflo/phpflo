@@ -158,9 +158,16 @@ class Graph extends EventEmitter
         return json_encode($json);
     }
 
-    public static function save($file)
+    /**
+     * Save the graph json into the file.
+     *
+     * @param string $file
+     * @return bool
+     */
+    public function save($file)
     {
         $stat = file_put_contents($file, $this->toJSON());
+
         if ($stat === false) {
             return false;
         }
