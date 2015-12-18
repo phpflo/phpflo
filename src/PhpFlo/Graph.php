@@ -168,6 +168,31 @@ class Graph extends EventEmitter
         return true;
     }
 
+    /**
+     * Load PhpFlo graph definition from string.
+     *
+     * @param string $string
+     * @throws \InvalidArgumentException
+     * @return \PhpFlo\Graph
+     */
+    public static function loadString($string)
+    {
+        $definition = @json_decode($string);
+
+        if (!$definition) {
+            throw new \InvalidArgumentException("Failed to parse PhpFlo graph definition string");
+        }
+
+        return self::loadDefinition($definition);
+    }
+
+    /**
+     * Load PhpFlo graph definition from file.
+     *
+     * @param string $file
+     * @throws \InvalidArgumentException
+     * @return \PhpFlo\Graph
+     */
     public static function loadFile($file)
     {
         if (!file_exists($file)) {
@@ -179,6 +204,17 @@ class Graph extends EventEmitter
             throw new \InvalidArgumentException("Failed to parse PhpFlo graph definition file {$file}");
         }
 
+        return self::loadDefinition($definition);
+    }
+
+    /**
+     * Load PhpFlo graph definition.
+     *
+     * @param stdClass $definition
+     * @return \PhpFlo\Graph
+     */
+    public static function loadDefinition($definition)
+    {
         $graph = new Graph($definition->properties->name);
 
         foreach ($definition->processes as $id => $def) {
