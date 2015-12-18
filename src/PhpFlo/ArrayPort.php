@@ -64,4 +64,19 @@ class ArrayPort extends Port
 
         return $this->sockets[$socketId]->isConnected();
     }
+
+    /**
+     * Checks if socket is attached.
+     *
+     * @param int $socketId
+     * @return bool
+     */
+    public function isAttached($socketId = 0)
+    {
+        if (!isset($this->sockets[$socketId])) {
+            return false;
+        }
+
+        return true;
+    }
 }
