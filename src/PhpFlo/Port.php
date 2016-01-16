@@ -85,6 +85,20 @@ class Port extends EventEmitter
         return $this->socket->isConnected();
     }
 
+    /**
+     * Checks if port is attached.
+     *
+     * @return bool
+     */
+    public function isAttached()
+    {
+        if (!$this->socket) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function onConnect(SocketInterface $socket)
     {
         $this->emit('connect', array($socket));
