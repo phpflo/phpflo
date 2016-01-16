@@ -81,19 +81,19 @@ class Graph extends EventEmitter
     {
         foreach ($this->edges as $index => $edge) {
             if ($edge['from']['node'] == $node && $edge['from']['port'] == $port) {
-                $thia->emit('removeEdge', array($edge));
+                $this->emit('removeEdge', array($edge));
                 $this->edges = array_splice($this->edges, $index, 1);
             }
 
             if ($edge['to']['node'] == $node && $edge['to']['port'] == $port) {
-                $thia->emit('removeEdge', array($edge));
+                $this->emit('removeEdge', array($edge));
                 $this->edges = array_splice($this->edges, $index, 1);
             }
         }
 
         foreach ($this->initializers as $index => $initializer) {
             if ($initializer['to']['node'] == $node && $initializer['to']['port'] == $port) {
-                $thia->emit('removeEdge', array($initializer));
+                $this->emit('removeEdge', array($initializer));
                 $this->initializers = array_splice($this->initializers, $index, 1);
             }
         }
