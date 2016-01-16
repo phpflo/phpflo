@@ -31,7 +31,9 @@ class Port extends EventEmitter
         $this->from = $socket->from;
 
         $socket->on('connect', array($this, 'onConnect'));
+        $socket->on('beginGroup', array($this, 'onBeginGroup'));
         $socket->on('data', array($this, 'onData'));
+        $socket->on('endGroup', array($this, 'onEndGroup'));
         $socket->on('disconnect', array($this, 'onDisconnect'));
     }
 
@@ -40,6 +42,37 @@ class Port extends EventEmitter
         $this->emit('detach', array($socket));
         $this->from = null;
         $this->socket = null;
+    }
+
+    /**
+     * @param string $groupName
+     * @return null
+     * @throws \RuntimeException
+     */
+    public function beginGroup($groupName)
+    {
+        if (!$this->socket) {
+            throw new \RuntimeException("This port is not connected");
+        }
+
+        if ($this->isConnected()) {
+            return $this->socket->beginGroup($groupName);
+        }
+
+        $this->socket->once('connect', function(SocketInterface $socket) use ($groupName) {
+            $socket->beginGroup($groupName);
+        });
+
+        $this->socket->connect();
+    }
+
+    public function endGroup()
+    {
+        if (!$this->socket) {
+            throw new \RuntimeException("This port is not connected");
+        }
+
+        $this->socket->endGroup();
     }
 
     public function send($data)
@@ -104,9 +137,30 @@ class Port extends EventEmitter
         $this->emit('connect', array($socket));
     }
 
-    public function onData($data)
+    /**
+     * @param mixed $data
+     * @param SocketInterface $socket
+     */
+    public function onData($data, SocketInterface $socket)
     {
-        $this->emit('data', array($data));
+        $this->emit('data', array($data, $socket));
+    }
+
+    /**
+     * @param string $groupName
+     * @param SocketInterface $socket
+     */
+    public function onBeginGroup($groupName, SocketInterface $socket)
+    {
+        $this->emit('beginGroup', array($groupName, $socket));
+    }
+
+    /**
+     * @param SocketInterface $socket
+     */
+    public function onEndGroup(SocketInterface $socket)
+    {
+        $this->emit('endGroup', array($socket));
     }
 
     public function onDisconnect(SocketInterface $socket)
