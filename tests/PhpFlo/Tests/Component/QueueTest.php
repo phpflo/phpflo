@@ -4,19 +4,19 @@ namespace PhpFlo\Tests\Component;
 
 use PhpFlo\Network;
 
-class QueuTest extends \PHPUnit_Framework_TestCase
+class QueueTest extends \PHPUnit_Framework_TestCase
 {
-    public function testNoMessageIsForwardedWhileQueuSizeIsNotReached()
+    public function testNoMessageIsForwardedWhileQueueSizeIsNotReached()
     {
         $this->markTestIncomplete();
     }
 
-    public function testAllMessagesAreForwardedWhenQueuSizeIsReached()
+    public function testAllMessagesAreForwardedWhenQueueSizeIsReached()
     {
         $this->markTestIncomplete();
     }
 
-    public function testQueuResize()
+    public function testQueueResize()
     {
         $this->markTestIncomplete();
     }
@@ -26,7 +26,7 @@ class QueuTest extends \PHPUnit_Framework_TestCase
         $this->markTestIncomplete();
     }
 
-    public function testMessagesAreForwardeWhenQueuIsResizedBelowCurrentMessageCount()
+    public function testMessagesAreForwardeWhenQueueIsResizedBelowCurrentMessageCount()
     {
         $this->markTestIncomplete();
     }
