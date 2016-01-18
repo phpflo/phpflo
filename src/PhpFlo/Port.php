@@ -66,13 +66,13 @@ class Port extends EventEmitter
         $this->socket->connect();
     }
 
-    public function endGroup()
+    public function endGroup($groupName)
     {
         if (!$this->socket) {
             throw new \RuntimeException("This port is not connected");
         }
 
-        $this->socket->endGroup();
+        $this->socket->endGroup($groupName);
     }
 
     public function send($data)
@@ -156,11 +156,12 @@ class Port extends EventEmitter
     }
 
     /**
+     * @param string $groupName
      * @param SocketInterface $socket
      */
-    public function onEndGroup(SocketInterface $socket)
+    public function onEndGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('endGroup', array($socket));
+        $this->emit('endGroup', array($groupName, $socket));
     }
 
     public function onDisconnect(SocketInterface $socket)

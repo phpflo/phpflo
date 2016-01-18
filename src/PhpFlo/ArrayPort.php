@@ -45,16 +45,17 @@ class ArrayPort extends Port
     }
 
     /**
+     * @param string $groupName
      * @param int $socketId
      * @throws \InvalidArgumentException
      */
-    public function endGroup($socketId = 0)
+    public function endGroup($groupName, $socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
             throw new \InvalidArgumentException("No socket {$socketId} connected");
         }
 
-        $this->sockets[$socketId]->endGroup();
+        $this->sockets[$socketId]->endGroup($groupName);
     }
 
     public function send($data, $socketId = 0)
@@ -116,6 +117,14 @@ class ArrayPort extends Port
     }
 
     /**
+     * return int[]
+     */
+    public function listAttached()
+    {
+        return array_keys($this->sockets);
+    }
+
+    /**
      * @param mixed $data
      * @param SocketInterface $socket
      */
@@ -134,11 +143,12 @@ class ArrayPort extends Port
     }
 
     /**
+     * @param string $groupName
      * @param SocketInterface $socket
      */
-    public function onEndGroup(SocketInterface $socket)
+    public function onEndGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('endGroup', array($this->getSocketIndex($socket)));
+        $this->emit('endGroup', array($groupName, $this->getSocketIndex($socket)));
     }
 
     /**
