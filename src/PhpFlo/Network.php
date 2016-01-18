@@ -47,7 +47,7 @@ class Network
             if (!$component instanceof ComponentInterface) {
                 throw new \InvalidArgumentException("Component {$node['component']} doesn't appear to be a valid PhpFlo component");
             }
-            $process['component'] = new $componentClass();
+            $process['component'] = $component;
         }
 
         $this->processes[$node['id']] = $process;

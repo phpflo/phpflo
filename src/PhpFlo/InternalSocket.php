@@ -27,9 +27,28 @@ class InternalSocket extends EventEmitter implements SocketInterface
         $this->emit('connect', array($this));
     }
 
+    /**
+     * @param string $groupName
+     */
+    public function beginGroup($groupName)
+    {
+        $this->emit('beginGroup', array($groupName, $this));
+    }
+
+    /**
+     * @param string $groupName
+     */
+    public function endGroup($groupName)
+    {
+        $this->emit('endGroup', array($groupName, $this));
+    }
+
+    /**
+     * @param mixed $data
+     */
     public function send($data)
     {
-        $this->emit('data', array($data));
+        $this->emit('data', array($data, $this));
     }
 
     public function disconnect()

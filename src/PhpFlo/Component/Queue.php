@@ -6,19 +6,19 @@ use PhpFlo\Component;
 use PhpFlo\Port;
 
 /**
- * Component for creating a simple queu of messages.
+ * Component for creating a simple queue of messages.
  *
- * All incomming messages are kept in memory. As soon as the queu reaches the
+ * All incomming messages are kept in memory. As soon as the queue reaches the
  * pre-configured size of 100 messages, the current list of messages is send.
  *
- * You can reconfigure the queu size of the component by sending a message to
+ * You can reconfigure the queue size of the component by sending a message to
  * the `size` input port of this component. If the incomming data is not a 
  * positive integer, an error message will be send to the `err` out port of this
  * component.
  *
  * @author Marijn Huizendveld <marijn@pink-tie.com>
  */
-class Queu extends Component
+class Queue extends Component
 {
     /**
      * @var integer
@@ -41,7 +41,7 @@ class Queu extends Component
         $this->outPorts['err'] = new Port();
         $this->outPorts['messages'] = new Port();
 
-        $this->inPorts['in']->on('data', array($this, 'onAppendQueu'));
+        $this->inPorts['in']->on('data', array($this, 'onAppendQueue'));
         $this->inPorts['in']->on('detach', array($this, 'onStreamEnded'));
 
         $this->inPorts['size']->on('data', array($this, 'onResize'));
@@ -50,16 +50,16 @@ class Queu extends Component
     /**
      * @param mixed $data
      */
-    public function onAppendQueu($data)
+    public function onAppendQueue($data)
     {
         $this->messages[] = $data;
 
-        $this->sendQueu();
+        $this->sendQueue();
     }
 
     public function onStreamEnded()
     {
-        $this->flushQueu();
+        $this->flushQueue();
     }
 
     /**
@@ -70,22 +70,22 @@ class Queu extends Component
         if (!is_int($data) || 0 > $data) {
             $dumped = var_dump($data);
 
-            $this->outPorts['err']->send("Invalid queu size: '{$dumped}'. Queu resize operation expects a positive integer value.");
+            $this->outPorts['err']->send("Invalid queue size: '{$dumped}'. Queue resize operation expects a positive integer value.");
         }
 
         $this->size = $data;
 
-        $this->sendQueu();
+        $this->sendQueue();
     }
 
-    private function sendQueu()
+    private function sendQueue()
     {
-        if ($this->size =< count($this->messages)) {
-            $this->flushQueu();
+        if ($this->size <= count($this->messages)) {
+            $this->flushQueue();
         }
     }
 
-    private function flushQueu()
+    private function flushQueue()
     {
         $this->outPorts['messages']->send($this->messages);
         $this->outPorts['messages']->disconnect();
