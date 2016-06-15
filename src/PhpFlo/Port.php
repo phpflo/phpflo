@@ -3,15 +3,37 @@ namespace PhpFlo;
 
 use Evenement\EventEmitter;
 
+/**
+ * Class Port
+ *
+ * @package PhpFlo
+ * @author Henri Bergius <henri.bergius@iki.fi>
+ */
 class Port extends EventEmitter
 {
-    private $name = "";
-    private $socket = null;
-    private $from = null;
+    /**
+     * @var string
+     */
+    private $name;
 
+    /**
+     * @var null
+     */
+    private $socket;
+
+    /**
+     * @var null
+     */
+    private $from;
+
+    /**
+     * @param string $name
+     */
     public function __construct($name = '')
     {
         $this->name = $name;
+        $this->socket = null;
+        $this->socket = null;
     }
 
     public function attach(SocketInterface $socket)
@@ -26,20 +48,20 @@ class Port extends EventEmitter
 
     protected function attachSocket(SocketInterface $socket)
     {
-        $this->emit('attach', array($socket));
+        $this->emit('attach', [$socket]);
 
         $this->from = $socket->from;
 
-        $socket->on('connect', array($this, 'onConnect'));
-        $socket->on('beginGroup', array($this, 'onBeginGroup'));
-        $socket->on('data', array($this, 'onData'));
-        $socket->on('endGroup', array($this, 'onEndGroup'));
-        $socket->on('disconnect', array($this, 'onDisconnect'));
+        $socket->on('connect', [$this, 'onConnect']);
+        $socket->on('beginGroup', [$this, 'onBeginGroup']);
+        $socket->on('data', [$this, 'onData']);
+        $socket->on('endGroup', [$this, 'onEndGroup']);
+        $socket->on('disconnect', [$this, 'onDisconnect']);
     }
 
     public function detach(SocketInterface $socket)
     {
-        $this->emit('detach', array($socket));
+        $this->emit('detach', [$socket]);
         $this->from = null;
         $this->socket = null;
     }
@@ -59,7 +81,7 @@ class Port extends EventEmitter
             return $this->socket->beginGroup($groupName);
         }
 
-        $this->socket->once('connect', function(SocketInterface $socket) use ($groupName) {
+        $this->socket->once('connect', function (SocketInterface $socket) use ($groupName) {
             $socket->beginGroup($groupName);
         });
 
@@ -85,7 +107,7 @@ class Port extends EventEmitter
             return $this->socket->send($data);
         }
 
-        $this->socket->once('connect', function(SocketInterface $socket) use ($data) {
+        $this->socket->once('connect', function (SocketInterface $socket) use ($data) {
             $socket->send($data);
         });
 
@@ -134,7 +156,7 @@ class Port extends EventEmitter
 
     public function onConnect(SocketInterface $socket)
     {
-        $this->emit('connect', array($socket));
+        $this->emit('connect', [$socket]);
     }
 
     /**
@@ -143,7 +165,7 @@ class Port extends EventEmitter
      */
     public function onData($data, SocketInterface $socket)
     {
-        $this->emit('data', array($data, $socket));
+        $this->emit('data', [$data, $socket]);
     }
 
     /**
@@ -152,7 +174,7 @@ class Port extends EventEmitter
      */
     public function onBeginGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('beginGroup', array($groupName, $socket));
+        $this->emit('beginGroup', [$groupName, $socket]);
     }
 
     /**
@@ -161,11 +183,11 @@ class Port extends EventEmitter
      */
     public function onEndGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('endGroup', array($groupName, $socket));
+        $this->emit('endGroup', [$groupName, $socket]);
     }
 
     public function onDisconnect(SocketInterface $socket)
     {
-        $this->emit('disconnect', array($socket));
+        $this->emit('disconnect', [$socket]);
     }
 }

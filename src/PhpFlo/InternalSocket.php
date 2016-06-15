@@ -3,11 +3,17 @@ namespace PhpFlo;
 
 use Evenement\EventEmitter;
 
+/**
+ * Class InternalSocket
+ *
+ * @package PhpFlo
+ * @author Henri Bergius <henri.bergius@iki.fi>
+ */
 class InternalSocket extends EventEmitter implements SocketInterface
 {
     private $connected = false;
-    public $from = array();
-    public $to = array();
+    public $from = [];
+    public $to = [];
 
     public function getId()
     {
@@ -24,7 +30,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     public function connect()
     {
         $this->connected = true;
-        $this->emit('connect', array($this));
+        $this->emit('connect', [$this]);
     }
 
     /**
@@ -32,7 +38,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
      */
     public function beginGroup($groupName)
     {
-        $this->emit('beginGroup', array($groupName, $this));
+        $this->emit('beginGroup', [$groupName, $this]);
     }
 
     /**
@@ -40,7 +46,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
      */
     public function endGroup($groupName)
     {
-        $this->emit('endGroup', array($groupName, $this));
+        $this->emit('endGroup', [$groupName, $this]);
     }
 
     /**
@@ -48,13 +54,13 @@ class InternalSocket extends EventEmitter implements SocketInterface
      */
     public function send($data)
     {
-        $this->emit('data', array($data, $this));
+        $this->emit('data', [$data, $this]);
     }
 
     public function disconnect()
     {
         $this->connected = false;
-        $this->emit('disconnect', array($this));
+        $this->emit('disconnect', [$this]);
     }
 
     public function isConnected()

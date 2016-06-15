@@ -3,10 +3,16 @@ namespace PhpFlo;
 
 use DateTime;
 
+/**
+ * Class Network
+ *
+ * @package PhpFlo
+ * @author Henri Bergius <henri.bergius@iki.fi>
+ */
 class Network
 {
-    private $processes = array();
-    private $connections = array();
+    private $processes = [];
+    private $connections = [];
     private $graph = null;
     private $startupDate = null;
 
@@ -15,10 +21,10 @@ class Network
         $this->graph = $graph;
         $this->startupDate = $this->createDateTimeWithMilliseconds();
 
-        $this->graph->on('addNode', array($this, 'addNode'));
-        $this->graph->on('removeNode', array($this, 'removeNode'));
-        $this->graph->on('addEdge', array($this, 'addEdge'));
-        $this->graph->on('removeEdge', array($this, 'removeEdge'));
+        $this->graph->on('addNode', [$this, 'addNode']);
+        $this->graph->on('removeNode', [$this, 'removeNode']);
+        $this->graph->on('addEdge', [$this, 'addEdge']);
+        $this->graph->on('removeEdge', [$this, 'removeEdge']);
     }
 
     public function uptime()
@@ -32,7 +38,7 @@ class Network
             return;
         }
 
-        $process = array();
+        $process = [];
         $process['id'] = $node['id'];
 
         if (isset($node['component'])) {
@@ -78,10 +84,10 @@ class Network
 
     private function connectInboundPort(SocketInterface $socket, array $process, $port)
     {
-        $socket->to = array(
+        $socket->to = [
             'process' => $process,
             'port' => $port,
-        );
+        ];
 
         if (!isset($process['component']->inPorts[$port])) {
             throw new \InvalidArgumentException("No inport {$port} defined for process {$process['id']}");
@@ -92,10 +98,10 @@ class Network
 
     private function connectOutgoingPort(SocketInterface $socket, array $process, $port)
     {
-        $socket->from = array(
+        $socket->from = [
             'process' => $process,
             'port' => $port,
-        );
+        ];
 
         if (!isset($process['component']->outPorts[$port])) {
             throw new \InvalidArgumentException("No outport {$port} defined for process {$process['id']}");

@@ -6,13 +6,22 @@ namespace PhpFlo;
 
 use Evenement\EventEmitter;
 
+/**
+ * Class Graph
+ *
+ * @package PhpFlo
+ * @author Henri Bergius <henri.bergius@iki.fi>
+ */
 class Graph extends EventEmitter
 {
     private $name = "";
-    public $nodes = array();
-    public $edges = array();
-    public $initializers = array();
+    public $nodes = [];
+    public $edges = [];
+    public $initializers = [];
 
+    /**
+     * @param string $name
+     */
     public function __construct($name)
     {
         $this->name = $name;
@@ -20,17 +29,18 @@ class Graph extends EventEmitter
 
     public function addNode($id, $component)
     {
-        $node = array(
+        $node = [
             'id' => $id,
-            'component' => $component
-        );
+            'component' => $component,
+        ];
 
         $this->nodes[$id] = $node;
-        $this->emit('addNode', array($node));
+        $this->emit('addNode', [$node]);
     }
 
     public function removeNode($id)
     {
+        // @todo: analyze - this seems not to work due to missing second param on removeEdge
         foreach ($this->edges as $edge) {
             if ($edge['from']['node'] == $id) {
                 $this->removeEdge($edge);
@@ -47,7 +57,7 @@ class Graph extends EventEmitter
         }
 
         $node = $this->nodes[$id];
-        $this->emit('removeNode', array($node));
+        $this->emit('removeNode', [$node]);
         unset($this->nodes[$id]);
     }
 
@@ -62,38 +72,38 @@ class Graph extends EventEmitter
 
     public function addEdge($outNode, $outPort, $inNode, $inPort)
     {
-        $edge = array(
-            'from' => array(
+        $edge = [
+            'from' => [
                 'node' => $outNode,
                 'port' => $outPort,
-            ),
-            'to' => array(
+            ],
+            'to' => [
                 'node' => $inNode,
                 'port' => $inPort,
-            ),
-        );
+            ],
+        ];
 
         $this->edges[] = $edge;
-        $this->emit('addEdge', array($edge));
+        $this->emit('addEdge', [$edge]);
     }
 
     public function removeEdge($node, $port)
     {
         foreach ($this->edges as $index => $edge) {
             if ($edge['from']['node'] == $node && $edge['from']['port'] == $port) {
-                $this->emit('removeEdge', array($edge));
+                $this->emit('removeEdge', [$edge]);
                 $this->edges = array_splice($this->edges, $index, 1);
             }
 
             if ($edge['to']['node'] == $node && $edge['to']['port'] == $port) {
-                $this->emit('removeEdge', array($edge));
+                $this->emit('removeEdge', [$edge]);
                 $this->edges = array_splice($this->edges, $index, 1);
             }
         }
 
         foreach ($this->initializers as $index => $initializer) {
             if ($initializer['to']['node'] == $node && $initializer['to']['port'] == $port) {
-                $this->emit('removeEdge', array($initializer));
+                $this->emit('removeEdge', [$initializer]);
                 $this->initializers = array_splice($this->initializers, $index, 1);
             }
         }
@@ -101,57 +111,57 @@ class Graph extends EventEmitter
 
     public function addInitial($data, $node, $port)
     {
-        $initializer = array(
-            'from' => array(
+        $initializer = [
+            'from' => [
                 'data' => $data,
-            ),
-            'to' => array(
+            ],
+            'to' => [
                 'node' => $node,
                 'port' => $port,
-            ),
-        );
+            ],
+        ];
 
         $this->initializers[] = $initializer;
-        $this->emit('addEdge', array($initializer));
+        $this->emit('addEdge', [$initializer]);
     }
 
     public function toJSON()
     {
-        $json = array(
-            'properties' => array(
+        $json = [
+            'properties' => [
                 'name' => $this->name,
-            ),
-            'processes' => array(),
-            'connections' => array(),
-        );
+            ],
+            'processes' => [],
+            'connections' => [],
+        ];
 
         foreach ($this->nodes as $node) {
-            $json['processes'][$node['id']] = array(
+            $json['processes'][$node['id']] = [
                 'component' => $node['component'],
-            );
+            ];
         }
 
         foreach ($this->edges as $edge) {
-            $json['connections'][] = array(
-                'src' => array(
+            $json['connections'][] = [
+                'src' => [
                     'process' => $edge['from']['node'],
                     'port' => $edge['from']['port'],
-                ),
-                'tgt' => array(
+                ],
+                'tgt' => [
                     'process' => $edge['to']['node'],
                     'port' => $edge['to']['port'],
-                ),
-            );
+                ],
+            ];
         }
 
         foreach ($this->initializers as $initializer) {
-            $json['connections'][] = array(
+            $json['connections'][] = [
                 'data' => $initializer['from']['data'],
-                'tgt' => array(
+                'tgt' => [
                     'process' => $initializer['to']['node'],
                     'port' => $initializer['to']['port'],
-                ),
-            );
+                ],
+            ];
         }
 
         // TODO: JSON_PRETTY_PRINT support in PHP 5.4

@@ -1,9 +1,15 @@
 <?php
 namespace PhpFlo;
 
+/**
+ * Class ArrayPort
+ *
+ * @package PhpFlo
+ * @author Henri Bergius <henri.bergius@iki.fi>
+ */
 class ArrayPort extends Port
 {
-    private $sockets = array();
+    private $sockets = [];
 
     public function attach(SocketInterface $socket)
     {
@@ -18,7 +24,7 @@ class ArrayPort extends Port
             return;
         }
 
-        $this->emit('detach', array($socket));
+        $this->emit('detach', [$socket]);
         $this->sockets = array_splice($this->sockets, $index, 1);
     }
 
@@ -130,7 +136,7 @@ class ArrayPort extends Port
      */
     public function onData($data, SocketInterface $socket)
     {
-        $this->emit('data', array($data, $this->getSocketIndex($socket)));
+        $this->emit('data', [$data, $this->getSocketIndex($socket)]);
     }
 
     /**
@@ -139,7 +145,7 @@ class ArrayPort extends Port
      */
     public function onBeginGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('beginGroup', array($groupName, $this->getSocketIndex($socket)));
+        $this->emit('beginGroup', [$groupName, $this->getSocketIndex($socket)]);
     }
 
     /**
@@ -148,7 +154,7 @@ class ArrayPort extends Port
      */
     public function onEndGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('endGroup', array($groupName, $this->getSocketIndex($socket)));
+        $this->emit('endGroup', [$groupName, $this->getSocketIndex($socket)]);
     }
 
     /**
