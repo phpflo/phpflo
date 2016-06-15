@@ -17,7 +17,7 @@ interface SocketInterface
     public function connect();
 
     /**
-     * @param $data
+     * @param mixed $data
      */
     public function send($data);
 

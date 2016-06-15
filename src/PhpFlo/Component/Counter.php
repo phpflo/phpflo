@@ -4,8 +4,17 @@ namespace PhpFlo\Component;
 use PhpFlo\Component;
 use PhpFlo\Port;
 
+/**
+ * Class Counter
+ *
+ * @package PhpFlo\Component
+ * @author Henri Bergius <henri.bergius@iki.fi>
+ */
 class Counter extends Component
 {
+    /**
+     * @var null
+     */
     private $count = null;
 
     public function __construct()
@@ -13,10 +22,13 @@ class Counter extends Component
         $this->inPorts['in'] = new Port();
         $this->outPorts['count'] = new Port();
 
-        $this->inPorts['in']->on('data', array($this, 'appendCount'));
-        $this->inPorts['in']->on('disconnect', array($this, 'sendCount'));
+        $this->inPorts['in']->on('data', [$this, 'appendCount']);
+        $this->inPorts['in']->on('disconnect', [$this, 'sendCount']);
     }
 
+    /**
+     * @param int|null $data
+     */
     public function appendCount($data)
     {
         if (is_null($this->count)) {

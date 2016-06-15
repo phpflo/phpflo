@@ -4,10 +4,23 @@ namespace PhpFlo\Component;
 use PhpFlo\Component;
 use PhpFlo\Port;
 
+/**
+ * Class SplitStr
+ *
+ * @package PhpFlo\Component
+ * @author Henri Bergius <henri.bergius@iki.fi>
+ */
 class SplitStr extends Component
 {
-    private $delimiterString = "\n";
-    private $string = "";
+    /**
+     * @var string
+     */
+    private $delimiterString;
+
+    /**
+     * @var string
+     */
+    private $string;
 
     public function __construct()
     {
@@ -15,16 +28,25 @@ class SplitStr extends Component
         $this->inPorts['delimiter'] = new Port();
         $this->outPorts['out'] = new Port();
 
-        $this->inPorts['delimiter']->on('data', array($this, 'setDelimiter'));
-        $this->inPorts['in']->on('data', array($this, 'appendString'));
-        $this->inPorts['in']->on('disconnect', array($this, 'splitString'));
+        $this->inPorts['delimiter']->on('data', [$this, 'setDelimiter']);
+        $this->inPorts['in']->on('data', [$this, 'appendString']);
+        $this->inPorts['in']->on('disconnect', [$this, 'splitString']);
+
+        $this->delimiterString = "\n";
+        $this->string = "";
     }
 
+    /**
+     * @param string $data
+     */
     public function setDelimiter($data)
     {
         $this->delimiterString = $data;
     }
 
+    /**
+     * @param string $data
+     */
     public function appendString($data)
     {
         $this->string .= $data;

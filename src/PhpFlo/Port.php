@@ -36,6 +36,9 @@ class Port extends EventEmitter
         $this->socket = null;
     }
 
+    /**
+     * @param SocketInterface $socket
+     */
     public function attach(SocketInterface $socket)
     {
         if ($this->socket) {
@@ -46,6 +49,9 @@ class Port extends EventEmitter
         $this->attachSocket($socket);
     }
 
+    /**
+     * @param SocketInterface $socket
+     */
     protected function attachSocket(SocketInterface $socket)
     {
         $this->emit('attach', [$socket]);
@@ -59,6 +65,9 @@ class Port extends EventEmitter
         $socket->on('disconnect', [$this, 'onDisconnect']);
     }
 
+    /**
+     * @param SocketInterface $socket
+     */
     public function detach(SocketInterface $socket)
     {
         $this->emit('detach', [$socket]);
@@ -88,6 +97,9 @@ class Port extends EventEmitter
         $this->socket->connect();
     }
 
+    /**
+     * @param $groupName
+     */
     public function endGroup($groupName)
     {
         if (!$this->socket) {
@@ -97,6 +109,10 @@ class Port extends EventEmitter
         $this->socket->endGroup($groupName);
     }
 
+    /**
+     * @param mixed $data
+     * @return mixed|null
+     */
     public function send($data)
     {
         if (!$this->socket) {
@@ -114,6 +130,9 @@ class Port extends EventEmitter
         $this->socket->connect();
     }
 
+    /**
+     * @throws \RuntimeException
+     */
     public function connect()
     {
         if (!$this->socket) {
@@ -131,6 +150,9 @@ class Port extends EventEmitter
         $this->socket->disconnect();
     }
 
+    /**
+     * @return bool
+     */
     public function isConnected()
     {
         if (!$this->socket) {
@@ -154,6 +176,9 @@ class Port extends EventEmitter
         return true;
     }
 
+    /**
+     * @param SocketInterface $socket
+     */
     public function onConnect(SocketInterface $socket)
     {
         $this->emit('connect', [$socket]);
@@ -186,6 +211,9 @@ class Port extends EventEmitter
         $this->emit('endGroup', [$groupName, $socket]);
     }
 
+    /**
+     * @param SocketInterface $socket
+     */
     public function onDisconnect(SocketInterface $socket)
     {
         $this->emit('disconnect', [$socket]);

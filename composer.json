@@ -1,7 +1,7 @@
 {
     "name": "PhpFlo/PhpFlo",
     "type": "library",
-    "description": "Flow-based programming for PHP 5.3",
+    "description": "Flow-based programming for PHP",
     "keywords": ["fbp", "flow"],
     "homepage": "https://github.com/bergie/phpflo",
     "version": "0.0.2",
@@ -16,6 +16,9 @@
     "require": {
         "php": ">=5.4.0",
         "evenement/evenement": "~2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "<5.0"
     },
     "autoload": {
         "psr-4": {

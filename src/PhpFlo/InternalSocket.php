@@ -11,10 +11,31 @@ use Evenement\EventEmitter;
  */
 class InternalSocket extends EventEmitter implements SocketInterface
 {
-    private $connected = false;
-    public $from = [];
-    public $to = [];
+    /**
+     * @var bool
+     */
+    private $connected;
 
+    /**
+     * @var array
+     */
+    public $from;
+
+    /**
+     * @var array
+     */
+    public $to;
+
+    public function __construct()
+    {
+        $this->connected = false;
+        $this->from = [];
+        $this->to = [];
+    }
+
+    /**
+     * @return string
+     */
     public function getId()
     {
         if ($this->from && !$this->to) {

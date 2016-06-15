@@ -14,10 +14,25 @@ use Evenement\EventEmitter;
  */
 class Graph extends EventEmitter
 {
-    private $name = "";
-    public $nodes = [];
-    public $edges = [];
-    public $initializers = [];
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var array
+     */
+    public $nodes;
+
+    /**
+     * @var array
+     */
+    public $edges;
+
+    /**
+     * @var array
+     */
+    public $initializers;
 
     /**
      * @param string $name
@@ -25,8 +40,15 @@ class Graph extends EventEmitter
     public function __construct($name)
     {
         $this->name = $name;
+        $this->nodes = [];
+        $this->edges = [];
+        $this->initializers = [];
     }
 
+    /**
+     * @param string $id
+     * @param string $component
+     */
     public function addNode($id, $component)
     {
         $node = [
@@ -38,6 +60,9 @@ class Graph extends EventEmitter
         $this->emit('addNode', [$node]);
     }
 
+    /**
+     * @param string $id
+     */
     public function removeNode($id)
     {
         // @todo: analyze - this seems not to work due to missing second param on removeEdge
@@ -61,6 +86,10 @@ class Graph extends EventEmitter
         unset($this->nodes[$id]);
     }
 
+    /**
+     * @param string $id
+     * @return mixed|null
+     */
     public function getNode($id)
     {
         if (!isset($this->nodes[$id])) {
@@ -70,6 +99,12 @@ class Graph extends EventEmitter
         return $this->nodes[$id];
     }
 
+    /**
+     * @param string $outNode
+     * @param string $outPort
+     * @param string $inNode
+     * @param string $inPort
+     */
     public function addEdge($outNode, $outPort, $inNode, $inPort)
     {
         $edge = [
@@ -87,6 +122,10 @@ class Graph extends EventEmitter
         $this->emit('addEdge', [$edge]);
     }
 
+    /**
+     * @param string $node
+     * @param string $port
+     */
     public function removeEdge($node, $port)
     {
         foreach ($this->edges as $index => $edge) {
@@ -109,6 +148,11 @@ class Graph extends EventEmitter
         }
     }
 
+    /**
+     * @param mixed $data
+     * @param string $node
+     * @param string $port
+     */
     public function addInitial($data, $node, $port)
     {
         $initializer = [
@@ -125,6 +169,9 @@ class Graph extends EventEmitter
         $this->emit('addEdge', [$initializer]);
     }
 
+    /**
+     * @return string
+     */
     public function toJSON()
     {
         $json = [
@@ -227,7 +274,7 @@ class Graph extends EventEmitter
     /**
      * Load PhpFlo graph definition.
      *
-     * @param stdClass $definition
+     * @param \stdClass $definition
      * @return \PhpFlo\Graph
      */
     public static function loadDefinition($definition)

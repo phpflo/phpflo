@@ -1,8 +1,6 @@
 <?php
 namespace PhpFlo;
 
-use DateTime;
-
 /**
  * Class Network
  *
@@ -11,11 +9,29 @@ use DateTime;
  */
 class Network
 {
-    private $processes = [];
-    private $connections = [];
-    private $graph = null;
-    private $startupDate = null;
+    /**
+     * @var array
+     */
+    private $processes;
 
+    /**
+     * @var array
+     */
+    private $connections;
+
+    /**
+     * @var null
+     */
+    private $graph;
+
+    /**
+     * @var null
+     */
+    private $startupDate;
+
+    /**
+     * @param Graph $graph
+     */
     public function __construct(Graph $graph)
     {
         $this->graph = $graph;
@@ -25,13 +41,24 @@ class Network
         $this->graph->on('removeNode', [$this, 'removeNode']);
         $this->graph->on('addEdge', [$this, 'addEdge']);
         $this->graph->on('removeEdge', [$this, 'removeEdge']);
+
+        $this->processes = [];
+        $this->connections = [];
+        $this->graph = null;
+        $this->startupDate = null;
     }
 
+    /**
+     * @return null|\DateTime
+     */
     public function uptime()
     {
         return $this->startupDate->diff($this->createDateTimeWithMilliseconds());
     }
 
+    /**
+     * @param array $node
+     */
     public function addNode(array $node)
     {
         if (isset($this->processes[$node['id']])) {
@@ -59,6 +86,9 @@ class Network
         $this->processes[$node['id']] = $process;
     }
 
+    /**
+     * @param array $node
+     */
     public function removeNode(array $node)
     {
         if (!isset($this->processes[$node['id']])) {
@@ -68,6 +98,10 @@ class Network
         unset($this->processes[$node['id']]);
     }
 
+    /**
+     * @param string $id
+     * @return mixed|null
+     */
     public function getNode($id)
     {
         if (!isset($this->processes[$id])) {
@@ -77,11 +111,20 @@ class Network
         return $this->processes[$id];
     }
 
+    /**
+     * @return null
+     */
     public function getGraph()
     {
         return $this->graph;
     }
 
+    /**
+     * @param SocketInterface $socket
+     * @param array $process
+     * @param Port $port
+     * @return mixed
+     */
     private function connectInboundPort(SocketInterface $socket, array $process, $port)
     {
         $socket->to = [
@@ -96,6 +139,12 @@ class Network
         return $process['component']->inPorts[$port]->attach($socket);
     }
 
+    /**
+     * @param SocketInterface $socket
+     * @param array $process
+     * @param Port $port
+     * @return mixed
+     */
     private function connectOutgoingPort(SocketInterface $socket, array $process, $port)
     {
         $socket->from = [
@@ -110,6 +159,9 @@ class Network
         return $process['component']->outPorts[$port]->attach($socket);
     }
 
+    /**
+     * @param array $edge
+     */
     public function addEdge(array $edge)
     {
         if (!isset($edge['from']['node'])) {
@@ -133,6 +185,9 @@ class Network
         $this->connections[] = $socket;
     }
 
+    /**
+     * @param array $edge
+     */
     public function removeEdge(array $edge)
     {
         foreach ($this->connections as $index => $connection) {
@@ -150,6 +205,9 @@ class Network
         }
     }
 
+    /**
+     * @param array $initializer
+     */
     public function addInitial(array $initializer)
     {
         $socket = new InternalSocket();
@@ -166,6 +224,10 @@ class Network
         $this->connections[] = $socket;
     }
 
+    /**
+     * @param Graph $graph
+     * @return Network
+     */
     public static function create(Graph $graph)
     {
         $network = new Network($graph);
@@ -211,8 +273,11 @@ class Network
         return Network::create($graph);
     }
 
+    /**
+     * @return \DateTime
+     */
     private function createDateTimeWithMilliseconds()
     {
-        return DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        return \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
     }
 }
