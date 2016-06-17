@@ -9,14 +9,23 @@ namespace PhpFlo;
  */
 class ArrayPort extends Port
 {
+    /**
+     * @var array
+     */
     private $sockets = [];
 
+    /**
+     * @param SocketInterface $socket
+     */
     public function attach(SocketInterface $socket)
     {
         $this->sockets[] = $socket;
         $this->attachSocket($socket);
     }
 
+    /**
+     * @param SocketInterface $socket
+     */
     public function detach(SocketInterface $socket)
     {
         $index = array_search($socket, $this->sockets);
@@ -64,6 +73,12 @@ class ArrayPort extends Port
         $this->sockets[$socketId]->endGroup($groupName);
     }
 
+    /**
+     * @param mixed $data
+     * @param int $socketId
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
     public function send($data, $socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
@@ -80,6 +95,10 @@ class ArrayPort extends Port
         $this->sockets[$socketId]->connect();
     }
 
+    /**
+     * @param int $socketId
+     * @throws \InvalidArgumentException
+     */
     public function connect($socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
@@ -158,7 +177,7 @@ class ArrayPort extends Port
     }
 
     /**
-     * 
+     *
      * @param SocketInterface $socket
      * @return int
      */
@@ -170,7 +189,7 @@ class ArrayPort extends Port
             if($subSocket->getId() == $socket->getId()) {
                 break;
             }
-            
+
             $index++;
         }
 

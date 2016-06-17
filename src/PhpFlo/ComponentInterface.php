@@ -9,5 +9,8 @@ namespace PhpFlo;
  */
 interface ComponentInterface
 {
+    /**
+     * @return string
+     */
     public function getDescription();
 }

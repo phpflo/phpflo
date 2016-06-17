@@ -15,7 +15,7 @@ class Counter extends Component
     /**
      * @var null
      */
-    private $count = null;
+    private $count;
 
     public function __construct()
     {
@@ -24,6 +24,8 @@ class Counter extends Component
 
         $this->inPorts['in']->on('data', [$this, 'appendCount']);
         $this->inPorts['in']->on('disconnect', [$this, 'sendCount']);
+
+        $this->count = null;
     }
 
     /**

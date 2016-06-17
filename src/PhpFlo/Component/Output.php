@@ -15,7 +15,6 @@ class Output extends Component
     public function __construct()
     {
         $this->inPorts['in'] = new ArrayPort();
-
         $this->inPorts['in']->on('data', [$this, 'displayData']);
     }
 
