@@ -1,5 +1,16 @@
 <?php
+/*
+ * This file is part of the phpflo/phpflo package.
+ *
+ * (c) Henri Bergius <henri.bergius@iki.fi>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpFlo;
+
+use PhpFlo\Exception\InvalidDefinitionException;
 
 /**
  * Class Network
@@ -58,6 +69,7 @@ class Network
 
     /**
      * @param array $node
+     * @throws InvalidDefinitionException
      */
     public function addNode(array $node)
     {
@@ -73,12 +85,12 @@ class Network
             if (!class_exists($componentClass) && strpos($componentClass, '\\') === false) {
                 $componentClass = "PhpFlo\\Component\\{$componentClass}";
                 if (!class_exists($componentClass)) {
-                    throw new \InvalidArgumentException("Component class {$componentClass} not found");
+                    throw new InvalidDefinitionException("Component class {$componentClass} not found");
                 }
             }
             $component = new $componentClass();
             if (!$component instanceof ComponentInterface) {
-                throw new \InvalidArgumentException("Component {$node['component']} doesn't appear to be a valid PhpFlo component");
+                throw new InvalidDefinitionException("Component {$node['component']} doesn't appear to be a valid PhpFlo component");
             }
             $process['component'] = $component;
         }
@@ -123,6 +135,7 @@ class Network
      * @param SocketInterface $socket
      * @param array $process
      * @param Port $port
+     * @throws InvalidDefinitionException
      * @return mixed
      */
     private function connectInboundPort(SocketInterface $socket, array $process, $port)
@@ -133,7 +146,7 @@ class Network
         ];
 
         if (!isset($process['component']->inPorts[$port])) {
-            throw new \InvalidArgumentException("No inport {$port} defined for process {$process['id']}");
+            throw new InvalidDefinitionException("No inport {$port} defined for process {$process['id']}");
         }
 
         return $process['component']->inPorts[$port]->attach($socket);
@@ -143,6 +156,7 @@ class Network
      * @param SocketInterface $socket
      * @param array $process
      * @param Port $port
+     * @throws InvalidDefinitionException
      * @return mixed
      */
     private function connectOutgoingPort(SocketInterface $socket, array $process, $port)
@@ -153,7 +167,7 @@ class Network
         ];
 
         if (!isset($process['component']->outPorts[$port])) {
-            throw new \InvalidArgumentException("No outport {$port} defined for process {$process['id']}");
+            throw new InvalidDefinitionException("No outport {$port} defined for process {$process['id']}");
         }
 
         return $process['component']->outPorts[$port]->attach($socket);
@@ -161,6 +175,7 @@ class Network
 
     /**
      * @param array $edge
+     * @throws InvalidDefinitionException
      */
     public function addEdge(array $edge)
     {
@@ -171,12 +186,12 @@ class Network
 
         $from = $this->getNode($edge['from']['node']);
         if (!$from) {
-            throw new \InvalidArgumentException("No process defined for outbound node {$edge['from']['node']}");
+            throw new InvalidDefinitionException("No process defined for outbound node {$edge['from']['node']}");
         }
 
         $to = $this->getNode($edge['to']['node']);
         if (!$to) {
-            throw new \InvalidArgumentException("No process defined for inbound node {$edge['to']['node']}");
+            throw new InvalidDefinitionException("No process defined for inbound node {$edge['to']['node']}");
         }
 
         $this->connectOutgoingPort($socket, $from, $edge['from']['port']);
@@ -207,13 +222,14 @@ class Network
 
     /**
      * @param array $initializer
+     * @throws InvalidDefinitionException
      */
     public function addInitial(array $initializer)
     {
         $socket = new InternalSocket();
         $to = $this->getNode($initializer['to']['node']);
         if (!$to) {
-            throw new \InvalidArgumentException("No process defined for inbound node {$initializer['to']['node']}");
+            throw new InvalidDefinitionException("No process defined for inbound node {$initializer['to']['node']}");
         }
 
         $this->connectInboundPort($socket, $to, $initializer['to']['port']);

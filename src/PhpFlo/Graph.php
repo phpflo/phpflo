@@ -1,10 +1,17 @@
 <?php
-/**
- * @package PhpFlo
+/*
+ * This file is part of the phpflo/phpflo package.
+ *
+ * (c) Henri Bergius <henri.bergius@iki.fi>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 namespace PhpFlo;
 
 use Evenement\EventEmitter;
+use PhpFlo\Exception\InvalidDefinitionException;
 
 /**
  * Class Graph
@@ -65,19 +72,18 @@ class Graph extends EventEmitter
      */
     public function removeNode($id)
     {
-        // @todo: analyze - this seems not to work due to missing second param on removeEdge
         foreach ($this->edges as $edge) {
             if ($edge['from']['node'] == $id) {
-                $this->removeEdge($edge);
+                $this->removeEdge($id, $edge['from']['port']);
             }
             if ($edge['to']['node'] == $id) {
-                $this->removeEdge($edge);
+                $this->removeEdge($id, $edge['to']['port']);
             }
         }
 
         foreach ($this->initializers as $initializer) {
             if ($initializer['to']['node'] == $id) {
-                $this->removeEdge($initializer);
+                $this->removeEdge($id, $initializer['to']['port']);
             }
         }
 
@@ -172,7 +178,7 @@ class Graph extends EventEmitter
     /**
      * @return string
      */
-    public function toJSON()
+    public function toJson()
     {
         $json = [
             'properties' => [
@@ -211,8 +217,7 @@ class Graph extends EventEmitter
             ];
         }
 
-        // TODO: JSON_PRETTY_PRINT support in PHP 5.4
-        return json_encode($json);
+        return json_encode($json, JSON_PRETTY_PRINT);
     }
 
     /**
@@ -223,7 +228,7 @@ class Graph extends EventEmitter
      */
     public function save($file)
     {
-        $stat = file_put_contents($file, $this->toJSON());
+        $stat = file_put_contents($file, $this->toJson());
 
         if ($stat === false) {
             return false;
@@ -236,15 +241,15 @@ class Graph extends EventEmitter
      * Load PhpFlo graph definition from string.
      *
      * @param string $string
-     * @throws \InvalidArgumentException
-     * @return \PhpFlo\Graph
+     * @throws InvalidDefinitionException
+     * @return Graph
      */
     public static function loadString($string)
     {
         $definition = @json_decode($string);
 
         if (!$definition) {
-            throw new \InvalidArgumentException("Failed to parse PhpFlo graph definition string");
+            throw new InvalidDefinitionException("Failed to parse PhpFlo graph definition string");
         }
 
         return self::loadDefinition($definition);
@@ -254,18 +259,18 @@ class Graph extends EventEmitter
      * Load PhpFlo graph definition from file.
      *
      * @param string $file
-     * @throws \InvalidArgumentException
-     * @return \PhpFlo\Graph
+     * @throws InvalidDefinitionException
+     * @return Graph
      */
     public static function loadFile($file)
     {
         if (!file_exists($file)) {
-            throw new \InvalidArgumentException("File {$file} not found");
+            throw new InvalidDefinitionException("File {$file} not found");
         }
 
         $definition = @json_decode(file_get_contents($file));
         if (!$definition) {
-            throw new \InvalidArgumentException("Failed to parse PhpFlo graph definition file {$file}");
+            throw new InvalidDefinitionException("Failed to parse PhpFlo graph definition file {$file}");
         }
 
         return self::loadDefinition($definition);

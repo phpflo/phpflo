@@ -1,7 +1,19 @@
 <?php
+/*
+ * This file is part of the phpflo/phpflo package.
+ *
+ * (c) Henri Bergius <henri.bergius@iki.fi>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpFlo;
 
-use Evenement\EventEmitter;
+use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Exception\InvalidTypeException;
+use PhpFlo\Exception\PortException;
+use PhpFlo\Exception\SocketException;
 
 /**
  * Class Port
@@ -9,40 +21,16 @@ use Evenement\EventEmitter;
  * @package PhpFlo
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-class Port extends EventEmitter
+final class Port extends AbstractPort
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var null
-     */
-    private $socket;
-
-    /**
-     * @var null
-     */
-    private $from;
-
-    /**
-     * @param string $name
-     */
-    public function __construct($name = '')
-    {
-        $this->name = $name;
-        $this->socket = null;
-        $this->socket = null;
-    }
-
-    /**
      * @param SocketInterface $socket
+     * @throws InvalidDefinitionException
      */
     public function attach(SocketInterface $socket)
     {
         if ($this->socket) {
-            throw new \InvalidArgumentException("{$this->name} socket already attached {$this->socket->getId()}");
+            throw new InvalidDefinitionException("{$this->name} socket already attached {$this->socket->getId()}");
         }
 
         $this->socket = $socket;
@@ -50,93 +38,39 @@ class Port extends EventEmitter
     }
 
     /**
+     * @param mixed $data
      * @param SocketInterface $socket
      */
-    protected function attachSocket(SocketInterface $socket)
+    public function onData($data, SocketInterface $socket)
     {
-        $this->emit('attach', [$socket]);
-
-        $this->from = $socket->from;
-
-        $socket->on('connect', [$this, 'onConnect']);
-        $socket->on('beginGroup', [$this, 'onBeginGroup']);
-        $socket->on('data', [$this, 'onData']);
-        $socket->on('endGroup', [$this, 'onEndGroup']);
-        $socket->on('disconnect', [$this, 'onDisconnect']);
-    }
-
-    /**
-     * @param SocketInterface $socket
-     */
-    public function detach(SocketInterface $socket)
-    {
-        $this->emit('detach', [$socket]);
-        $this->from = null;
-        $this->socket = null;
+        $this->emit('data', [$data, $socket]);
     }
 
     /**
      * @param string $groupName
-     * @return null
-     * @throws \RuntimeException
+     * @param SocketInterface $socket
      */
-    public function beginGroup($groupName)
+    public function onBeginGroup($groupName, SocketInterface $socket)
     {
-        if (!$this->socket) {
-            throw new \RuntimeException("This port is not connected");
-        }
-
-        if ($this->isConnected()) {
-            return $this->socket->beginGroup($groupName);
-        }
-
-        $this->socket->once('connect', function (SocketInterface $socket) use ($groupName) {
-            $socket->beginGroup($groupName);
-        });
-
-        $this->socket->connect();
+        $this->emit('beginGroup', [$groupName, $socket]);
     }
 
     /**
-     * @param $groupName
+     * @param string $groupName
+     * @param SocketInterface $socket
      */
-    public function endGroup($groupName)
+    public function onEndGroup($groupName, SocketInterface $socket)
     {
-        if (!$this->socket) {
-            throw new \RuntimeException("This port is not connected");
-        }
-
-        $this->socket->endGroup($groupName);
+        $this->emit('endGroup', [$groupName, $socket]);
     }
 
     /**
-     * @param mixed $data
-     * @return mixed|null
-     */
-    public function send($data)
-    {
-        if (!$this->socket) {
-            throw new \RuntimeException("This port is not connected");
-        }
-
-        if ($this->isConnected()) {
-            return $this->socket->send($data);
-        }
-
-        $this->socket->once('connect', function (SocketInterface $socket) use ($data) {
-            $socket->send($data);
-        });
-
-        $this->socket->connect();
-    }
-
-    /**
-     * @throws \RuntimeException
+     * @throws SocketException
      */
     public function connect()
     {
         if (!$this->socket) {
-            throw new \RuntimeException("No socket available");
+            throw new SocketException("No socket available");
         }
         $this->socket->connect();
     }
@@ -177,45 +111,75 @@ class Port extends EventEmitter
     }
 
     /**
-     * @param SocketInterface $socket
+     * @param $groupName
+     * @throws PortException
      */
-    public function onConnect(SocketInterface $socket)
+    public function endGroup($groupName)
     {
-        $this->emit('connect', [$socket]);
+        if (!$this->socket) {
+            throw new PortException("This port is not connected");
+        }
+
+        $this->socket->endGroup($groupName);
     }
 
     /**
      * @param mixed $data
+     * @return mixed|null
+     * @throws InvalidTypeException
+     */
+    public function send($data)
+    {
+        if (!$this->socket) {
+            throw new PortException("This port is not connected");
+        }
+
+        if (false == $this->hasType($data, 'send')) {
+            throw new InvalidTypeException(
+                'Port tries to send invalid data type "' . gettype($data) . '"!'
+            );
+        }
+
+        if ($this->isConnected()) {
+            return $this->socket->send($data);
+        }
+
+        $this->socket->once('connect', function (SocketInterface $socket) use ($data) {
+            $socket->send($data);
+        });
+
+        $this->socket->connect();
+    }
+
+    /**
      * @param SocketInterface $socket
      */
-    public function onData($data, SocketInterface $socket)
+    public function detach(SocketInterface $socket)
     {
-        $this->emit('data', [$data, $socket]);
+        $this->emit('detach', [$socket]);
+        $this->from = null;
+        $this->socket = null;
     }
 
     /**
      * @param string $groupName
-     * @param SocketInterface $socket
+     * @return null
+     * @throws PortException
      */
-    public function onBeginGroup($groupName, SocketInterface $socket)
+    public function beginGroup($groupName)
     {
-        $this->emit('beginGroup', [$groupName, $socket]);
-    }
+        if (!$this->socket) {
+            throw new PortException("This port is not connected");
+        }
 
-    /**
-     * @param string $groupName
-     * @param SocketInterface $socket
-     */
-    public function onEndGroup($groupName, SocketInterface $socket)
-    {
-        $this->emit('endGroup', [$groupName, $socket]);
-    }
+        if ($this->isConnected()) {
+            return $this->socket->beginGroup($groupName);
+        }
 
-    /**
-     * @param SocketInterface $socket
-     */
-    public function onDisconnect(SocketInterface $socket)
-    {
-        $this->emit('disconnect', [$socket]);
+        $this->socket->once('connect', function (SocketInterface $socket) use ($groupName) {
+            $socket->beginGroup($groupName);
+        });
+
+        $this->socket->connect();
     }
 }

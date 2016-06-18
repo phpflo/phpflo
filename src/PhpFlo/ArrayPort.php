@@ -1,5 +1,16 @@
 <?php
+/*
+ * This file is part of the phpflo/phpflo package.
+ *
+ * (c) Henri Bergius <henri.bergius@iki.fi>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpFlo;
+
+use PhpFlo\Exception\SocketException;
 
 /**
  * Class ArrayPort
@@ -7,7 +18,7 @@ namespace PhpFlo;
  * @package PhpFlo
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-class ArrayPort extends Port
+final class ArrayPort extends AbstractPort
 {
     /**
      * @var array
@@ -41,12 +52,12 @@ class ArrayPort extends Port
      * @param string $groupName
      * @param int $socketId
      * @return null
-     * @throws \InvalidArgumentException
+     * @throws SocketException
      */
     public function beginGroup($groupName, $socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
-            throw new \InvalidArgumentException("No socket {$socketId} connected");
+            throw new SocketException("No socket {$socketId} connected");
         }
 
         if ($this->isConnected($socketId)) {
@@ -62,12 +73,12 @@ class ArrayPort extends Port
     /**
      * @param string $groupName
      * @param int $socketId
-     * @throws \InvalidArgumentException
+     * @throws SocketException
      */
     public function endGroup($groupName, $socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
-            throw new \InvalidArgumentException("No socket {$socketId} connected");
+            throw new SocketException("No socket {$socketId} connected");
         }
 
         $this->sockets[$socketId]->endGroup($groupName);
@@ -77,12 +88,12 @@ class ArrayPort extends Port
      * @param mixed $data
      * @param int $socketId
      * @return mixed
-     * @throws \InvalidArgumentException
+     * @throws SocketException
      */
     public function send($data, $socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
-            throw new \InvalidArgumentException("No socket {$socketId} connected");
+            throw new SocketException("No socket {$socketId} connected");
         }
 
         if ($this->isConnected($socketId)) {
@@ -97,17 +108,20 @@ class ArrayPort extends Port
 
     /**
      * @param int $socketId
-     * @throws \InvalidArgumentException
+     * @throws SocketException
      */
     public function connect($socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
-            throw new \InvalidArgumentException("No socket {$socketId} connected");
+            throw new SocketException("No socket {$socketId} connected");
         }
 
         $this->sockets[$socketId]->connect();
     }
 
+    /**
+     * @param int $socketId
+     */
     public function disconnect($socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
@@ -117,6 +131,10 @@ class ArrayPort extends Port
         $this->sockets[$socketId]->disconnect();
     }
 
+    /**
+     * @param int $socketId
+     * @return bool
+     */
     public function isConnected($socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
