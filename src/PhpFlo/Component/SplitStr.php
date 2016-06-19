@@ -33,13 +33,13 @@ class SplitStr extends Component
 
     public function __construct()
     {
-        $this->inPorts['in'] = new Port();
-        $this->inPorts['delimiter'] = new Port();
-        $this->outPorts['out'] = new Port();
+        $this->inPorts()->add('in', ['datatype' => 'string']);
+        $this->inPorts()->add('delimiter', ['datatype' => 'string']);
+        $this->outPorts()->add('out', ['datatype' => 'int']);
 
-        $this->inPorts['delimiter']->on('data', [$this, 'setDelimiter']);
-        $this->inPorts['in']->on('data', [$this, 'appendString']);
-        $this->inPorts['in']->on('disconnect', [$this, 'splitString']);
+        $this->inPorts()->delimiter->on('data', [$this, 'setDelimiter']);
+        $this->inPorts()->in->on('data', [$this, 'appendString']);
+        $this->inPorts()->in->on('disconnect', [$this, 'splitString']);
 
         $this->delimiterString = "\n";
         $this->string = "";
@@ -65,9 +65,9 @@ class SplitStr extends Component
     {
         $parts = explode($this->delimiterString, $this->string);
         foreach ($parts as $part) {
-            $this->outPorts['out']->send($part);
+            $this->outPorts()->out->send($part);
         }
-        $this->outPorts['out']->disconnect();
+        $this->outPorts()->out->disconnect();
         $this->string = "";
     }
 }

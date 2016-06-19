@@ -43,6 +43,7 @@ class PortRegistry implements \Iterator
             'datatype' => 'all',
             'required' => false,
             'cached' => false,
+            'addressable' => false,
         ];
     }
 
@@ -53,13 +54,21 @@ class PortRegistry implements \Iterator
      */
     public function add($name, array $attributes)
     {
-        if (!$this->has($name)) {
-            $this->ports[$name] = new Port(
-                $name,
-                array_merge($this->attributes, $attributes)
-            );
-        } else {
-            throw new PortException("The port {$name} already exists!");
+        switch (true) {
+            case (!$this->has($name) && (isset($attributes['addressable']) && false !== $attributes['addressable'])):
+                $this->ports[$name] = new ArrayPort(
+                    $name,
+                    array_merge($this->attributes, $attributes)
+                );
+                break;
+            case (!$this->has($name)):
+                $this->ports[$name] = new Port(
+                    $name,
+                    array_merge($this->attributes, $attributes)
+                );
+                break;
+            default:
+                throw new PortException("The port {$name} already exists!");
         }
 
         return $this;
@@ -82,7 +91,7 @@ class PortRegistry implements \Iterator
 
     /**
      * Return one or all ports.
-     * 
+     *
      * @param string $name
      * @return array|Port|ArrayPort
      */
@@ -100,6 +109,17 @@ class PortRegistry implements \Iterator
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function remove($name)
+    {
+        if ($this->has($name)) {
+            $this->ports[$name] = null;
+            unset($this->ports[$name]);
+        }
     }
 
     /**

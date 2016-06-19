@@ -28,11 +28,11 @@ class Counter extends Component
 
     public function __construct()
     {
-        $this->inPorts['in'] = new Port();
-        $this->outPorts['count'] = new Port();
+        $this->inPorts()->add('in', ['datatype' => 'all']);
+        $this->outPorts()->add('count', ['datatype' => 'all']);
 
-        $this->inPorts['in']->on('data', [$this, 'appendCount']);
-        $this->inPorts['in']->on('disconnect', [$this, 'sendCount']);
+        $this->inPorts()->in->on('data', [$this, 'appendCount']);
+        $this->inPorts()->in->on('disconnect', [$this, 'sendCount']);
 
         $this->count = null;
     }
@@ -50,8 +50,8 @@ class Counter extends Component
 
     public function sendCount()
     {
-        $this->outPorts['count']->send($this->count);
-        $this->outPorts['count']->disconnect();
+        $this->outPorts()->count->send($this->count);
+        $this->outPorts()->count->disconnect();
         $this->count = null;
     }
 }

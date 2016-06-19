@@ -143,11 +143,14 @@ class Network
             'port' => $port,
         ];
 
-        if (!isset($process['component']->inPorts[$port])) {
+        if (!$process['component']->inPorts()->has($port)) {
             throw new InvalidDefinitionException("No inport {$port} defined for process {$process['id']}");
         }
 
-        return $process['component']->inPorts[$port]->attach($socket);
+        return $process['component']
+            ->inPorts()
+            ->get($port)
+            ->attach($socket);
     }
 
     /**
@@ -164,11 +167,14 @@ class Network
             'port' => $port,
         ];
 
-        if (!isset($process['component']->outPorts[$port])) {
+        if (!$process['component']->outPorts()->has($port)) {
             throw new InvalidDefinitionException("No outport {$port} defined for process {$process['id']}");
         }
 
-        return $process['component']->outPorts[$port]->attach($socket);
+        return $process['component']
+            ->outPorts()
+            ->get($port)
+            ->attach($socket);
     }
 
     /**
@@ -205,13 +211,13 @@ class Network
     {
         foreach ($this->connections as $index => $connection) {
             if ($edge['to']['node'] == $connection->to['process']['id'] && $edge['to']['port'] == $connection->to['process']['port']) {
-                $connection->to['process']['component']->inPorts[$edge['to']['port']]->detach($connection);
+                $connection->to['process']['component']->inPorts()->get($edge['to']['port'])->detach($connection);
                 $this->connections = array_splice($this->connections, $index, 1);
             }
 
             if (isset($edge['from']['node'])) {
                 if ($edge['from']['node'] == $connection->from['process']['id'] && $edge['from']['port'] == $connection->from['process']['port']) {
-                    $connection->from['process']['component']->inPorts[$edge['from']['port']]->detach($connection);
+                    $connection->from['process']['component']->inPorts()->get($edge['from']['port'])->detach($connection);
                     $this->connections = array_splice($this->connections, $index, 1);
                 }
             }

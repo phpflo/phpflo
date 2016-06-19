@@ -43,16 +43,16 @@ class Queue extends Component
         $this->size = 100;
         $this->messages = [];
 
-        $this->inPorts['in'] = new Port();
-        $this->inPorts['size'] = new Port();
+        $this->inPorts()->add('in', ['datatype' => 'all']);
+        $this->inPorts()->add('size', ['datatype' => 'all']);
 
-        $this->outPorts['error'] = new Port();
-        $this->outPorts['messages'] = new Port();
+        $this->outPorts()->add('error', ['datatype' => 'all']);
+        $this->outPorts()->add('messages', ['datatype' => 'all']);
 
-        $this->inPorts['in']->on('data', [$this, 'onAppendQueue']);
-        $this->inPorts['in']->on('detach', [$this, 'onStreamEnded']);
+        $this->inPorts()->in->on('data', [$this, 'onAppendQueue']);
+        $this->inPorts()->in->on('detach', [$this, 'onStreamEnded']);
 
-        $this->inPorts['size']->on('data', [$this, 'onResize']);
+        $this->inPorts()->size->on('data', [$this, 'onResize']);
     }
 
     /**
@@ -78,7 +78,7 @@ class Queue extends Component
         if (!is_int($data) || 0 > $data) {
             $dumped = var_dump($data);
 
-            $this->outPorts['error']->send(
+            $this->outPorts()->error->send(
                 "Invalid queue size: '{$dumped}'. Queue resize operation expects a positive integer value."
             );
         }
@@ -97,8 +97,8 @@ class Queue extends Component
 
     private function flushQueue()
     {
-        $this->outPorts['messages']->send($this->messages);
-        $this->outPorts['messages']->disconnect();
+        $this->outPorts()->messages->send($this->messages);
+        $this->outPorts()->messages->disconnect();
 
         $this->messages = [];
     }
