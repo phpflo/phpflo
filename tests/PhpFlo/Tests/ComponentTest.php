@@ -21,7 +21,7 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\PhpFlo\ComponentInterface', $component);
     }
 
-    public function testDynamicProperties()
+    public function testRegistryInstantiation()
     {
         $component = new Component();
 
