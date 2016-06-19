@@ -55,8 +55,6 @@ class Network
 
         $this->processes = [];
         $this->connections = [];
-        $this->graph = null;
-        $this->startupDate = null;
     }
 
     /**
@@ -267,7 +265,7 @@ class Network
      * Load PhpFlo graph definition from string.
      *
      * @param string $string
-     * @return \PhpFlo\Network
+     * @return Network
      */
     public static function loadString($string)
     {
@@ -280,7 +278,7 @@ class Network
      * Load PhpFlo graph definition from file.
      *
      * @param string $file
-     * @return \PhpFlo\Network
+     * @return Network
      */
     public static function loadFile($file)
     {

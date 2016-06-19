@@ -10,6 +10,8 @@
 
 namespace PhpFlo;
 
+use PhpFlo\Exception\FlowException;
+
 /**
  * Class Component
  *
@@ -19,14 +21,14 @@ namespace PhpFlo;
 class Component implements ComponentInterface
 {
     /**
-     * @var array
+     * @var PortRegistry
      */
-    public $inPorts = [];
+    private $_inPorts = null;
 
     /**
-     * @var array
+     * @var PortRegistry
      */
-    public $outPorts = [];
+    private $_outPorts = null;
 
     /**
      * @var string
@@ -39,5 +41,29 @@ class Component implements ComponentInterface
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return PortRegistry
+     */
+    public function inPorts()
+    {
+        if (null == $this->_inPorts) {
+            $this->_inPorts = new PortRegistry();
+        }
+
+        return $this->_inPorts;
+    }
+
+    /**
+     * @return PortRegistry
+     */
+    public function outPorts()
+    {
+        if (null == $this->_outPorts) {
+            $this->_outPorts = new PortRegistry();
+        }
+
+        return $this->_outPorts;
     }
 }
