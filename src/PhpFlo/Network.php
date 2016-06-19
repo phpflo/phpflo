@@ -10,7 +10,9 @@
 
 namespace PhpFlo;
 
+use PhpFlo\Exception\IncompatibleDatatypeException;
 use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Exception\PortException;
 
 /**
  * Class Network
@@ -198,10 +200,57 @@ class Network
             throw new InvalidDefinitionException("No process defined for inbound node {$edge['to']['node']}");
         }
 
-        $this->connectOutgoingPort($socket, $from, $edge['from']['port']);
-        $this->connectInboundPort($socket, $to, $edge['to']['port']);
+        $this->connectPorts($socket, $from, $to, $edge['from']['port'], $edge['to']['port'])
+        ;
+        //$this->connectOutgoingPort($socket, $from, $edge['from']['port']);
+        //$this->connectInboundPort($socket, $to, $edge['to']['port']);
 
         $this->connections[] = $socket;
+    }
+
+    /**
+     * Connect out to inport and compare data types.
+     *
+     * @param SocketInterface $socket
+     * @param array $from
+     * @param array $to
+     * @param string $edgeFrom
+     * @param string $edgeTo
+     */
+    private function connectPorts(SocketInterface $socket, array $from, array $to, $edgeFrom, $edgeTo)
+    {
+        $socket->from = [
+            'process' => $from,
+            'port' => $edgeFrom,
+        ];
+
+        if (!$from['component']->outPorts()->has($edgeFrom)) {
+            throw new InvalidDefinitionException("No outport {$edgeFrom} defined for process {$from['id']}");
+        }
+
+        $socket->to = [
+            'process' => $to,
+            'port' => $edgeTo,
+        ];
+
+        if (!$to['component']->inPorts()->has($edgeTo)) {
+            throw new InvalidDefinitionException("No inport {$edgeTo} defined for process {$to['id']}");
+        }
+
+        $fromType = $from['component']->outPorts()->get($edgeFrom)->getAttribute('datatype');
+        $toType = $to['component']->outPorts()->get($edgeFrom)->getAttribute('datatype');
+
+        // compare out and in ports for datatype definitions
+        if (!$this->isPortCompatible($fromType, $toType)) {
+            throw new IncompatibleDatatypeException(
+                "Outport type {$fromType} of {$edgeFrom} does not match inport {$toType} of {$edgeTo}"
+            );
+        }
+
+        $from['component']->outPorts()->get($edgeFrom)->attach($socket);
+        $to['component']->inPorts()->get($edgeTo)->attach($socket);
+
+        return;
     }
 
     /**
@@ -299,5 +348,31 @@ class Network
     private function createDateTimeWithMilliseconds()
     {
         return \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+    }
+
+    /**
+     * Compare in and outport datatypes.
+     *
+     * @param string $fromType
+     * @param string $toType
+     * @return bool
+     */
+    private function isPortCompatible($fromType, $toType)
+    {
+        switch(true) {
+            case (($fromType == $toType) || $toType == 'all'):
+                $isCompatible = true;
+                break;
+            case (($fromType == 'int' || $fromType == 'integer') && $toType == 'number'):
+                $isCompatible = true;
+                break;
+            case ($fromType == 'all' && $toType == 'bang'):
+                $isCompatible = true;
+                break;
+            default:
+                $isCompatible = false;
+        }
+
+        return $isCompatible;
     }
 }

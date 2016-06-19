@@ -94,6 +94,21 @@ class AbstractPort extends EventEmitter
     }
 
     /**
+     * @param string $name
+     * @return mixed|null
+     */
+    public function getAttribute($name)
+    {
+        $attribute = null;
+
+        if (array_key_exists($name, $this->attributes)) {
+            $attribute = $this->attributes[$name];
+        }
+
+        return $attribute;
+    }
+
+    /**
      * @return string
      */
     public function getName()
