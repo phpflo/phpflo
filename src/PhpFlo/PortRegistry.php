@@ -58,13 +58,13 @@ class PortRegistry implements \Iterator
             case (!$this->has($name) && (isset($attributes['addressable']) && false !== $attributes['addressable'])):
                 $this->ports[$name] = new ArrayPort(
                     $name,
-                    array_merge($this->attributes, $attributes)
+                    array_replace($this->attributes, $attributes)
                 );
                 break;
             case (!$this->has($name)):
                 $this->ports[$name] = new Port(
                     $name,
-                    array_merge($this->attributes, $attributes)
+                    array_replace($this->attributes, $attributes)
                 );
                 break;
             default:

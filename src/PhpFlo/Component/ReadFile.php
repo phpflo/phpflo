@@ -25,7 +25,7 @@ class ReadFile extends Component
     {
         $this->inPorts()->add('source', ['datatype' => 'string']);
         $this->outPorts()->add('out', ['datatype' => 'string']);
-        $this->outPorts()->add('error', []);
+        $this->outPorts()->add('error', []); // use defaults, datatype = all
 
         $this->inPorts()->source->on('data', [$this, 'readFile']);
     }

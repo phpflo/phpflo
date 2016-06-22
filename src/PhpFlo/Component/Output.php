@@ -23,7 +23,7 @@ class Output extends Component
 {
     public function __construct()
     {
-        $this->inPorts()->add('in', ['datatype' => 'int', 'addressable' => true]);
+        $this->inPorts()->add('in', ['datatype' => 'all', 'addressable' => true]);
         $this->inPorts()->in->on('data', [$this, 'displayData']);
     }
 

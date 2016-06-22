@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpFlo\Tests\Component;
+namespace Tests\PhpFlo\Component;
 
 use PhpFlo\Network;
 

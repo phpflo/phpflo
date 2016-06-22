@@ -12,7 +12,6 @@ namespace PhpFlo;
 
 use PhpFlo\Exception\IncompatibleDatatypeException;
 use PhpFlo\Exception\InvalidDefinitionException;
-use PhpFlo\Exception\PortException;
 
 /**
  * Class Network
@@ -156,30 +155,6 @@ class Network
     }
 
     /**
-     * @param SocketInterface $socket
-     * @param array $process
-     * @param Port $port
-     * @throws InvalidDefinitionException
-     * @return mixed
-     */
-    private function connectOutgoingPort(SocketInterface $socket, array $process, $port)
-    {
-        $socket->from = [
-            'process' => $process,
-            'port' => $port,
-        ];
-
-        if (!$process['component']->outPorts()->has($port)) {
-            throw new InvalidDefinitionException("No outport {$port} defined for process {$process['id']}");
-        }
-
-        return $process['component']
-            ->outPorts()
-            ->get($port)
-            ->attach($socket);
-    }
-
-    /**
      * @param array $edge
      * @throws InvalidDefinitionException
      */
@@ -200,10 +175,7 @@ class Network
             throw new InvalidDefinitionException("No process defined for inbound node {$edge['to']['node']}");
         }
 
-        $this->connectPorts($socket, $from, $to, $edge['from']['port'], $edge['to']['port'])
-        ;
-        //$this->connectOutgoingPort($socket, $from, $edge['from']['port']);
-        //$this->connectInboundPort($socket, $to, $edge['to']['port']);
+        $this->connectPorts($socket, $from, $to, $edge['from']['port'], $edge['to']['port']);
 
         $this->connections[] = $socket;
     }
@@ -238,12 +210,13 @@ class Network
         }
 
         $fromType = $from['component']->outPorts()->get($edgeFrom)->getAttribute('datatype');
-        $toType = $to['component']->outPorts()->get($edgeFrom)->getAttribute('datatype');
+        $toType = $to['component']->inPorts()->get($edgeTo)->getAttribute('datatype');
 
         // compare out and in ports for datatype definitions
         if (!$this->isPortCompatible($fromType, $toType)) {
             throw new IncompatibleDatatypeException(
-                "Outport type {$fromType} of {$edgeFrom} does not match inport {$toType} of {$edgeTo}"
+                "Process {$from['id']}: outport type \"{$fromType}\" of port \"{$edgeFrom}\" ".
+                "does not match {$to['id']} inport type \"{$toType}\" of port \"{$edgeTo}\""
             );
         }
 
@@ -360,13 +333,10 @@ class Network
     private function isPortCompatible($fromType, $toType)
     {
         switch(true) {
-            case (($fromType == $toType) || $toType == 'all'):
+            case (($fromType == $toType) || ($toType == 'all' || $toType == 'bang')):
                 $isCompatible = true;
                 break;
             case (($fromType == 'int' || $fromType == 'integer') && $toType == 'number'):
-                $isCompatible = true;
-                break;
-            case ($fromType == 'all' && $toType == 'bang'):
                 $isCompatible = true;
                 break;
             default:

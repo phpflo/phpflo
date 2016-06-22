@@ -35,7 +35,7 @@ class SplitStr extends Component
     {
         $this->inPorts()->add('in', ['datatype' => 'string']);
         $this->inPorts()->add('delimiter', ['datatype' => 'string']);
-        $this->outPorts()->add('out', ['datatype' => 'int']);
+        $this->outPorts()->add('out', ['datatype' => 'string']);
 
         $this->inPorts()->delimiter->on('data', [$this, 'setDelimiter']);
         $this->inPorts()->in->on('data', [$this, 'appendString']);

@@ -28,8 +28,8 @@ class Counter extends Component
 
     public function __construct()
     {
-        $this->inPorts()->add('in', ['datatype' => 'all']);
-        $this->outPorts()->add('count', ['datatype' => 'all']);
+        $this->inPorts()->add('in', ['datatype' => 'bang']);
+        $this->outPorts()->add('count', ['datatype' => 'int']);
 
         $this->inPorts()->in->on('data', [$this, 'appendCount']);
         $this->inPorts()->in->on('disconnect', [$this, 'sendCount']);

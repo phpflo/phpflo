@@ -10,8 +10,6 @@
 
 namespace PhpFlo;
 
-use PhpFlo\Exception\FlowException;
-
 /**
  * Class Component
  *

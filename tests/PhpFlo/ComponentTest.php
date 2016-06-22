@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpFlo\Tests;
+namespace Tests\PhpFlo;
 
 use PhpFlo\Component;
 
