@@ -8,15 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpFlo;
+namespace PhpFlo\Interaction;
 
 use Evenement\EventEmitter;
-use PhpFlo\Exception\InvalidTypeException;
+use PhpFlo\Common\SocketInterface;
 
 /**
  * Class AbstractPort
  *
- * @package PhpFlo
+ * @package PhpFlo\Interaction
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 class AbstractPort extends EventEmitter
@@ -51,22 +51,6 @@ class AbstractPort extends EventEmitter
         $this->attributes = $attributes;
         $this->socket = null;
         $this->from = null;
-    }
-
-    /**
-     * @param SocketInterface $socket
-     */
-    protected function attachSocket(SocketInterface $socket)
-    {
-        $this->emit('attach', [$socket]);
-
-        $this->from = $socket->from;
-
-        $socket->on('connect', [$this, 'onConnect']);
-        $socket->on('beginGroup', [$this, 'onBeginGroup']);
-        $socket->on('data', [$this, 'onData']);
-        $socket->on('endGroup', [$this, 'onEndGroup']);
-        $socket->on('disconnect', [$this, 'onDisconnect']);
     }
 
     /**
@@ -114,5 +98,21 @@ class AbstractPort extends EventEmitter
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param SocketInterface $socket
+     */
+    protected function attachSocket(SocketInterface $socket)
+    {
+        $this->emit('attach', [$socket]);
+
+        $this->from = $socket->from;
+
+        $socket->on('connect', [$this, 'onConnect']);
+        $socket->on('beginGroup', [$this, 'onBeginGroup']);
+        $socket->on('data', [$this, 'onData']);
+        $socket->on('endGroup', [$this, 'onEndGroup']);
+        $socket->on('disconnect', [$this, 'onDisconnect']);
     }
 }

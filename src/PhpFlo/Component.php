@@ -10,6 +10,9 @@
 
 namespace PhpFlo;
 
+use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Interaction\PortRegistry;
+
 /**
  * Class Component
  *

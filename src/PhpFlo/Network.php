@@ -10,8 +10,11 @@
 
 namespace PhpFlo;
 
+use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\IncompatibleDatatypeException;
 use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Interaction\InternalSocket;
 
 /**
  * Class Network
@@ -40,6 +43,8 @@ class Network
      * @var null
      */
     private $startupDate;
+
+    private $container;
 
     /**
      * @param Graph $graph

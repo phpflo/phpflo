@@ -8,8 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpFlo;
+namespace PhpFlo\Interaction;
 
+use PhpFlo\Common\PortInterface;
+use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\InvalidDefinitionException;
 use PhpFlo\Exception\InvalidTypeException;
 use PhpFlo\Exception\PortException;
@@ -18,10 +20,10 @@ use PhpFlo\Exception\SocketException;
 /**
  * Class Port
  *
- * @package PhpFlo
+ * @package PhpFlo\Interaction
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-final class Port extends AbstractPort
+final class Port extends AbstractPort implements PortInterface
 {
     /**
      * @param SocketInterface $socket
@@ -132,12 +134,6 @@ final class Port extends AbstractPort
     {
         if (!$this->socket) {
             throw new PortException("This port is not connected");
-        }
-
-        if (false == $this->hasType($data, 'send')) {
-            throw new InvalidTypeException(
-                'Port tries to send invalid data type "' . gettype($data) . '"!'
-            );
         }
 
         if ($this->isConnected()) {

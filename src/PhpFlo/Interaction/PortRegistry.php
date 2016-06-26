@@ -8,14 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpFlo;
+namespace PhpFlo\Interaction;
 
 use PhpFlo\Exception\PortException;
 
 /**
  * Class PortRegistry
  *
- * @package PhpFlo
+ * @package PhpFlo\Interaction
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 class PortRegistry implements \Iterator

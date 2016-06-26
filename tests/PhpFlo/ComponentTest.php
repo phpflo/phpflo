@@ -18,14 +18,14 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
     {
         $component = new Component();
 
-        $this->assertInstanceOf('\PhpFlo\ComponentInterface', $component);
+        $this->assertInstanceOf('\PhpFlo\Common\ComponentInterface', $component);
     }
 
     public function testRegistryInstantiation()
     {
         $component = new Component();
 
-        $this->assertInstanceOf('\PhpFlo\PortRegistry', $component->inPorts());
-        $this->assertInstanceOf('\PhpFlo\PortRegistry', $component->outPorts());
+        $this->assertInstanceOf('\PhpFlo\Interaction\PortRegistry', $component->inPorts());
+        $this->assertInstanceOf('\PhpFlo\Interaction\PortRegistry', $component->outPorts());
     }
 }
