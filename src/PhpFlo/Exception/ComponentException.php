@@ -11,12 +11,12 @@
 namespace PhpFlo\Exception;
 
 /**
- * Class PortException
+ * Class ComponentException
  *
  * @package PhpFlo\Exception
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-class PortException extends FlowException
+class ComponentException extends FlowException
 {
 
 }
