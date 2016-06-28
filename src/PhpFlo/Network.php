@@ -35,12 +35,12 @@ class Network
     private $connections;
 
     /**
-     * @var null
+     * @var Graph
      */
     private $graph;
 
     /**
-     * @var null
+     * @var \DateTime
      */
     private $startupDate;
 
@@ -64,7 +64,7 @@ class Network
     }
 
     /**
-     * @return null|\DateTime
+     * @return bool|\DateInterval
      */
     public function uptime()
     {
@@ -78,7 +78,7 @@ class Network
     public function addNode(array $node)
     {
         if (isset($this->processes[$node['id']])) {
-            return;
+            return $this;
         }
 
         $process = [];
@@ -100,18 +100,21 @@ class Network
         }
 
         $this->processes[$node['id']] = $process;
+
+        return $this;
     }
 
     /**
      * @param array $node
+     * @return $this
      */
     public function removeNode(array $node)
     {
-        if (!isset($this->processes[$node['id']])) {
-            return;
+        if (isset($this->processes[$node['id']])) {
+            unset($this->processes[$node['id']]);
         }
 
-        unset($this->processes[$node['id']]);
+        return $this;
     }
 
     /**
@@ -128,7 +131,7 @@ class Network
     }
 
     /**
-     * @return null
+     * @return null|Graph
      */
     public function getGraph()
     {
@@ -233,6 +236,7 @@ class Network
 
     /**
      * @param array $edge
+     * @return $this
      */
     public function removeEdge(array $edge)
     {
@@ -249,11 +253,13 @@ class Network
                 }
             }
         }
+
+        return $this;
     }
 
     /**
      * @param array $initializer
-     * @throws InvalidDefinitionException
+     * @return $this
      */
     public function addInitial(array $initializer)
     {
@@ -269,6 +275,8 @@ class Network
         $socket->disconnect();
 
         $this->connections[] = $socket;
+
+        return $this;
     }
 
     /**
