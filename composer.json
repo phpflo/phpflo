@@ -1,5 +1,5 @@
 {
-    "name": "PhpFlo/PhpFlo",
+    "name": "phpflo/phpflo",
     "type": "library",
     "description": "Flow-based programming for PHP",
     "keywords": ["fbp", "flow"],
@@ -15,7 +15,10 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "evenement/evenement": "~2.0"
+        "evenement/evenement": "~2.0",
+        "symfony/dependency-injection": "^3.1",
+        "symfony/config": "^3.1",
+        "symfony/yaml": "^3.1"
     },
     "require-dev": {
         "phpunit/phpunit": "<5.0"
