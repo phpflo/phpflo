@@ -134,12 +134,6 @@ final class Port extends AbstractPort
             throw new PortException("This port is not connected");
         }
 
-        if (false == $this->hasType($data, 'send')) {
-            throw new InvalidTypeException(
-                'Port tries to send invalid data type "' . gettype($data) . '"!'
-            );
-        }
-
         if ($this->isConnected()) {
             return $this->socket->send($data);
         }
