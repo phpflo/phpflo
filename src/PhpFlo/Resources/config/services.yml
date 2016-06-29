@@ -1,0 +1,5 @@
+---
+services:
+  phpflo.PortRegistry:
+    class: PhpFlo\PortRegistry
+    scope: prototype

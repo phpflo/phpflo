@@ -8,17 +8,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpFlo;
+namespace PhpFlo\Interaction;
 
+use PhpFlo\Common\PortInterface;
+use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\SocketException;
 
 /**
  * Class ArrayPort
  *
- * @package PhpFlo
+ * @package PhpFlo\Interaction
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-final class ArrayPort extends AbstractPort
+final class ArrayPort extends AbstractPort implements PortInterface
 {
     /**
      * @var array

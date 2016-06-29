@@ -13,6 +13,12 @@ $fileName = $_SERVER['argv'][1];
 // Include standard autoloader
 require __DIR__ . '/../../vendor/autoload.php';
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use PhpFlo\CompilerPass\ComponentCompilerPass;
+
+$container = new ContainerBuilder();
+$container->addCompilerPass(new ComponentCompilerPass());
+
 // Load network from graph file
 $network = PhpFlo\Network::loadFile(__DIR__.'/count.json');
 

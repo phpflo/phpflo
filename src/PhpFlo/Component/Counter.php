@@ -11,7 +11,6 @@
 namespace PhpFlo\Component;
 
 use PhpFlo\Component;
-use PhpFlo\Port;
 
 /**
  * Class Counter
