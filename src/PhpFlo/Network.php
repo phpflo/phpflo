@@ -188,6 +188,8 @@ class Network
      * @param array $to
      * @param string $edgeFrom
      * @param string $edgeTo
+     * @throws IncompatibleDatatypeException
+     * @throws InvalidDefinitionException
      */
     private function connectPorts(SocketInterface $socket, array $from, array $to, $edgeFrom, $edgeTo)
     {
