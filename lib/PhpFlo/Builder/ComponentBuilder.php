@@ -20,7 +20,7 @@ use PhpFlo\Exception\InvalidDefinitionException;
  * This is just an example - every builder implementing the interface could be used to
  * return the component instances.
  * The build method is not static to allow for e.g. easy dependency injection and use
- * as a service. 
+ * as a service.
  *
  * @package PhpFlo
  * @author Marc Aschmann <maschmann@gmail.com>
@@ -42,7 +42,9 @@ class ComponentBuilder implements ComponentBuilderInterface
         }
         $instance = new $component();
         if (!$instance instanceof ComponentInterface) {
-            throw new InvalidDefinitionException("Component {$component} doesn't appear to be a valid PhpFlo component");
+            throw new InvalidDefinitionException(
+                "Component {$component} doesn't appear to be a valid PhpFlo component"
+            );
         }
 
         return $instance;

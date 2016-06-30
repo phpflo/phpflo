@@ -17,7 +17,7 @@ use PhpFlo\Exception\InvalidDefinitionException;
 use PhpFlo\Interaction\InternalSocket;
 
 /**
- * Class Network
+ * Builds the concrete network based on graph.
  *
  * @package PhpFlo
  * @author Henri Bergius <henri.bergius@iki.fi>

@@ -14,7 +14,7 @@ use Evenement\EventEmitter;
 use PhpFlo\Exception\InvalidDefinitionException;
 
 /**
- * Class Graph
+ * Analyzes and creates definitions from flow graph file.
  *
  * @package PhpFlo
  * @author Henri Bergius <henri.bergius@iki.fi>
