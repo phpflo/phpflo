@@ -1,0 +1,29 @@
+<?php
+/*
+ * This file is part of the <package> package.
+ *
+ * (c) Marc Aschmann <maschmann@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace PhpFlo\Common;
+
+use PhpFlo\Exception\InvalidDefinitionException;
+
+/**
+ * Interface ComponentBuilderInterface
+ *
+ * @package PhpFlo\Common
+ * @author Marc Aschmann <maschmann@gmail.com>
+ */
+interface ComponentBuilderInterface
+{
+    /**
+     * @param string $component
+     * @return ComponentInterface
+     * @throws InvalidDefinitionException
+     */
+    public function build($component);
+}

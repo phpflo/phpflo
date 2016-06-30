@@ -73,6 +73,7 @@ class Network
 
     /**
      * @param array $node
+     * @return $this
      * @throws InvalidDefinitionException
      */
     public function addNode(array $node)
