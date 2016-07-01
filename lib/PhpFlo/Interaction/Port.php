@@ -128,7 +128,7 @@ final class Port extends AbstractPort implements PortInterface
     /**
      * @param mixed $data
      * @return mixed|null
-     * @throws InvalidTypeException
+     * @throws PortException
      */
     public function send($data)
     {

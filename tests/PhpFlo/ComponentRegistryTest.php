@@ -10,7 +10,6 @@
 
 namespace Tests\PhpFlo;
 
-
 use PhpFlo\Component;
 use PhpFlo\ComponentRegistry;
 use PhpFlo\Exception\ComponentException;

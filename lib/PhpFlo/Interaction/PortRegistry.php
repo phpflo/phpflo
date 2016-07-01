@@ -39,18 +39,13 @@ class PortRegistry implements \Iterator
     {
         $this->position = 0;
         $this->ports = [];
-        $this->attributes = [
-            'datatype' => 'all',
-            'required' => false,
-            'cached' => false,
-            'addressable' => false,
-        ];
     }
 
     /**
      * @param string $name
      * @param array $attributes
      * @return $this
+     * @throws PortException
      */
     public function add($name, array $attributes)
     {
@@ -58,13 +53,13 @@ class PortRegistry implements \Iterator
             case (!$this->has($name) && (isset($attributes['addressable']) && false !== $attributes['addressable'])):
                 $this->ports[$name] = new ArrayPort(
                     $name,
-                    array_replace($this->attributes, $attributes)
+                    $attributes
                 );
                 break;
             case (!$this->has($name)):
                 $this->ports[$name] = new Port(
                     $name,
-                    array_replace($this->attributes, $attributes)
+                    $attributes
                 );
                 break;
             default:
@@ -93,7 +88,8 @@ class PortRegistry implements \Iterator
      * Return one or all ports.
      *
      * @param string $name
-     * @return array|Port|ArrayPort
+     * @return array|ArrayPort|Port
+     * @throws PortException
      */
     public function get($name = '')
     {

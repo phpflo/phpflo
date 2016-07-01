@@ -1,7 +1,7 @@
-PhpFlo: Flow-based programming for PHP 5.3+
+PhpFlo: Flow-based programming for PHP 5
 ==============================================
 
-PhpFlo is a simple [flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) implementation for PHP 5.3+. It is a PHP port of [NoFlo](https://github.com/bergie/noflo), a similar tool for Node.js. From WikiPedia:
+PhpFlo is a simple [flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) implementation for PHP 5. It is a PHP port of [NoFlo](https://github.com/bergie/noflo), a similar tool for Node.js. From WikiPedia:
 
 > In computer science, flow-based programming (FBP) is a programming paradigm that defines applications as networks of "black box" processes, which exchange data across predefined connections by message passing, where the connections are specified externally to the processes. These black box processes can be reconnected endlessly to form different applications without having to be changed internally. FBP is thus naturally component-oriented.
 
@@ -57,7 +57,7 @@ $ ./examples/linecount/count.php somefile.txt
 
 ## Terminology
 
-* Component: individual, pluggable and reusable piece of software. In this case a PHP class implementing `PhpFlo\ComponentInterface`
+* Component: individual, pluggable and reusable piece of software. In this case a PHP class implementing `PhpFlo\Common\ComponentInterface`
 * Graph: the control logic of a FBP application, can be either in programmatical or file format
 * Inport: inbound port of a component
 * Network: collection of processes connected by sockets. A running version of a graph
@@ -85,7 +85,6 @@ A minimal component would look like the following:
 <?php
 
 use PhpFlo\Component;
-use PhpFlo\Port;
 
 class Forwarder extends Component
 {
@@ -94,31 +93,62 @@ class Forwarder extends Component
     public function __construct()
     {
         // Register ports
-        $this->inPorts['in'] = new Port();
-        $this->outPorts['out'] = new Port();
+        $this->inPorts()->add('in', ['datatype' => 'all']);
+        $this->outPorts()->add('out', ['datatype' => 'all']);
 
         // Forward data when we receive it
-        $this->inPorts['in']->on('data', array($this, 'forward'));
+        $this->inPorts()->in->on('data', array($this, 'forward'));
 
         // Disconnect output port when input port disconnects
-        $this->inPorts['in']->on('disconnect', array($this, 'disconnect'));
+        $this->inPorts()->in->on('disconnect', array($this, 'disconnect'));
     }
 
     public function forward($data)
     {
-        $this->outPorts['out']->send($data);
+        $this->outPorts()->out->send($data);
     }
 
     public function disconnect()
     {
-        $this->outPorts['out']->disconnect();
+        $this->outPorts->out->disconnect();
     }
 }
 ```
 
 This example component register two ports: _in_ and _out_. When it receives data in the _in_ port, it opens the _out_ port and sends the same data there. When the _in_ connection closes, it will also close the _out_ connection. So basically this component would be a simple repeater.
+You can find more examples of components in the `lib/PhpFlo/Component` folder.
+Please mind that there's an mandatory second parameter for the "add" command. This array receives the port's meta information and has following defaults:
+ 
+``` php
+    $defaultAttributes = [
+        'datatype' => 'all',
+        'required' => false,
+        'cached' => false,
+        'addressable' => false,
+    ];
+```
+This is but a subset of the available attributes, a noflo port can take.
 
-You can find more examples of components in the `src/PhpFlo/Components` folder.
+* _datatype_ defines the "to be expected" datatype of the dataflow. Currently _all_ datatypes from noflo are implemented
+* _required_ not implemented yet
+* _cached_ not implemented yet
+* _addressable_ decides if a port needs to be either an instance of Port (false) or ArrayPort (true)
+
+Defining the datatype is mandatory, since there is a port matching check during graph building, according to this matrix:
+
+| out\in   | all      | bang     | bool     | number   | int      | object   | array    | date     | function |
+| -------- |:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:| --------:|
+| all      |    x     |    x     |          |          |          |          |          |          |          |
+| bang     |    x     |    x     |          |          |          |          |          |          |          |
+| bool     |    x     |          |    x     |          |          |          |          |          |          |
+| number   |    x     |          |          |    x     |          |          |          |          |          |
+| int      |    x     |          |          |    x     |    x     |          |          |          |          |
+| object   |    x     |          |          |          |          |    x     |          |          |          |
+| array    |    x     |          |          |          |          |          |    x     |          |          |
+| date     |    x     |          |          |          |          |          |          |    x     |          |
+| function |    x     |          |          |          |          |          |          |          |    x     |
+
+These types are only implicitly checked. There is no data validation during runtime!
 
 ### Some words on component design
 
