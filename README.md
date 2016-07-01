@@ -136,17 +136,18 @@ This is but a subset of the available attributes, a noflo port can take.
 
 Defining the datatype is mandatory, since there is a port matching check during graph building, according to this matrix:
 
-| out\in   | all      | bang     | bool     | number   | int      | object   | array    | date     | function |
-| -------- |:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:| --------:|
-| all      |    x     |    x     |          |          |          |          |          |          |          |
-| bang     |    x     |    x     |          |          |          |          |          |          |          |
-| bool     |    x     |          |    x     |          |          |          |          |          |          |
-| number   |    x     |          |          |    x     |          |          |          |          |          |
-| int      |    x     |          |          |    x     |    x     |          |          |          |          |
-| object   |    x     |          |          |          |          |    x     |          |          |          |
-| array    |    x     |          |          |          |          |          |    x     |          |          |
-| date     |    x     |          |          |          |          |          |          |    x     |          |
-| function |    x     |          |          |          |          |          |          |          |    x     |
+| out\in   | all      | bang     | string   | bool     | number   | int      | object   | array    | date     | function |
+| -------- |:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:| --------:|
+| all      |    x     |    x     |          |          |          |          |          |          |          |          |
+| bang     |    x     |    x     |          |          |          |          |          |          |          |          |
+| string   |    x     |          |    x     |          |          |          |          |          |          |          |
+| bool     |    x     |          |          |    x     |          |          |          |          |          |          |
+| number   |    x     |          |          |          |    x     |          |          |          |          |          |
+| int      |    x     |          |          |          |    x     |    x     |          |          |          |          |
+| object   |    x     |          |          |          |          |          |    x     |          |          |          |
+| array    |    x     |          |          |          |          |          |          |    x     |          |          |
+| date     |    x     |          |          |          |          |          |          |          |    x     |          |
+| function |    x     |          |          |          |          |          |          |          |          |    x     |
 
 These types are only implicitly checked. There is no data validation during runtime!
 

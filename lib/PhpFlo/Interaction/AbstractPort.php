@@ -42,6 +42,24 @@ class AbstractPort extends EventEmitter
     protected $from;
 
     /**
+     * @var array
+     */
+    public static $datatypes = [
+        'all',
+        'bang',
+        'string',
+        'bool',
+        'boolean',
+        'number',
+        'int',
+        'integer',
+        'object',
+        'array',
+        'date',
+        'function',
+    ];
+
+    /**
      * @param string $name
      * @param array $attributes
      */

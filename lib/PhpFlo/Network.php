@@ -15,6 +15,7 @@ use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\IncompatibleDatatypeException;
 use PhpFlo\Exception\InvalidDefinitionException;
 use PhpFlo\Interaction\InternalSocket;
+use PhpFlo\Interaction\Port;
 
 /**
  * Builds the concrete network based on graph.
@@ -43,8 +44,6 @@ class Network
      * @var \DateTime
      */
     private $startupDate;
-
-    private $container;
 
     /**
      * @param Graph $graph
@@ -165,6 +164,7 @@ class Network
 
     /**
      * @param array $edge
+     * @return Network
      * @throws InvalidDefinitionException
      */
     public function addEdge(array $edge)
@@ -197,6 +197,8 @@ class Network
      * @param array $to
      * @param string $edgeFrom
      * @param string $edgeTo
+     * @throws IncompatibleDatatypeException
+     * @throws InvalidDefinitionException
      */
     private function connectPorts(SocketInterface $socket, array $from, array $to, $edgeFrom, $edgeTo)
     {
@@ -220,6 +222,20 @@ class Network
 
         $fromType = $from['component']->outPorts()->get($edgeFrom)->getAttribute('datatype');
         $toType = $to['component']->inPorts()->get($edgeTo)->getAttribute('datatype');
+
+        if (!$this->hasValidPortType($fromType)) {
+            throw new InvalidDefinitionException(
+                "Process {$from['id']} has invalid outport type {$fromType}. Valid types: " .
+                implode(', ', Port::$datatypes)
+            );
+        }
+
+        if (!$this->hasValidPortType($toType)) {
+            throw new InvalidDefinitionException(
+                "Process {$to['id']} has invalid outport type {$toType}. Valid types: " .
+                implode(', ', Port::$datatypes)
+            );
+        }
 
         // compare out and in ports for datatype definitions
         if (!$this->isPortCompatible($fromType, $toType)) {
@@ -261,6 +277,7 @@ class Network
     /**
      * @param array $initializer
      * @return $this
+     * @throws InvalidDefinitionException
      */
     public function addInitial(array $initializer)
     {
@@ -358,5 +375,16 @@ class Network
         }
 
         return $isCompatible;
+    }
+
+    /**
+     * Check datatype vs. defined types.
+     *
+     * @param string $type
+     * @return bool
+     */
+    private function hasValidPortType($type)
+    {
+        return in_array($type, Port::$datatypes);
     }
 }
