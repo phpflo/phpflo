@@ -50,7 +50,7 @@ class ComponentDiFinder implements ComponentBuilderInterface
     {
         $instance = $this->container->get($component);
 
-        if (!$instance instanceof ComponentInterface) {
+        if (!empty($instance) && !$instance instanceof ComponentInterface) {
             throw new InvalidDefinitionException(
                 "Component {$component} doesn't appear to be a valid PhpFlo component"
             );

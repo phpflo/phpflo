@@ -25,7 +25,7 @@ use PhpFlo\Exception\InvalidDefinitionException;
  * @package PhpFlo
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-class ComponentBuilder implements ComponentBuilderInterface
+class ComponentFactory implements ComponentBuilderInterface
 {
     /**
      * @param string $component
