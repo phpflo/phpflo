@@ -42,13 +42,38 @@ class AbstractPort extends EventEmitter
     protected $from;
 
     /**
+     * @var array
+     */
+    public static $datatypes = [
+        'all',
+        'bang',
+        'string',
+        'bool',
+        'boolean',
+        'number',
+        'int',
+        'integer',
+        'object',
+        'array',
+        'date',
+        'function',
+    ];
+
+    /**
      * @param string $name
      * @param array $attributes
      */
     public function __construct($name, array $attributes)
     {
+        $defaultAttributes = [
+            'datatype' => 'all',
+            'required' => false,
+            'cached' => false,
+            'addressable' => false,
+        ];
+
         $this->name = $name;
-        $this->attributes = $attributes;
+        $this->attributes = array_replace($defaultAttributes, $attributes);
         $this->socket = null;
         $this->from = null;
     }

@@ -14,7 +14,7 @@ use Evenement\EventEmitter;
 use PhpFlo\Exception\InvalidDefinitionException;
 
 /**
- * Class Graph
+ * Analyzes and creates definitions from flow graph file.
  *
  * @package PhpFlo
  * @author Henri Bergius <henri.bergius@iki.fi>
@@ -55,6 +55,7 @@ class Graph extends EventEmitter
     /**
      * @param string $id
      * @param string $component
+     * @return $this
      */
     public function addNode($id, $component)
     {
@@ -65,10 +66,13 @@ class Graph extends EventEmitter
 
         $this->nodes[$id] = $node;
         $this->emit('addNode', [$node]);
+
+        return $this;
     }
 
     /**
      * @param string $id
+     * @return $this
      */
     public function removeNode($id)
     {
@@ -90,6 +94,8 @@ class Graph extends EventEmitter
         $node = $this->nodes[$id];
         $this->emit('removeNode', [$node]);
         unset($this->nodes[$id]);
+
+        return $this;
     }
 
     /**
@@ -110,6 +116,7 @@ class Graph extends EventEmitter
      * @param string $outPort
      * @param string $inNode
      * @param string $inPort
+     * @return $this
      */
     public function addEdge($outNode, $outPort, $inNode, $inPort)
     {
@@ -126,11 +133,14 @@ class Graph extends EventEmitter
 
         $this->edges[] = $edge;
         $this->emit('addEdge', [$edge]);
+
+        return $this;
     }
 
     /**
      * @param string $node
      * @param string $port
+     * @return $this
      */
     public function removeEdge($node, $port)
     {
@@ -152,12 +162,15 @@ class Graph extends EventEmitter
                 $this->initializers = array_splice($this->initializers, $index, 1);
             }
         }
+
+        return $this;
     }
 
     /**
      * @param mixed $data
      * @param string $node
      * @param string $port
+     * @return $this
      */
     public function addInitial($data, $node, $port)
     {
@@ -173,6 +186,8 @@ class Graph extends EventEmitter
 
         $this->initializers[] = $initializer;
         $this->emit('addEdge', [$initializer]);
+
+        return $this;
     }
 
     /**

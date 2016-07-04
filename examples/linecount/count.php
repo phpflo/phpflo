@@ -15,21 +15,25 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 // Add nodes to the graph
 $graph = new PhpFlo\Graph("linecount");
-$graph->addNode("Read File", "ReadFile");
-$graph->addNode("Split by Lines", "SplitStr");
-$graph->addNode("Count Lines", "Counter");
-$graph->addNode("Display", "Output");
+$graph
+    ->addNode("Read File", "ReadFile")
+    ->addNode("Split by Lines", "SplitStr")
+    ->addNode("Count Lines", "Counter")
+    ->addNode("Display", "Output");
 
 // Add connections between nodes
-$graph->addEdge("Read File", "out", "Split by Lines", "in");
-$graph->addEdge("Read File", "error", "Display", "in");
-$graph->addEdge("Split by Lines", "out", "Count Lines", "in");
-$graph->addEdge("Count Lines", "count", "Display", "in");
+$graph
+    ->addEdge("Read File", "out", "Split by Lines", "in")
+    ->addEdge("Read File", "error", "Display", "in")
+    ->addEdge("Split by Lines", "out", "Count Lines", "in")
+    ->addEdge("Count Lines", "count", "Display", "in");
 
 // Kick-start the process by sending filename to Read File
 $graph->addInitial($fileName, "Read File", "source");
 
+$builder = new \PhpFlo\Builder\ComponentFactory();
+
 //echo $graph->toJson();
 
 // Make the graph "live"
-$network = PhpFlo\Network::create($graph);
+$network = PhpFlo\Network::create($graph, $builder);

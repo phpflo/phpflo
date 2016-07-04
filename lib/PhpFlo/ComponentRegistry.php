@@ -23,6 +23,9 @@ use PhpFlo\Exception\ComponentNotFoundException;
  */
 class ComponentRegistry implements ComponentRegistryInterface
 {
+    /**
+     * @var array
+     */
     private $references;
 
     public function __construct()
