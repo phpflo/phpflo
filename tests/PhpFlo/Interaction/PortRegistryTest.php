@@ -43,4 +43,18 @@ class PortRegistryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($registry->has('test'));
         $this->assertCount(1, $registry->get());
     }
+
+    public function testIterator()
+    {
+        $registry = new PortRegistry();
+        $registry
+            ->add('test', ['datatype' => 'all'])
+            ->add('test2', ['datatype' => 'all']);
+
+        $this->assertEquals(2, count($registry));
+
+        foreach ($registry as $port) {
+            $this->assertInstanceOf('\PhpFlo\Interaction\Port', $port);
+        }
+    }
 }

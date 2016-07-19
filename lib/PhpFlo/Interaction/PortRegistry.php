@@ -18,17 +18,12 @@ use PhpFlo\Exception\PortException;
  * @package PhpFlo\Interaction
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-class PortRegistry implements \Iterator
+class PortRegistry implements \Iterator, \Countable
 {
     /**
      * @var array
      */
     private $ports;
-
-    /**
-     * @var array
-     */
-    private $attributes;
 
     /**
      * @var int
@@ -38,7 +33,7 @@ class PortRegistry implements \Iterator
     public function __construct()
     {
         $this->position = 0;
-        $this->ports = [];
+        $this->ports    = [];
     }
 
     /**
@@ -128,23 +123,42 @@ class PortRegistry implements \Iterator
         return $this->get($name);
     }
 
-    function rewind() {
+    function rewind()
+    {
         $this->position = 0;
     }
 
-    function current() {
-        return $this->ports[$this->position];
+    function current()
+    {
+        $index = array_keys($this->ports);
+
+        return $this->ports[$index[$this->position]];
     }
 
-    function key() {
+    function key()
+    {
         return $this->position;
     }
 
-    function next() {
+    function next()
+    {
         ++$this->position;
     }
 
-    function valid() {
-        return isset($this->ports[$this->position]);
+    function valid()
+    {
+        $index = array_keys($this->ports);
+
+        return isset($index[$this->position]);
+    }
+
+    /**
+     * Count elements of an object
+     *
+     * @return int The custom count as an integer.
+     */
+    public function count()
+    {
+        return count($this->ports);
     }
 }
