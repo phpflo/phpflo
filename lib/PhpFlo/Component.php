@@ -24,12 +24,12 @@ class Component implements ComponentInterface
     /**
      * @var PortRegistry
      */
-    private $_inPorts = null;
+    private $inPorts = null;
 
     /**
      * @var PortRegistry
      */
-    private $_outPorts = null;
+    private $outPorts = null;
 
     /**
      * @var string
@@ -49,11 +49,11 @@ class Component implements ComponentInterface
      */
     public function inPorts()
     {
-        if (null == $this->_inPorts) {
-            $this->_inPorts = new PortRegistry();
+        if (null == $this->inPorts) {
+            $this->inPorts = new PortRegistry();
         }
 
-        return $this->_inPorts;
+        return $this->inPorts;
     }
 
     /**
@@ -61,10 +61,10 @@ class Component implements ComponentInterface
      */
     public function outPorts()
     {
-        if (null == $this->_outPorts) {
-            $this->_outPorts = new PortRegistry();
+        if (null == $this->outPorts) {
+            $this->outPorts = new PortRegistry();
         }
 
-        return $this->_outPorts;
+        return $this->outPorts;
     }
 }
