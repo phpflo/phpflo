@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpFlo;
+namespace PhpFlo\Common;
 
 /**
  * Interface SocketInterface
  *
- * @package PhpFlo
+ * @package PhpFlo\Common
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
 interface SocketInterface

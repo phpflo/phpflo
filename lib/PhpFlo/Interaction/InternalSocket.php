@@ -8,14 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpFlo;
+namespace PhpFlo\Interaction;
 
 use Evenement\EventEmitter;
+use PhpFlo\Common\SocketInterface;
 
 /**
  * Class InternalSocket
  *
- * @package PhpFlo
+ * @package PhpFlo\Interaction
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
 class InternalSocket extends EventEmitter implements SocketInterface

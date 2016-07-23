@@ -8,27 +8,22 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpFlo;
+namespace PhpFlo\Interaction;
 
 use PhpFlo\Exception\PortException;
 
 /**
  * Class PortRegistry
  *
- * @package PhpFlo
+ * @package PhpFlo\Interaction
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-class PortRegistry implements \Iterator
+class PortRegistry implements \Iterator, \Countable
 {
     /**
      * @var array
      */
     private $ports;
-
-    /**
-     * @var array
-     */
-    private $attributes;
 
     /**
      * @var int
@@ -38,19 +33,14 @@ class PortRegistry implements \Iterator
     public function __construct()
     {
         $this->position = 0;
-        $this->ports = [];
-        $this->attributes = [
-            'datatype' => 'all',
-            'required' => false,
-            'cached' => false,
-            'addressable' => false,
-        ];
+        $this->ports    = [];
     }
 
     /**
      * @param string $name
      * @param array $attributes
      * @return $this
+     * @throws PortException
      */
     public function add($name, array $attributes)
     {
@@ -58,13 +48,13 @@ class PortRegistry implements \Iterator
             case (!$this->has($name) && (isset($attributes['addressable']) && false !== $attributes['addressable'])):
                 $this->ports[$name] = new ArrayPort(
                     $name,
-                    array_replace($this->attributes, $attributes)
+                    $attributes
                 );
                 break;
             case (!$this->has($name)):
                 $this->ports[$name] = new Port(
                     $name,
-                    array_replace($this->attributes, $attributes)
+                    $attributes
                 );
                 break;
             default:
@@ -93,7 +83,8 @@ class PortRegistry implements \Iterator
      * Return one or all ports.
      *
      * @param string $name
-     * @return array|Port|ArrayPort
+     * @return array|ArrayPort|Port
+     * @throws PortException
      */
     public function get($name = '')
     {
@@ -132,23 +123,42 @@ class PortRegistry implements \Iterator
         return $this->get($name);
     }
 
-    function rewind() {
+    function rewind()
+    {
         $this->position = 0;
     }
 
-    function current() {
-        return $this->ports[$this->position];
+    function current()
+    {
+        $index = array_keys($this->ports);
+
+        return $this->ports[$index[$this->position]];
     }
 
-    function key() {
+    function key()
+    {
         return $this->position;
     }
 
-    function next() {
+    function next()
+    {
         ++$this->position;
     }
 
-    function valid() {
-        return isset($this->ports[$this->position]);
+    function valid()
+    {
+        $index = array_keys($this->ports);
+
+        return isset($index[$this->position]);
+    }
+
+    /**
+     * Count elements of an object
+     *
+     * @return int The custom count as an integer.
+     */
+    public function count()
+    {
+        return count($this->ports);
     }
 }

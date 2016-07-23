@@ -11,12 +11,12 @@
 namespace PhpFlo\Exception;
 
 /**
- * Class SocketException
+ * Class ComponentException
  *
  * @package PhpFlo\Exception
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-class SocketException extends \RuntimeException
+class ComponentException extends FlowException
 {
 
 }

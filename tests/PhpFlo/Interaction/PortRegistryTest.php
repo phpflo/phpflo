@@ -8,16 +8,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\PhpFlo;
+namespace Tests\PhpFlo\Interaction;
 
-use PhpFlo\PortRegistry;
+use PhpFlo\Interaction\PortRegistry;
 
 class PortRegistryTest extends \PHPUnit_Framework_TestCase
 {
     public function testInstance()
     {
         $registry = new PortRegistry();
-        $this->assertInstanceOf('\PhpFlo\PortRegistry', $registry);
+        $this->assertInstanceOf('\PhpFlo\Interaction\PortRegistry', $registry);
     }
 
     public function testPortInteraction()
@@ -27,11 +27,13 @@ class PortRegistryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($registry->has('test'));
 
         $port = $registry->get('test');
-        $this->assertInstanceOf('\PhpFlo\Port', $port);
+        $this->assertInstanceOf('\PhpFlo\Common\PortInterface', $port);
+        $this->assertEquals('test', $port->getName());
 
 
         $registry->add('test2', ['datatype' => 'all', 'addressable' => true]);
-        $this->assertInstanceOf('\PhpFlo\ArrayPort', $registry->test2);
+        $this->assertInstanceOf('\PhpFlo\Interaction\ArrayPort', $registry->test2);
+        $this->assertEquals('test2', $registry->test2->getName());
 
         $ports = $registry->get();
         $this->assertTrue(is_array($ports));
@@ -40,5 +42,19 @@ class PortRegistryTest extends \PHPUnit_Framework_TestCase
         $registry->remove('test');
         $this->assertFalse($registry->has('test'));
         $this->assertCount(1, $registry->get());
+    }
+
+    public function testIterator()
+    {
+        $registry = new PortRegistry();
+        $registry
+            ->add('test', ['datatype' => 'all'])
+            ->add('test2', ['datatype' => 'all']);
+
+        $this->assertEquals(2, count($registry));
+
+        foreach ($registry as $port) {
+            $this->assertInstanceOf('\PhpFlo\Interaction\Port', $port);
+        }
     }
 }

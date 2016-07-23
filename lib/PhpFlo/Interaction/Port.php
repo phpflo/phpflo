@@ -8,8 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpFlo;
+namespace PhpFlo\Interaction;
 
+use PhpFlo\Common\PortInterface;
+use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\InvalidDefinitionException;
 use PhpFlo\Exception\InvalidTypeException;
 use PhpFlo\Exception\PortException;
@@ -18,10 +20,10 @@ use PhpFlo\Exception\SocketException;
 /**
  * Class Port
  *
- * @package PhpFlo
+ * @package PhpFlo\Interaction
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-final class Port extends AbstractPort
+final class Port extends AbstractPort implements PortInterface
 {
     /**
      * @param SocketInterface $socket
@@ -126,7 +128,7 @@ final class Port extends AbstractPort
     /**
      * @param mixed $data
      * @return mixed|null
-     * @throws InvalidTypeException
+     * @throws PortException
      */
     public function send($data)
     {

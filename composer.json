@@ -1,10 +1,9 @@
 {
-    "name": "PhpFlo/PhpFlo",
+    "name": "phpflo/phpflo",
     "type": "library",
     "description": "Flow-based programming for PHP",
     "keywords": ["fbp", "flow"],
     "homepage": "https://github.com/bergie/phpflo",
-    "version": "0.0.2",
     "license": "MIT",
     "authors": [
         {
@@ -22,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "": "src/"
+            "": "lib/"
         }
     },
     "autoload-dev": {

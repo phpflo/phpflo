@@ -10,11 +10,16 @@
 
 namespace PhpFlo;
 
+use PhpFlo\Common\ComponentBuilderInterface;
+use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\IncompatibleDatatypeException;
 use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Interaction\InternalSocket;
+use PhpFlo\Interaction\Port;
 
 /**
- * Class Network
+ * Builds the concrete network based on graph.
  *
  * @package PhpFlo
  * @author Henri Bergius <henri.bergius@iki.fi>
@@ -32,21 +37,28 @@ class Network
     private $connections;
 
     /**
-     * @var null
+     * @var Graph
      */
     private $graph;
 
     /**
-     * @var null
+     * @var \DateTime
      */
     private $startupDate;
 
     /**
-     * @param Graph $graph
+     * @var ComponentBuilderInterface
      */
-    public function __construct(Graph $graph)
+    private $builder;
+
+    /**
+     * @param Graph $graph
+     * @param ComponentBuilderInterface $builder
+     */
+    public function __construct(Graph $graph, ComponentBuilderInterface $builder)
     {
         $this->graph = $graph;
+        $this->builder = $builder;
         $this->startupDate = $this->createDateTimeWithMilliseconds();
 
         $this->graph->on('addNode', [$this, 'addNode']);
@@ -59,7 +71,7 @@ class Network
     }
 
     /**
-     * @return null|\DateTime
+     * @return bool|\DateInterval
      */
     public function uptime()
     {
@@ -68,45 +80,38 @@ class Network
 
     /**
      * @param array $node
+     * @return $this
      * @throws InvalidDefinitionException
      */
     public function addNode(array $node)
     {
         if (isset($this->processes[$node['id']])) {
-            return;
+            return $this;
         }
 
         $process = [];
         $process['id'] = $node['id'];
 
         if (isset($node['component'])) {
-            $componentClass = $node['component'];
-            if (!class_exists($componentClass) && strpos($componentClass, '\\') === false) {
-                $componentClass = "PhpFlo\\Component\\{$componentClass}";
-                if (!class_exists($componentClass)) {
-                    throw new InvalidDefinitionException("Component class {$componentClass} not found");
-                }
-            }
-            $component = new $componentClass();
-            if (!$component instanceof ComponentInterface) {
-                throw new InvalidDefinitionException("Component {$node['component']} doesn't appear to be a valid PhpFlo component");
-            }
-            $process['component'] = $component;
+            $process['component'] = $this->builder->build($node['component']);
         }
 
         $this->processes[$node['id']] = $process;
+
+        return $this;
     }
 
     /**
      * @param array $node
+     * @return $this
      */
     public function removeNode(array $node)
     {
-        if (!isset($this->processes[$node['id']])) {
-            return;
+        if (isset($this->processes[$node['id']])) {
+            unset($this->processes[$node['id']]);
         }
 
-        unset($this->processes[$node['id']]);
+        return $this;
     }
 
     /**
@@ -123,7 +128,7 @@ class Network
     }
 
     /**
-     * @return null
+     * @return null|Graph
      */
     public function getGraph()
     {
@@ -156,6 +161,7 @@ class Network
 
     /**
      * @param array $edge
+     * @return Network
      * @throws InvalidDefinitionException
      */
     public function addEdge(array $edge)
@@ -178,6 +184,8 @@ class Network
         $this->connectPorts($socket, $from, $to, $edge['from']['port'], $edge['to']['port']);
 
         $this->connections[] = $socket;
+
+        return $this;
     }
 
     /**
@@ -188,6 +196,9 @@ class Network
      * @param array $to
      * @param string $edgeFrom
      * @param string $edgeTo
+     * @return $this
+     * @throws IncompatibleDatatypeException
+     * @throws InvalidDefinitionException
      */
     private function connectPorts(SocketInterface $socket, array $from, array $to, $edgeFrom, $edgeTo)
     {
@@ -212,6 +223,20 @@ class Network
         $fromType = $from['component']->outPorts()->get($edgeFrom)->getAttribute('datatype');
         $toType = $to['component']->inPorts()->get($edgeTo)->getAttribute('datatype');
 
+        if (!$this->hasValidPortType($fromType)) {
+            throw new InvalidDefinitionException(
+                "Process {$from['id']} has invalid outport type {$fromType}. Valid types: " .
+                implode(', ', Port::$datatypes)
+            );
+        }
+
+        if (!$this->hasValidPortType($toType)) {
+            throw new InvalidDefinitionException(
+                "Process {$to['id']} has invalid outport type {$toType}. Valid types: " .
+                implode(', ', Port::$datatypes)
+            );
+        }
+
         // compare out and in ports for datatype definitions
         if (!$this->isPortCompatible($fromType, $toType)) {
             throw new IncompatibleDatatypeException(
@@ -223,11 +248,12 @@ class Network
         $from['component']->outPorts()->get($edgeFrom)->attach($socket);
         $to['component']->inPorts()->get($edgeTo)->attach($socket);
 
-        return;
+        return $this;
     }
 
     /**
      * @param array $edge
+     * @return $this
      */
     public function removeEdge(array $edge)
     {
@@ -244,10 +270,13 @@ class Network
                 }
             }
         }
+
+        return $this;
     }
 
     /**
      * @param array $initializer
+     * @return $this
      * @throws InvalidDefinitionException
      */
     public function addInitial(array $initializer)
@@ -264,15 +293,19 @@ class Network
         $socket->disconnect();
 
         $this->connections[] = $socket;
+
+        return $this;
     }
 
     /**
      * @param Graph $graph
+     * @param ComponentBuilderInterface $builder
      * @return Network
+     * @throws InvalidDefinitionException
      */
-    public static function create(Graph $graph)
+    public static function create(Graph $graph, ComponentBuilderInterface $builder)
     {
-        $network = new Network($graph);
+        $network = new Network($graph, $builder);
 
         foreach ($graph->nodes as $node) {
             $network->addNode($node);
@@ -293,26 +326,30 @@ class Network
      * Load PhpFlo graph definition from string.
      *
      * @param string $string
+     * @param ComponentBuilderInterface $builder
      * @return Network
+     * @throws InvalidDefinitionException
      */
-    public static function loadString($string)
+    public static function loadString($string, ComponentBuilderInterface $builder)
     {
         $graph = Graph::loadString($string);
 
-        return Network::create($graph);
+        return Network::create($graph, $builder);
     }
 
     /**
      * Load PhpFlo graph definition from file.
      *
      * @param string $file
+     * @param ComponentBuilderInterface $builder
      * @return Network
+     * @throws InvalidDefinitionException
      */
-    public static function loadFile($file)
+    public static function loadFile($file, ComponentBuilderInterface $builder)
     {
         $graph = Graph::loadFile($file);
 
-        return Network::create($graph);
+        return Network::create($graph, $builder);
     }
 
     /**
@@ -344,5 +381,16 @@ class Network
         }
 
         return $isCompatible;
+    }
+
+    /**
+     * Check datatype vs. defined types.
+     *
+     * @param string $type
+     * @return bool
+     */
+    private function hasValidPortType($type)
+    {
+        return in_array($type, Port::$datatypes);
     }
 }
