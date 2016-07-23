@@ -1,38 +1,82 @@
 <?php
+/*
+ * This file is part of the phpflo/phpflo package.
+ *
+ * (c) Henri Bergius <henri.bergius@iki.fi>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpFlo;
 
-use DateTime;
+use PhpFlo\Exception\IncompatibleDatatypeException;
+use PhpFlo\Exception\InvalidDefinitionException;
 
+/**
+ * Class Network
+ *
+ * @package PhpFlo
+ * @author Henri Bergius <henri.bergius@iki.fi>
+ */
 class Network
 {
-    private $processes = array();
-    private $connections = array();
-    private $graph = null;
-    private $startupDate = null;
+    /**
+     * @var array
+     */
+    private $processes;
 
+    /**
+     * @var array
+     */
+    private $connections;
+
+    /**
+     * @var null
+     */
+    private $graph;
+
+    /**
+     * @var null
+     */
+    private $startupDate;
+
+    /**
+     * @param Graph $graph
+     */
     public function __construct(Graph $graph)
     {
         $this->graph = $graph;
         $this->startupDate = $this->createDateTimeWithMilliseconds();
 
-        $this->graph->on('addNode', array($this, 'addNode'));
-        $this->graph->on('removeNode', array($this, 'removeNode'));
-        $this->graph->on('addEdge', array($this, 'addEdge'));
-        $this->graph->on('removeEdge', array($this, 'removeEdge'));
+        $this->graph->on('addNode', [$this, 'addNode']);
+        $this->graph->on('removeNode', [$this, 'removeNode']);
+        $this->graph->on('addEdge', [$this, 'addEdge']);
+        $this->graph->on('removeEdge', [$this, 'removeEdge']);
+
+        $this->processes = [];
+        $this->connections = [];
     }
 
+    /**
+     * @return null|\DateTime
+     */
     public function uptime()
     {
         return $this->startupDate->diff($this->createDateTimeWithMilliseconds());
     }
 
+    /**
+     * @param array $node
+     * @throws InvalidDefinitionException
+     */
     public function addNode(array $node)
     {
         if (isset($this->processes[$node['id']])) {
             return;
         }
 
-        $process = array();
+        $process = [];
         $process['id'] = $node['id'];
 
         if (isset($node['component'])) {
@@ -40,12 +84,12 @@ class Network
             if (!class_exists($componentClass) && strpos($componentClass, '\\') === false) {
                 $componentClass = "PhpFlo\\Component\\{$componentClass}";
                 if (!class_exists($componentClass)) {
-                    throw new \InvalidArgumentException("Component class {$componentClass} not found");
+                    throw new InvalidDefinitionException("Component class {$componentClass} not found");
                 }
             }
             $component = new $componentClass();
             if (!$component instanceof ComponentInterface) {
-                throw new \InvalidArgumentException("Component {$node['component']} doesn't appear to be a valid PhpFlo component");
+                throw new InvalidDefinitionException("Component {$node['component']} doesn't appear to be a valid PhpFlo component");
             }
             $process['component'] = $component;
         }
@@ -53,6 +97,9 @@ class Network
         $this->processes[$node['id']] = $process;
     }
 
+    /**
+     * @param array $node
+     */
     public function removeNode(array $node)
     {
         if (!isset($this->processes[$node['id']])) {
@@ -62,6 +109,10 @@ class Network
         unset($this->processes[$node['id']]);
     }
 
+    /**
+     * @param string $id
+     * @return mixed|null
+     */
     public function getNode($id)
     {
         if (!isset($this->processes[$id])) {
@@ -71,39 +122,42 @@ class Network
         return $this->processes[$id];
     }
 
+    /**
+     * @return null
+     */
     public function getGraph()
     {
         return $this->graph;
     }
 
+    /**
+     * @param SocketInterface $socket
+     * @param array $process
+     * @param Port $port
+     * @throws InvalidDefinitionException
+     * @return mixed
+     */
     private function connectInboundPort(SocketInterface $socket, array $process, $port)
     {
-        $socket->to = array(
+        $socket->to = [
             'process' => $process,
             'port' => $port,
-        );
+        ];
 
-        if (!isset($process['component']->inPorts[$port])) {
-            throw new \InvalidArgumentException("No inport {$port} defined for process {$process['id']}");
+        if (!$process['component']->inPorts()->has($port)) {
+            throw new InvalidDefinitionException("No inport {$port} defined for process {$process['id']}");
         }
 
-        return $process['component']->inPorts[$port]->attach($socket);
+        return $process['component']
+            ->inPorts()
+            ->get($port)
+            ->attach($socket);
     }
 
-    private function connectOutgoingPort(SocketInterface $socket, array $process, $port)
-    {
-        $socket->from = array(
-            'process' => $process,
-            'port' => $port,
-        );
-
-        if (!isset($process['component']->outPorts[$port])) {
-            throw new \InvalidArgumentException("No outport {$port} defined for process {$process['id']}");
-        }
-
-        return $process['component']->outPorts[$port]->attach($socket);
-    }
-
+    /**
+     * @param array $edge
+     * @throws InvalidDefinitionException
+     */
     public function addEdge(array $edge)
     {
         if (!isset($edge['from']['node'])) {
@@ -113,43 +167,95 @@ class Network
 
         $from = $this->getNode($edge['from']['node']);
         if (!$from) {
-            throw new \InvalidArgumentException("No process defined for outbound node {$edge['from']['node']}");
+            throw new InvalidDefinitionException("No process defined for outbound node {$edge['from']['node']}");
         }
 
         $to = $this->getNode($edge['to']['node']);
         if (!$to) {
-            throw new \InvalidArgumentException("No process defined for inbound node {$edge['to']['node']}");
+            throw new InvalidDefinitionException("No process defined for inbound node {$edge['to']['node']}");
         }
 
-        $this->connectOutgoingPort($socket, $from, $edge['from']['port']);
-        $this->connectInboundPort($socket, $to, $edge['to']['port']);
+        $this->connectPorts($socket, $from, $to, $edge['from']['port'], $edge['to']['port']);
 
         $this->connections[] = $socket;
     }
 
+    /**
+     * Connect out to inport and compare data types.
+     *
+     * @param SocketInterface $socket
+     * @param array $from
+     * @param array $to
+     * @param string $edgeFrom
+     * @param string $edgeTo
+     */
+    private function connectPorts(SocketInterface $socket, array $from, array $to, $edgeFrom, $edgeTo)
+    {
+        $socket->from = [
+            'process' => $from,
+            'port' => $edgeFrom,
+        ];
+
+        if (!$from['component']->outPorts()->has($edgeFrom)) {
+            throw new InvalidDefinitionException("No outport {$edgeFrom} defined for process {$from['id']}");
+        }
+
+        $socket->to = [
+            'process' => $to,
+            'port' => $edgeTo,
+        ];
+
+        if (!$to['component']->inPorts()->has($edgeTo)) {
+            throw new InvalidDefinitionException("No inport {$edgeTo} defined for process {$to['id']}");
+        }
+
+        $fromType = $from['component']->outPorts()->get($edgeFrom)->getAttribute('datatype');
+        $toType = $to['component']->inPorts()->get($edgeTo)->getAttribute('datatype');
+
+        // compare out and in ports for datatype definitions
+        if (!$this->isPortCompatible($fromType, $toType)) {
+            throw new IncompatibleDatatypeException(
+                "Process {$from['id']}: outport type \"{$fromType}\" of port \"{$edgeFrom}\" ".
+                "does not match {$to['id']} inport type \"{$toType}\" of port \"{$edgeTo}\""
+            );
+        }
+
+        $from['component']->outPorts()->get($edgeFrom)->attach($socket);
+        $to['component']->inPorts()->get($edgeTo)->attach($socket);
+
+        return;
+    }
+
+    /**
+     * @param array $edge
+     */
     public function removeEdge(array $edge)
     {
         foreach ($this->connections as $index => $connection) {
             if ($edge['to']['node'] == $connection->to['process']['id'] && $edge['to']['port'] == $connection->to['process']['port']) {
-                $connection->to['process']['component']->inPorts[$edge['to']['port']]->detach($connection);
+                $connection->to['process']['component']->inPorts()->get($edge['to']['port'])->detach($connection);
                 $this->connections = array_splice($this->connections, $index, 1);
             }
 
             if (isset($edge['from']['node'])) {
                 if ($edge['from']['node'] == $connection->from['process']['id'] && $edge['from']['port'] == $connection->from['process']['port']) {
-                    $connection->from['process']['component']->inPorts[$edge['from']['port']]->detach($connection);
+                    $connection->from['process']['component']->inPorts()->get($edge['from']['port'])->detach($connection);
                     $this->connections = array_splice($this->connections, $index, 1);
                 }
             }
         }
     }
 
+    /**
+     * @param array $initializer
+     * @throws InvalidDefinitionException
+     */
     public function addInitial(array $initializer)
     {
         $socket = new InternalSocket();
         $to = $this->getNode($initializer['to']['node']);
         if (!$to) {
-            throw new \InvalidArgumentException("No process defined for inbound node {$initializer['to']['node']}");
+            throw new InvalidDefinitionException("No process defined for inbound node {$initializer['to']['node']}");
         }
 
         $this->connectInboundPort($socket, $to, $initializer['to']['port']);
@@ -160,6 +266,10 @@ class Network
         $this->connections[] = $socket;
     }
 
+    /**
+     * @param Graph $graph
+     * @return Network
+     */
     public static function create(Graph $graph)
     {
         $network = new Network($graph);
@@ -183,7 +293,7 @@ class Network
      * Load PhpFlo graph definition from string.
      *
      * @param string $string
-     * @return \PhpFlo\Network
+     * @return Network
      */
     public static function loadString($string)
     {
@@ -196,7 +306,7 @@ class Network
      * Load PhpFlo graph definition from file.
      *
      * @param string $file
-     * @return \PhpFlo\Network
+     * @return Network
      */
     public static function loadFile($file)
     {
@@ -205,8 +315,34 @@ class Network
         return Network::create($graph);
     }
 
+    /**
+     * @return \DateTime
+     */
     private function createDateTimeWithMilliseconds()
     {
-        return DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+        return \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+    }
+
+    /**
+     * Compare in and outport datatypes.
+     *
+     * @param string $fromType
+     * @param string $toType
+     * @return bool
+     */
+    private function isPortCompatible($fromType, $toType)
+    {
+        switch(true) {
+            case (($fromType == $toType) || ($toType == 'all' || $toType == 'bang')):
+                $isCompatible = true;
+                break;
+            case (($fromType == 'int' || $fromType == 'integer') && $toType == 'number'):
+                $isCompatible = true;
+                break;
+            default:
+                $isCompatible = false;
+        }
+
+        return $isCompatible;
     }
 }

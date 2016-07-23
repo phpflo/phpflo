@@ -1,14 +1,50 @@
 <?php
+/*
+ * This file is part of the phpflo/phpflo package.
+ *
+ * (c) Henri Bergius <henri.bergius@iki.fi>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PhpFlo;
 
 use Evenement\EventEmitter;
 
+/**
+ * Class InternalSocket
+ *
+ * @package PhpFlo
+ * @author Henri Bergius <henri.bergius@iki.fi>
+ */
 class InternalSocket extends EventEmitter implements SocketInterface
 {
-    private $connected = false;
-    public $from = array();
-    public $to = array();
+    /**
+     * @var bool
+     */
+    private $connected;
 
+    /**
+     * @var array
+     */
+    public $from;
+
+    /**
+     * @var array
+     */
+    public $to;
+
+    public function __construct()
+    {
+        $this->connected = false;
+        $this->from = [];
+        $this->to = [];
+    }
+
+    /**
+     * @return string
+     */
     public function getId()
     {
         if ($this->from && !$this->to) {
@@ -24,7 +60,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     public function connect()
     {
         $this->connected = true;
-        $this->emit('connect', array($this));
+        $this->emit('connect', [$this]);
     }
 
     /**
@@ -32,7 +68,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
      */
     public function beginGroup($groupName)
     {
-        $this->emit('beginGroup', array($groupName, $this));
+        $this->emit('beginGroup', [$groupName, $this]);
     }
 
     /**
@@ -40,7 +76,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
      */
     public function endGroup($groupName)
     {
-        $this->emit('endGroup', array($groupName, $this));
+        $this->emit('endGroup', [$groupName, $this]);
     }
 
     /**
@@ -48,13 +84,13 @@ class InternalSocket extends EventEmitter implements SocketInterface
      */
     public function send($data)
     {
-        $this->emit('data', array($data, $this));
+        $this->emit('data', [$data, $this]);
     }
 
     public function disconnect()
     {
         $this->connected = false;
-        $this->emit('disconnect', array($this));
+        $this->emit('disconnect', [$this]);
     }
 
     public function isConnected()
