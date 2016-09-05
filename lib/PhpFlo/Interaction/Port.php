@@ -54,7 +54,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function onBeginGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('beginGroup', [$groupName, $socket]);
+        $this->emit('begin.group', [$groupName, $socket]);
     }
 
     /**
@@ -63,7 +63,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function onEndGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('endGroup', [$groupName, $socket]);
+        $this->emit('end.group', [$groupName, $socket]);
     }
 
     /**

@@ -10,7 +10,10 @@
 
 namespace PhpFlo\Interaction;
 
-use Evenement\EventEmitter;
+use League\Event\Emitter;
+use League\Event\EmitterInterface;
+use League\Event\EmitterTrait;
+use League\Event\EventInterface;
 use PhpFlo\Common\SocketInterface;
 
 /**
@@ -19,8 +22,13 @@ use PhpFlo\Common\SocketInterface;
  * @package PhpFlo\Interaction
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-class AbstractPort extends EventEmitter
+class AbstractPort extends Emitter implements EmitterInterface, EventInterface
 {
+
+    use EmitterTrait;
+    use EventTrait;
+    use EventEmitterBcTrait;
+
     /**
      * @var string
      */
@@ -76,6 +84,8 @@ class AbstractPort extends EventEmitter
         $this->attributes = array_replace($defaultAttributes, $attributes);
         $this->socket = null;
         $this->from = null;
+        $this->sorted = [];
+        $this->listeners = [];
     }
 
     /**
@@ -135,9 +145,9 @@ class AbstractPort extends EventEmitter
         $this->from = $socket->from;
 
         $socket->on('connect', [$this, 'onConnect']);
-        $socket->on('beginGroup', [$this, 'onBeginGroup']);
+        $socket->on('begin.group', [$this, 'onBeginGroup']);
         $socket->on('data', [$this, 'onData']);
-        $socket->on('endGroup', [$this, 'onEndGroup']);
+        $socket->on('end.group', [$this, 'onEndGroup']);
         $socket->on('disconnect', [$this, 'onDisconnect']);
     }
 }

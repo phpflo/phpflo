@@ -61,10 +61,10 @@ class Network
         $this->builder = $builder;
         $this->startupDate = $this->createDateTimeWithMilliseconds();
 
-        $this->graph->on('addNode', [$this, 'addNode']);
-        $this->graph->on('removeNode', [$this, 'removeNode']);
-        $this->graph->on('addEdge', [$this, 'addEdge']);
-        $this->graph->on('removeEdge', [$this, 'removeEdge']);
+        $this->graph->on('add.node', [$this, 'addNode']);
+        $this->graph->on('remove.node', [$this, 'removeNode']);
+        $this->graph->on('add.edge', [$this, 'addEdge']);
+        $this->graph->on('remove.edge', [$this, 'removeEdge']);
 
         $this->processes = [];
         $this->connections = [];
