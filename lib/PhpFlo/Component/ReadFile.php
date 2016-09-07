@@ -23,8 +23,9 @@ class ReadFile extends Component
     public function __construct()
     {
         $this->inPorts()->add('source', ['datatype' => 'string']);
-        $this->outPorts()->add('out', ['datatype' => 'string']);
-        $this->outPorts()->add('error', []); // use defaults, datatype = all
+        $this->outPorts()
+            ->add('out', ['datatype' => 'string'])
+            ->add('error', []); // use defaults, datatype = all
 
         $this->inPorts()->source->on('data', [$this, 'readFile']);
     }
@@ -40,7 +41,9 @@ class ReadFile extends Component
             return;
         }
 
-        $this->outPorts()->out->send(file_get_contents($data));
-        $this->outPorts()->out->disconnect();
+        $this->outPorts()
+            ->out
+            ->send(file_get_contents($data))
+            ->disconnect();
     }
 }

@@ -42,11 +42,13 @@ class Queue extends Component
         $this->size = 100;
         $this->messages = [];
 
-        $this->inPorts()->add('in', ['datatype' => 'all']);
-        $this->inPorts()->add('size', ['datatype' => 'all']);
+        $this->inPorts()
+            ->add('in', ['datatype' => 'all'])
+            ->add('size', ['datatype' => 'all']);
 
-        $this->outPorts()->add('error', ['datatype' => 'all']);
-        $this->outPorts()->add('messages', ['datatype' => 'all']);
+        $this->outPorts()
+            ->add('error', ['datatype' => 'all'])
+            ->add('messages', ['datatype' => 'all']);
 
         $this->inPorts()->in->on('data', [$this, 'onAppendQueue']);
         $this->inPorts()->in->on('detach', [$this, 'onStreamEnded']);
@@ -96,8 +98,10 @@ class Queue extends Component
 
     private function flushQueue()
     {
-        $this->outPorts()->messages->send($this->messages);
-        $this->outPorts()->messages->disconnect();
+        $this->outPorts()
+            ->messages
+            ->send($this->messages)
+            ->disconnect();
 
         $this->messages = [];
     }

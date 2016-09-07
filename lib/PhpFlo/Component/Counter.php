@@ -49,8 +49,11 @@ class Counter extends Component
 
     public function sendCount()
     {
-        $this->outPorts()->count->send($this->count);
-        $this->outPorts()->count->disconnect();
+        $this->outPorts()
+            ->count
+            ->send($this->count)
+            ->disconnect();
+
         $this->count = null;
     }
 }
