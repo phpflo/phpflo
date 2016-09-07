@@ -10,11 +10,7 @@
 
 namespace PhpFlo\Interaction;
 
-
-use League\Event\Emitter;
-use League\Event\EmitterInterface;
-use League\Event\EmitterTrait;
-use League\Event\EventInterface;
+use Evenement\EventEmitter;
 use PhpFlo\Common\SocketInterface;
 
 /**
@@ -23,12 +19,8 @@ use PhpFlo\Common\SocketInterface;
  * @package PhpFlo\Interaction
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-class InternalSocket extends Emitter implements EmitterInterface, EventInterface, SocketInterface
+class InternalSocket extends EventEmitter implements SocketInterface
 {
-    use EmitterTrait;
-    use EventTrait;
-    use EventEmitterBcTrait;
-
     /**
      * @var bool
      */
@@ -77,7 +69,7 @@ class InternalSocket extends Emitter implements EmitterInterface, EventInterface
      */
     public function beginGroup($groupName)
     {
-        $this->emit('begin.group', [$groupName, $this]);
+        $this->emit('beginGroup', [$groupName, $this]);
     }
 
     /**
@@ -85,7 +77,7 @@ class InternalSocket extends Emitter implements EmitterInterface, EventInterface
      */
     public function endGroup($groupName)
     {
-        $this->emit('end.group', [$groupName, $this]);
+        $this->emit('endGroup', [$groupName, $this]);
     }
 
     /**
@@ -102,19 +94,8 @@ class InternalSocket extends Emitter implements EmitterInterface, EventInterface
         $this->emit('disconnect', [$this]);
     }
 
-    /**
-     * @return bool
-     */
     public function isConnected()
     {
         return $this->connected;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return get_class($this);
     }
 }
