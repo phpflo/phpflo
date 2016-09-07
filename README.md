@@ -140,14 +140,14 @@ Defining the datatype is mandatory, since there is a port matching check during 
 | -------- |:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:| --------:|
 | all      |    x     |    x     |          |          |          |          |          |          |          |          |
 | bang     |    x     |    x     |          |          |          |          |          |          |          |          |
-| string   |    x     |          |    x     |          |          |          |          |          |          |          |
-| bool     |    x     |          |          |    x     |          |          |          |          |          |          |
-| number   |    x     |          |          |          |    x     |          |          |          |          |          |
-| int      |    x     |          |          |          |    x     |    x     |          |          |          |          |
-| object   |    x     |          |          |          |          |          |    x     |          |          |          |
-| array    |    x     |          |          |          |          |          |          |    x     |          |          |
-| date     |    x     |          |          |          |          |          |          |          |    x     |          |
-| function |    x     |          |          |          |          |          |          |          |          |    x     |
+| string   |    x     |    x     |    x     |          |          |          |          |          |          |          |
+| bool     |    x     |    x     |          |    x     |          |          |          |          |          |          |
+| number   |    x     |    x     |          |          |    x     |          |          |          |          |          |
+| int      |    x     |    x     |          |          |    x     |    x     |          |          |          |          |
+| object   |    x     |    x     |          |          |          |          |    x     |          |          |          |
+| array    |    x     |    x     |          |          |          |          |          |    x     |          |          |
+| date     |    x     |    x     |          |          |          |          |          |          |    x     |          |
+| function |    x     |    x     |          |          |          |          |          |          |          |    x     |
 
 These types are only implicitly checked. There is no data validation during runtime!
 
