@@ -11,11 +11,7 @@
 namespace PhpFlo;
 
 use Evenement\EventEmitter;
-use League\Event\Emitter;
-use League\Event\EmitterInterface;
 use PhpFlo\Exception\InvalidDefinitionException;
-use PhpFlo\Interaction\EventEmitterBcTrait;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Analyzes and creates definitions from flow graph file.
@@ -23,10 +19,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  * @package PhpFlo
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-class Graph extends Emitter implements EmitterInterface
+class Graph extends EventEmitter
 {
-    use EventEmitterBcTrait;
-
     /**
      * @var string
      */
@@ -71,7 +65,7 @@ class Graph extends Emitter implements EmitterInterface
         ];
 
         $this->nodes[$id] = $node;
-        $this->emit('add.node', [$node]);
+        $this->emit('addNode', [$node]);
 
         return $this;
     }
@@ -98,7 +92,7 @@ class Graph extends Emitter implements EmitterInterface
         }
 
         $node = $this->nodes[$id];
-        $this->emit('remove.node', [$node]);
+        $this->emit('removeNode', [$node]);
         unset($this->nodes[$id]);
 
         return $this;
@@ -138,7 +132,7 @@ class Graph extends Emitter implements EmitterInterface
         ];
 
         $this->edges[] = $edge;
-        $this->emit('add.edge', [$edge]);
+        $this->emit('addEdge', [$edge]);
 
         return $this;
     }
@@ -152,19 +146,19 @@ class Graph extends Emitter implements EmitterInterface
     {
         foreach ($this->edges as $index => $edge) {
             if ($edge['from']['node'] == $node && $edge['from']['port'] == $port) {
-                $this->emit('remove.edge', [$edge]);
+                $this->emit('removeEdge', [$edge]);
                 $this->edges = array_splice($this->edges, $index, 1);
             }
 
             if ($edge['to']['node'] == $node && $edge['to']['port'] == $port) {
-                $this->emit('remove.edge', [$edge]);
+                $this->emit('removeEdge', [$edge]);
                 $this->edges = array_splice($this->edges, $index, 1);
             }
         }
 
         foreach ($this->initializers as $index => $initializer) {
             if ($initializer['to']['node'] == $node && $initializer['to']['port'] == $port) {
-                $this->emit('remove.edge', [$initializer]);
+                $this->emit('removeEdge', [$initializer]);
                 $this->initializers = array_splice($this->initializers, $index, 1);
             }
         }
@@ -191,7 +185,7 @@ class Graph extends Emitter implements EmitterInterface
         ];
 
         $this->initializers[] = $initializer;
-        $this->emit('add.edge', [$initializer]);
+        $this->emit('addEdge', [$initializer]);
 
         return $this;
     }
