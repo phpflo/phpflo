@@ -52,6 +52,7 @@ interface PortInterface
     /**
      * @param SocketInterface $socket
      * @throws InvalidDefinitionException
+     * @return $this
      */
     public function attach(SocketInterface $socket);
 

@@ -104,6 +104,7 @@ class PortRegistry implements \Iterator, \Countable
 
     /**
      * @param string $name
+     * @return $this
      */
     public function remove($name)
     {
@@ -111,6 +112,8 @@ class PortRegistry implements \Iterator, \Countable
             $this->ports[$name] = null;
             unset($this->ports[$name]);
         }
+
+        return $this;
     }
 
     /**
@@ -123,29 +126,29 @@ class PortRegistry implements \Iterator, \Countable
         return $this->get($name);
     }
 
-    function rewind()
+    public function rewind()
     {
         $this->position = 0;
     }
 
-    function current()
+    public function current()
     {
         $index = array_keys($this->ports);
 
         return $this->ports[$index[$this->position]];
     }
 
-    function key()
+    public function key()
     {
         return $this->position;
     }
 
-    function next()
+    public function next()
     {
         ++$this->position;
     }
 
-    function valid()
+    public function valid()
     {
         $index = array_keys($this->ports);
 

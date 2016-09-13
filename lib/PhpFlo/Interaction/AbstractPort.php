@@ -79,6 +79,29 @@ class AbstractPort extends EventEmitter
     }
 
     /**
+     * Compare in and outport datatypes.
+     *
+     * @param string $fromType
+     * @param string $toType
+     * @return bool
+     */
+    public static function isCompatible($fromType, $toType)
+    {
+        switch(true) {
+            case (($fromType == $toType) || ($toType == 'all' || $toType == 'bang')):
+                $isCompatible = true;
+                break;
+            case (($fromType == 'int' || $fromType == 'integer') && $toType == 'number'):
+                $isCompatible = true;
+                break;
+            default:
+                $isCompatible = false;
+        }
+
+        return $isCompatible;
+    }
+
+    /**
      * @param SocketInterface $socket
      */
     public function onConnect(SocketInterface $socket)
@@ -92,6 +115,14 @@ class AbstractPort extends EventEmitter
     public function onDisconnect(SocketInterface $socket)
     {
         $this->emit('disconnect', [$socket]);
+    }
+
+    /**
+     *
+     */
+    public function onShutdown()
+    {
+        $this->emit('shutdown');
     }
 
     /**

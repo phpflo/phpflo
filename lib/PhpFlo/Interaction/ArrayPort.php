@@ -29,11 +29,14 @@ final class ArrayPort extends AbstractPort implements PortInterface
 
     /**
      * @param SocketInterface $socket
+     * @return $this
      */
     public function attach(SocketInterface $socket)
     {
         $this->sockets[] = $socket;
         $this->attachSocket($socket);
+
+        return $this;
     }
 
     /**
@@ -184,7 +187,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      */
     public function onBeginGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('beginGroup', [$groupName, $this->getSocketIndex($socket)]);
+        $this->emit('begin.group', [$groupName, $this->getSocketIndex($socket)]);
     }
 
     /**
@@ -193,7 +196,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      */
     public function onEndGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('endGroup', [$groupName, $this->getSocketIndex($socket)]);
+        $this->emit('end.group', [$groupName, $this->getSocketIndex($socket)]);
     }
 
     /**
