@@ -12,6 +12,7 @@ namespace PhpFlo;
 
 use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Common\PortInterface;
 use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\IncompatibleDatatypeException;
 use PhpFlo\Exception\InvalidDefinitionException;
@@ -234,7 +235,10 @@ class Network
      */
     public function shutdown()
     {
-        //@todo: implement
+        foreach ($this->processes as $process) {
+            $process['component']->shutdown();
+        }
+
         return $this;
     }
 

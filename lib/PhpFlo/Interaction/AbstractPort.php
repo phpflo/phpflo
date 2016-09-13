@@ -117,12 +117,9 @@ class AbstractPort extends EventEmitter
         $this->emit('disconnect', [$socket]);
     }
 
-    /**
-     *
-     */
-    public function onShutdown()
+    public function onDetach()
     {
-        $this->emit('shutdown');
+        $this->emit('detach', [$this->socket]);
     }
 
     /**
@@ -170,5 +167,7 @@ class AbstractPort extends EventEmitter
         $socket->on('data', [$this, 'onData']);
         $socket->on('endGroup', [$this, 'onEndGroup']);
         $socket->on('disconnect', [$this, 'onDisconnect']);
+        $socket->on('detach', [$this, 'onDetach']);
+        $this->on('shutdown', [$this, 'onShutdown']);
     }
 }

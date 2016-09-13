@@ -200,6 +200,18 @@ final class ArrayPort extends AbstractPort implements PortInterface
     }
 
     /**
+     * @return $this
+     */
+    public function onShutdown()
+    {
+        foreach ($this->sockets as $id => $socket) {
+            $this->disconnect($id);
+        }
+
+        return $this;
+    }
+
+    /**
      *
      * @param SocketInterface $socket
      * @return int

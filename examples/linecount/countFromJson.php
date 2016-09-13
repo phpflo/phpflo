@@ -23,3 +23,5 @@ $network->getGraph()->addInitial($fileName, "ReadFile", "source");
 $network
     ->addInitial($fileName, "ReadFile", "source")
     ->addInitial($fileName, "ReadFile", "source");
+
+$network->shutdown();

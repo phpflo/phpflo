@@ -74,6 +74,8 @@ interface PortInterface
      */
     public function onEndGroup($groupName, SocketInterface $socket);
 
+    public function onShutdown();
+
     /**
      * @throws SocketException
      */
