@@ -163,7 +163,6 @@ class Network
         }
 
         $this->connectPorts($socket, $from, $to, $edge['from']['port'], $edge['to']['port']);
-
         $this->connections[] = $socket;
 
         return $this;
@@ -231,6 +230,8 @@ class Network
     }
 
     /**
+     * Cleanup network state after runs.
+     *
      * @return $this
      */
     public function shutdown()
@@ -239,10 +240,15 @@ class Network
             $process['component']->shutdown();
         }
 
+        // explicitly destroy the sockets
+        foreach ($this->connections as $socket) {
+            $socket = null;
+        }
+
         $this->graph = null;
-        $this->processes = null;
+        $this->processes = [];
         $this->startupDate = null;
-        $this->connections = null;
+        $this->connections = [];
 
         return $this;
     }

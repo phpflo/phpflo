@@ -74,8 +74,14 @@ interface PortInterface
      */
     public function onEndGroup($groupName, SocketInterface $socket);
 
+    /**
+     * Callback for shutdown event, disconnects and detaches port and sockets.
+     */
     public function onShutdown();
 
+    /**
+     * Callback for detach event.
+     */
     public function onDetach();
 
     /**
@@ -83,6 +89,9 @@ interface PortInterface
      */
     public function connect();
 
+    /**
+     * Emits disconnect event.
+     */
     public function disconnect();
 
     /**

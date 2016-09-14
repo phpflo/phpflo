@@ -69,13 +69,15 @@ final class Port extends AbstractPort implements PortInterface
         $this->emit('end.group', [$groupName, $socket]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function onShutdown()
     {
-        $this->disconnect();
-
         if (null !== $this->socket) {
-            $this->emit('detach', [$this->socket]);
-            //$this->detach($this->socket);
+            $this->socket->shutdown();
+            $this->from = null;
+            $this->socket = null;
         }
 
         $this->emit('shutdown', [$this]);
@@ -93,6 +95,9 @@ final class Port extends AbstractPort implements PortInterface
         throw new SocketException("No socket available");
     }
 
+    /**
+     * @inheritdoc
+     */
     public function disconnect()
     {
         if (null != $this->socket) {
