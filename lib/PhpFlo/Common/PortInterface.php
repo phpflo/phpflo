@@ -76,6 +76,8 @@ interface PortInterface
 
     public function onShutdown();
 
+    public function onDetach();
+
     /**
      * @throws SocketException
      */

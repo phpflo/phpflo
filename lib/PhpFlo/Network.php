@@ -60,7 +60,7 @@ class Network
     {
         $this->graph = $graph;
         $this->builder = $builder;
-        $this->startupDate = $this->createDateTimeWithMilliseconds();
+        $this->startup();
 
         $this->graph->on('add.node', [$this, 'addNode']);
         $this->graph->on('remove.node', [$this, 'removeNode']);
@@ -239,6 +239,11 @@ class Network
             $process['component']->shutdown();
         }
 
+        $this->graph = null;
+        $this->processes = null;
+        $this->startupDate = null;
+        $this->connections = null;
+
         return $this;
     }
 
@@ -394,6 +399,14 @@ class Network
     private function createDateTimeWithMilliseconds()
     {
         return \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+    }
+
+    /**
+     * Set startup timer.
+     */
+    private function startup()
+    {
+        $this->startupDate = $this->createDateTimeWithMilliseconds();
     }
 
     /**
