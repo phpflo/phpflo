@@ -73,11 +73,11 @@ class Component implements ComponentInterface
      */
     public function shutdown()
     {
-        foreach ($this->inPorts() as $port) {
+        foreach ($this->inPorts()->get() as $port) {
             $port->emit('shutdown', [$port]);
         }
 
-        foreach ($this->outPorts() as $port) {
+        foreach ($this->outPorts()->get() as $port) {
             $port->emit('shutdown', [$port]);
         }
 

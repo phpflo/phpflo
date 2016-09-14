@@ -163,11 +163,11 @@ class AbstractPort extends EventEmitter
         $this->from = $socket->from;
 
         $socket->on('connect', [$this, 'onConnect']);
-        $socket->on('beginGroup', [$this, 'onBeginGroup']);
+        $socket->on('begin.group', [$this, 'onBeginGroup']);
         $socket->on('data', [$this, 'onData']);
-        $socket->on('endGroup', [$this, 'onEndGroup']);
+        $socket->on('end.group', [$this, 'onEndGroup']);
         $socket->on('disconnect', [$this, 'onDisconnect']);
         $socket->on('detach', [$this, 'onDetach']);
-        $this->on('shutdown', [$this, 'onShutdown']);
+        $this->once('shutdown', [$this, 'onShutdown']);
     }
 }

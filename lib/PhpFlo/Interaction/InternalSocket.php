@@ -91,7 +91,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     public function disconnect()
     {
         $this->connected = false;
-        $this->emit('disconnect', [$this]);
+        $this->emit('disconnect', [$this]); //why does this have to emit the same event? loop?
     }
 
     public function isConnected()

@@ -206,9 +206,11 @@ final class ArrayPort extends AbstractPort implements PortInterface
     {
         foreach ($this->sockets as $id => $subSocket) {
             $this->disconnect($id);
+            $this->emit('detach', [$subSocket]);
+            //$this->detach($subSocket);
         }
 
-        return $this;
+        $this->emit('shutdown', [$this]);
     }
 
     /**

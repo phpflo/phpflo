@@ -71,10 +71,14 @@ final class Port extends AbstractPort implements PortInterface
 
     public function onShutdown()
     {
-        if ($this->socket) {
-            $this->detach($this->socket);
-        }
         $this->disconnect();
+
+        if (null !== $this->socket) {
+            $this->emit('detach', [$this->socket]);
+            //$this->detach($this->socket);
+        }
+
+        $this->emit('shutdown', [$this]);
     }
 
     /**
