@@ -242,6 +242,7 @@ class Network
 
         // explicitly destroy the sockets
         foreach ($this->connections as $socket) {
+            $socket->shutdown();
             $socket = null;
         }
 
