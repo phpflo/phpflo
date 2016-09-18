@@ -2,6 +2,7 @@ PhpFlo: Flow-based programming for PHP
 ==============================================
 
 [![Build Status](https://secure.travis-ci.org/bergie/phpflo.png)](http://travis-ci.org/bergie/phpflo)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
 PhpFlo is a simple [flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) implementation for PHP. It is a PHP port of [NoFlo](https://github.com/bergie/noflo), a similar tool for Node.js. From WikiPedia:
 
