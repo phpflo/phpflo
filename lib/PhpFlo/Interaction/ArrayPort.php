@@ -126,6 +126,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
 
     /**
      * @param int $socketId
+     * @return $this|void
      */
     public function disconnect($socketId = 0)
     {
@@ -134,6 +135,8 @@ final class ArrayPort extends AbstractPort implements PortInterface
         }
 
         $this->sockets[$socketId]->disconnect();
+
+        return $this;
     }
 
     /**

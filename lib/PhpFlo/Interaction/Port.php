@@ -164,6 +164,8 @@ final class Port extends AbstractPort implements PortInterface
         });
 
         $this->socket->connect();
+
+        return $this;
     }
 
     /**

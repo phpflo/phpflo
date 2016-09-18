@@ -89,6 +89,8 @@ class InternalSocket extends EventEmitter implements SocketInterface
     public function send($data)
     {
         $this->emit('data', [$data, $this]);
+
+        return $this;
     }
 
     /**
@@ -98,6 +100,8 @@ class InternalSocket extends EventEmitter implements SocketInterface
     {
         $this->connected = false;
         $this->emit('disconnect', [$this]);
+
+        return $this;
     }
 
     /**
