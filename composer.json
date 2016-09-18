@@ -14,7 +14,9 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "evenement/evenement": "~2.0"
+        "evenement/evenement": "~2.0",
+        "phpflo/phpflo-core": "dev-master",
+        "phpflo/phpflo-fbp": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "<5.0"
@@ -29,5 +31,15 @@
     },
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:phpflo/phpflo-fbp.git"
+        },
+        {
+            "type": "git",
+            "url": "git@github.com:phpflo/phpflo-core.git"
+        }
+    ]
 }
