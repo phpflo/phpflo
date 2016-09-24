@@ -11,7 +11,10 @@
 namespace PhpFlo;
 
 use Evenement\EventEmitter;
+use PhpFlo\Common\DefinitionInterface;
 use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Fbp\FbpParser;
+use PhpFlo\Loader\Loader;
 
 /**
  * Analyzes and creates definitions from flow graph file.
@@ -42,14 +45,20 @@ class Graph extends EventEmitter
     public $initializers;
 
     /**
-     * @param string $name
+     * @var DefinitionInterface
      */
-    public function __construct($name)
+    private $definition;
+
+    /**
+     * @param DefinitionInterface $definition
+     */
+    public function __construct(DefinitionInterface $definition)
     {
-        $this->name = $name;
+        $this->name = $definition->name();
         $this->nodes = [];
         $this->edges = [];
         $this->initializers = [];
+        $this->definition = $definition;
     }
 
     /**
@@ -195,44 +204,7 @@ class Graph extends EventEmitter
      */
     public function toJson()
     {
-        $json = [
-            'properties' => [
-                'name' => $this->name,
-            ],
-            'processes' => [],
-            'connections' => [],
-        ];
-
-        foreach ($this->nodes as $node) {
-            $json['processes'][$node['id']] = [
-                'component' => $node['component'],
-            ];
-        }
-
-        foreach ($this->edges as $edge) {
-            $json['connections'][] = [
-                'src' => [
-                    'process' => $edge['from']['node'],
-                    'port' => $edge['from']['port'],
-                ],
-                'tgt' => [
-                    'process' => $edge['to']['node'],
-                    'port' => $edge['to']['port'],
-                ],
-            ];
-        }
-
-        foreach ($this->initializers as $initializer) {
-            $json['connections'][] = [
-                'data' => $initializer['from']['data'],
-                'tgt' => [
-                    'process' => $initializer['to']['node'],
-                    'port' => $initializer['to']['port'],
-                ],
-            ];
-        }
-
-        return json_encode($json, JSON_PRETTY_PRINT);
+        return $this->definition->toJson();
     }
 
     /**
@@ -243,7 +215,7 @@ class Graph extends EventEmitter
      */
     public function save($file)
     {
-        $stat = file_put_contents($file, $this->toJson());
+        $stat = file_put_contents($file, $this->definition->toFbp());
 
         if ($stat === false) {
             return false;
@@ -255,17 +227,14 @@ class Graph extends EventEmitter
     /**
      * Load PhpFlo graph definition from string.
      *
-     * @param string $string
+     * @param string $string FBP defnition string
      * @throws InvalidDefinitionException
      * @return Graph
      */
     public static function loadString($string)
     {
-        $definition = @json_decode($string); // every time you @, god kills a kitten!
-
-        if (!$definition) {
-            throw new InvalidDefinitionException("Failed to parse PhpFlo graph definition string");
-        }
+        $loader = new FbpParser($string);
+        $definition = $loader->run();
 
         return self::loadDefinition($definition);
     }
@@ -279,39 +248,40 @@ class Graph extends EventEmitter
      */
     public static function loadFile($file)
     {
-        if (!file_exists($file)) {
-            throw new InvalidDefinitionException("File {$file} not found");
-        }
-
-        $definition = @json_decode(file_get_contents($file));
-        if (!$definition) {
-            throw new InvalidDefinitionException("Failed to parse PhpFlo graph definition file {$file}");
-        }
-
-        return self::loadDefinition($definition);
+        return self::loadDefinition(
+            Loader::load($file)
+        );
     }
 
     /**
      * Load PhpFlo graph definition.
      *
-     * @param \stdClass $definition
+     * @param DefinitionInterface $definition
      * @return \PhpFlo\Graph
      */
-    public static function loadDefinition($definition)
+    public static function loadDefinition(DefinitionInterface $definition)
     {
-        $graph = new Graph($definition->properties->name);
+        $graph = new Graph($definition);
 
-        foreach ($definition->processes as $id => $def) {
-            $graph->addNode($id, $def->component);
+        foreach ($definition->processes() as $id => $def) {
+            $graph->addNode($id, $def['component']);
         }
 
-        foreach ($definition->connections as $conn) {
-            if (isset($conn->data)) {
-                $graph->addInitial($conn->data, $conn->tgt->process, $conn->tgt->port);
-                continue;
-            }
+        foreach ($definition->initializers() as $initializer) {
+            $graph->addInitial(
+                $initializer['data'],
+                $initializer['tgt']['process'],
+                $initializer['tgt']['port']
+            );
+        }
 
-            $graph->addEdge($conn->src->process, $conn->src->port, $conn->tgt->process, $conn->tgt->port);
+        foreach ($definition->connections() as $conn) {
+            $graph->addEdge(
+                $conn['src']['process'],
+                $conn['src']['port'],
+                $conn['tgt']['process'],
+                $conn['tgt']['port']
+            );
         }
 
         return $graph;
