@@ -28,6 +28,7 @@ final class Port extends AbstractPort implements PortInterface
     /**
      * @param SocketInterface $socket
      * @throws InvalidDefinitionException
+     * @return $this
      */
     public function attach(SocketInterface $socket)
     {
@@ -37,6 +38,8 @@ final class Port extends AbstractPort implements PortInterface
 
         $this->socket = $socket;
         $this->attachSocket($socket);
+
+        return $this;
     }
 
     /**

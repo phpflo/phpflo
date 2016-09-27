@@ -1,6 +1,8 @@
 PhpFlo: Flow-based programming for PHP
 ==============================================
 
+[![Build Status](https://secure.travis-ci.org/bergie/phpflo.png)](http://travis-ci.org/bergie/phpflo)
+
 PhpFlo is a simple [flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) implementation for PHP. It is a PHP port of [NoFlo](https://github.com/bergie/noflo), a similar tool for Node.js. From WikiPedia:
 
 > In computer science, flow-based programming (FBP) is a programming paradigm that defines applications as networks of "black box" processes, which exchange data across predefined connections by message passing, where the connections are specified externally to the processes. These black box processes can be reconnected endlessly to form different applications without having to be changed internally. FBP is thus naturally component-oriented.
@@ -243,10 +245,6 @@ To run the unit tests you need PHPUnit. Run the tests with:
 ```sh
 $ phpunit
 ```
-
-PhpFlo has a Continuous Integration environment set up on [Travis](http://travis-ci.org/bergie/phpflo). Current status is:
-
-[![Build Status](https://secure.travis-ci.org/bergie/phpflo.png)](http://travis-ci.org/bergie/phpflo)
 
 ### Some ideas
 

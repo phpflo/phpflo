@@ -20,3 +20,6 @@ $network = PhpFlo\Network::loadFile(__DIR__.'/count.json', $builder);
 
 // Kick-start the process by sending filename
 $network->getGraph()->addInitial($fileName, "ReadFile", "source");
+$network
+    ->addInitial($fileName, "ReadFile", "source")
+    ->addInitial($fileName, "ReadFile", "source");

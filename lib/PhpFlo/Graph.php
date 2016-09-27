@@ -65,7 +65,7 @@ class Graph extends EventEmitter
         ];
 
         $this->nodes[$id] = $node;
-        $this->emit('addNode', [$node]);
+        $this->emit('add.node', [$node]);
 
         return $this;
     }
@@ -92,7 +92,7 @@ class Graph extends EventEmitter
         }
 
         $node = $this->nodes[$id];
-        $this->emit('removeNode', [$node]);
+        $this->emit('remove.node', [$node]);
         unset($this->nodes[$id]);
 
         return $this;
@@ -132,7 +132,7 @@ class Graph extends EventEmitter
         ];
 
         $this->edges[] = $edge;
-        $this->emit('addEdge', [$edge]);
+        $this->emit('add.edge', [$edge]);
 
         return $this;
     }
@@ -146,19 +146,19 @@ class Graph extends EventEmitter
     {
         foreach ($this->edges as $index => $edge) {
             if ($edge['from']['node'] == $node && $edge['from']['port'] == $port) {
-                $this->emit('removeEdge', [$edge]);
+                $this->emit('remove.edge', [$edge]);
                 $this->edges = array_splice($this->edges, $index, 1);
             }
 
             if ($edge['to']['node'] == $node && $edge['to']['port'] == $port) {
-                $this->emit('removeEdge', [$edge]);
+                $this->emit('remove.edge', [$edge]);
                 $this->edges = array_splice($this->edges, $index, 1);
             }
         }
 
         foreach ($this->initializers as $index => $initializer) {
             if ($initializer['to']['node'] == $node && $initializer['to']['port'] == $port) {
-                $this->emit('removeEdge', [$initializer]);
+                $this->emit('remove.edge', [$initializer]);
                 $this->initializers = array_splice($this->initializers, $index, 1);
             }
         }
@@ -185,7 +185,7 @@ class Graph extends EventEmitter
         ];
 
         $this->initializers[] = $initializer;
-        $this->emit('addEdge', [$initializer]);
+        $this->emit('add.edge', [$initializer]);
 
         return $this;
     }
@@ -261,7 +261,7 @@ class Graph extends EventEmitter
      */
     public static function loadString($string)
     {
-        $definition = @json_decode($string);
+        $definition = @json_decode($string); // every time you @, god kills a kitten!
 
         if (!$definition) {
             throw new InvalidDefinitionException("Failed to parse PhpFlo graph definition string");
