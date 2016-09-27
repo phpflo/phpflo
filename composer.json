@@ -31,15 +31,5 @@
     },
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" }
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "git@github.com:phpflo/phpflo-fbp.git"
-        },
-        {
-            "type": "git",
-            "url": "git@github.com:phpflo/phpflo-core.git"
-        }
-    ]
+    }
 }
