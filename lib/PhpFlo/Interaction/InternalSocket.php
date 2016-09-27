@@ -58,6 +58,9 @@ class InternalSocket extends EventEmitter implements SocketInterface
         return "{$this->from['process']['id']}.{$this->from['port']}:{$this->to['process']['id']}.{$this->to['port']}";
     }
 
+    /**
+     * @inhertidoc
+     */
     public function connect()
     {
         $this->connected = true;
@@ -69,7 +72,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
      */
     public function beginGroup($groupName)
     {
-        $this->emit('beginGroup', [$groupName, $this]);
+        $this->emit('begin.group', [$groupName, $this]);
     }
 
     /**
@@ -77,21 +80,34 @@ class InternalSocket extends EventEmitter implements SocketInterface
      */
     public function endGroup($groupName)
     {
-        $this->emit('endGroup', [$groupName, $this]);
+        $this->emit('end.group', [$groupName, $this]);
     }
 
     /**
-     * @param mixed $data
+     * @inheritdoc
      */
     public function send($data)
     {
         $this->emit('data', [$data, $this]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function disconnect()
     {
         $this->connected = false;
         $this->emit('disconnect', [$this]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function shutdown()
+    {
+        $this->connected = false;
+        $this->removeAllListeners();
+        $this->emit('shutdown', [$this]);
     }
 
     public function isConnected()

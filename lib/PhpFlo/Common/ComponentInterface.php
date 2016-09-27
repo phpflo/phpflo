@@ -10,6 +10,8 @@
 
 namespace PhpFlo\Common;
 
+use PhpFlo\Interaction\PortRegistry;
+
 /**
  * Interface ComponentInterface
  *
@@ -22,4 +24,21 @@ interface ComponentInterface
      * @return string
      */
     public function getDescription();
+
+    /**
+     * @return PortRegistry
+     */
+    public function inPorts();
+
+    /**
+     * @return PortRegistry
+     */
+    public function outPorts();
+
+    /**
+     * Detach all sockets, disconnect all ports.
+     *
+     * @return $this;
+     */
+    public function shutdown();
 }

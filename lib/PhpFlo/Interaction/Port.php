@@ -57,7 +57,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function onBeginGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('beginGroup', [$groupName, $socket]);
+        $this->emit('begin.group', [$groupName, $socket]);
     }
 
     /**
@@ -66,7 +66,21 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function onEndGroup($groupName, SocketInterface $socket)
     {
-        $this->emit('endGroup', [$groupName, $socket]);
+        $this->emit('end.group', [$groupName, $socket]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onShutdown()
+    {
+        if (null !== $this->socket) {
+            $this->socket->shutdown();
+            $this->from = null;
+            $this->socket = null;
+        }
+
+        $this->emit('shutdown', [$this]);
     }
 
     /**
@@ -74,19 +88,21 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function connect()
     {
-        if (!$this->socket) {
-            throw new SocketException("No socket available");
+        if (null != $this->socket) {
+            $this->socket->connect();
         }
-        $this->socket->connect();
+
+        throw new SocketException("No socket available");
     }
 
+    /**
+     * @inheritdoc
+     */
     public function disconnect()
     {
-        if (!$this->socket) {
-            return;
+        if (null != $this->socket) {
+            $this->socket->disconnect();
         }
-
-        $this->socket->disconnect();
     }
 
     /**
@@ -94,7 +110,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function isConnected()
     {
-        if (!$this->socket) {
+        if (null == $this->socket) {
             return false;
         }
 
@@ -121,11 +137,11 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function endGroup($groupName)
     {
-        if (!$this->socket) {
-            throw new PortException("This port is not connected");
+        if (null != $this->socket) {
+            $this->socket->endGroup($groupName);
         }
 
-        $this->socket->endGroup($groupName);
+        throw new PortException("This port is not connected");
     }
 
     /**
@@ -135,7 +151,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function send($data)
     {
-        if (!$this->socket) {
+        if (null == $this->socket) {
             throw new PortException("This port is not connected");
         }
 
@@ -167,7 +183,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function beginGroup($groupName)
     {
-        if (!$this->socket) {
+        if (null === $this->socket) {
             throw new PortException("This port is not connected");
         }
 

@@ -67,4 +67,20 @@ class Component implements ComponentInterface
 
         return $this->outPorts;
     }
+
+    /**
+     * @return $this;
+     */
+    public function shutdown()
+    {
+        foreach ($this->inPorts()->get() as $port) {
+            $port->emit('shutdown', [$port]);
+        }
+
+        foreach ($this->outPorts()->get() as $port) {
+            $port->emit('shutdown', [$port]);
+        }
+
+        return $this;
+    }
 }

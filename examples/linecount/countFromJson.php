@@ -23,3 +23,14 @@ $network->getGraph()->addInitial($fileName, "ReadFile", "source");
 $network
     ->addInitial($fileName, "ReadFile", "source")
     ->addInitial($fileName, "ReadFile", "source");
+
+$network->shutdown();
+
+$graph = \PhpFlo\Graph::loadFile(__DIR__.'/count.json');
+
+$network = $network::create($graph, $builder);
+$network
+    ->addInitial($fileName, "ReadFile", "source")
+    ->addInitial($fileName, "ReadFile", "source");
+
+$network->shutdown();

@@ -12,6 +12,7 @@ namespace PhpFlo;
 
 use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Common\PortInterface;
 use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\IncompatibleDatatypeException;
 use PhpFlo\Exception\InvalidDefinitionException;
@@ -59,7 +60,7 @@ class Network
     {
         $this->graph = $graph;
         $this->builder = $builder;
-        $this->startupDate = $this->createDateTimeWithMilliseconds();
+        $this->startup();
 
         $this->graph->on('add.node', [$this, 'addNode']);
         $this->graph->on('remove.node', [$this, 'removeNode']);
@@ -162,7 +163,6 @@ class Network
         }
 
         $this->connectPorts($socket, $from, $to, $edge['from']['port'], $edge['to']['port']);
-
         $this->connections[] = $socket;
 
         return $this;
@@ -230,11 +230,27 @@ class Network
     }
 
     /**
+     * Cleanup network state after runs.
+     *
      * @return $this
      */
     public function shutdown()
     {
-        //@todo: implement
+        foreach ($this->processes as $process) {
+            $process['component']->shutdown();
+        }
+
+        // explicitly destroy the sockets
+        foreach ($this->connections as $socket) {
+            $socket->shutdown();
+            $socket = null;
+        }
+
+        $this->graph = null;
+        $this->processes = [];
+        $this->startupDate = null;
+        $this->connections = [];
+
         return $this;
     }
 
@@ -390,6 +406,14 @@ class Network
     private function createDateTimeWithMilliseconds()
     {
         return \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
+    }
+
+    /**
+     * Set startup timer.
+     */
+    private function startup()
+    {
+        $this->startupDate = $this->createDateTimeWithMilliseconds();
     }
 
     /**
