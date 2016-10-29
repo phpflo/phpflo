@@ -15,8 +15,8 @@
     "require": {
         "php": ">=5.4.0",
         "evenement/evenement": "~2.0",
-        "phpflo/phpflo-core": "dev-master",
-        "phpflo/phpflo-fbp": "dev-master"
+        "phpflo/phpflo-core": "^1.0",
+        "phpflo/phpflo-fbp": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "<5.0"

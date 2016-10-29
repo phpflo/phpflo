@@ -16,7 +16,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 $builder = new \PhpFlo\Builder\ComponentFactory();
 
 // Load network from graph file
-$network = PhpFlo\Network::loadFile(__DIR__.'/count.json', $builder);
+$network = PhpFlo\Network::loadFile(__DIR__.'/count.fbp', $builder);
 
 // Kick-start the process by sending filename
 $network->getGraph()->addInitial($fileName, "ReadFile", "source");

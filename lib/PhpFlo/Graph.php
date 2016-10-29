@@ -202,6 +202,22 @@ class Graph extends EventEmitter
     /**
      * @return string
      */
+    public function toFbp()
+    {
+        return $this->definition->toFbp();
+    }
+
+    /**
+     * @return string
+     */
+    public function toYaml()
+    {
+        return $this->definition->toYaml();
+    }
+
+    /**
+     * @return string
+     */
     public function toJson()
     {
         return $this->definition->toJson();
