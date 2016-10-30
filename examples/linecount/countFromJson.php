@@ -13,7 +13,7 @@ $fileName = $_SERVER['argv'][1];
 // Include standard autoloader
 require __DIR__ . '/../../vendor/autoload.php';
 
-$builder = new \PhpFlo\Builder\ComponentFactory();
+$builder = new PhpFlo\Builder\ComponentFactory();
 
 // Load network from graph file
 $network = PhpFlo\Network::loadFile(__DIR__.'/count.json', $builder);

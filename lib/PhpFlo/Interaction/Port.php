@@ -88,7 +88,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function connect()
     {
-        if (null != $this->socket) {
+        if (null !== $this->socket) {
             $this->socket->connect();
         }
 
@@ -100,7 +100,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function disconnect()
     {
-        if (null != $this->socket) {
+        if (null !== $this->socket) {
             $this->socket->disconnect();
         }
     }
@@ -110,7 +110,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function isConnected()
     {
-        if (null == $this->socket) {
+        if (null === $this->socket) {
             return false;
         }
 
@@ -137,7 +137,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function endGroup($groupName)
     {
-        if (null != $this->socket) {
+        if (null !== $this->socket) {
             $this->socket->endGroup($groupName);
         }
 
@@ -151,7 +151,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function send($data)
     {
-        if (null == $this->socket) {
+        if (null === $this->socket) {
             throw new PortException("This port is not connected");
         }
 

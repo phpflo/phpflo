@@ -49,7 +49,7 @@ class Component implements ComponentInterface
      */
     public function inPorts()
     {
-        if (null == $this->inPorts) {
+        if (null === $this->inPorts) {
             $this->inPorts = new PortRegistry();
         }
 
@@ -61,7 +61,7 @@ class Component implements ComponentInterface
      */
     public function outPorts()
     {
-        if (null == $this->outPorts) {
+        if (null === $this->outPorts) {
             $this->outPorts = new PortRegistry();
         }
 
