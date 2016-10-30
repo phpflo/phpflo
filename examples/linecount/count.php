@@ -13,8 +13,10 @@ $fileName = $_SERVER['argv'][1];
 // Include standard autoloader
 require __DIR__ . '/../../vendor/autoload.php';
 
+$definition = new PhpFlo\Fbp\FbpDefinition(['properties' => ['name' => 'linecount']]);
+
 // Add nodes to the graph
-$graph = new PhpFlo\Graph("linecount");
+$graph = new PhpFlo\Graph($definition);
 $graph
     ->addNode("Read File", "ReadFile")
     ->addNode("Split by Lines", "SplitStr")
@@ -31,7 +33,7 @@ $graph
 // Kick-start the process by sending filename to Read File
 $graph->addInitial($fileName, "Read File", "source");
 
-$builder = new \PhpFlo\Builder\ComponentFactory();
+$builder = new PhpFlo\Builder\ComponentFactory();
 
 //echo $graph->toJson();
 

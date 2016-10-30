@@ -2,6 +2,7 @@ PhpFlo: Flow-based programming for PHP
 ==============================================
 
 [![Build Status](https://secure.travis-ci.org/bergie/phpflo.png)](http://travis-ci.org/bergie/phpflo)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
 PhpFlo is a simple [flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) implementation for PHP. It is a PHP port of [NoFlo](https://github.com/bergie/noflo), a similar tool for Node.js. From WikiPedia:
 
@@ -185,45 +186,122 @@ When a port has no connections, meaning that it was initialized without a connec
 
 ## Graph file format
 
-In addition to using PhpFlo in _embedded mode_ where you create the FBP graph programmatically (see [example](https://github.com/bergie/phpflo/blob/master/examples/linecount/count.php)), you can also initialize and run graphs defined using a JSON file.
+In addition to using PhpFlo in _embedded mode_ where you create the FBP graph programmatically (see [example](https://github.com/bergie/phpflo/blob/master/examples/linecount/count.php)), you can also initialize and run graphs defined using a FBP file.
+This format gives you the advantage of much less definition work, compared to the deprecated (but still valid) JSON files.
 
-The PhpFlo JSON files declare the processes used in the FBP graph, and the connections between them. The file format is shared between PhpFlo and NoFlo, and looks like the following:
+If you have older JSON definitions, you can still use them or convert then to FBP, using the dumper wrapped by the graph or directly from definition:
+```php
+$builder = new \PhpFlo\Builder\ComponentFactory();
+$network = PhpFlo\Network::loadFile(__DIR__.'/count.json', $builder);
+file_put_contents('./count.fbp', $network->getGraph()->toFbp());
+```
 
+The PhpFlo FBP files declare the processes used in the FBP graph, and the connections between them. The file format is shared between PhpFlo and NoFlo, and looks like the following:
+
+```
+ReadFile(ReadFile) out -> in SplitbyLines(SplitStr)
+ReadFile(ReadFile) error -> in Display(Output)
+SplitbyLines(SplitStr) out -> in CountLines(Counter)
+CountLines(Counter) count -> in Display(Output)
+```
+Other supported formats are YAML and JSON, but keep in mind that the FBP domain specific language (DSL) should be the way to go if you want to use something like the noflo ui.
+
+JSON example:
 ```json
 {
     "properties": {
         "name": "Count lines in a file"
     },
     "processes": {
-        "Read File": {
+        "ReadFile": {
             "component": "ReadFile"
         },
-        "Split by Lines": {
+        "SplitbyLines": {
             "component": "SplitStr"
         },
-        ...
+        "CountLines": {
+            "component": "Counter"
+        },
+        "Display": {
+            "component": "Output"
+        }
     },
     "connections": [
         {
-            "data": "README.md",
+            "src": {
+                "process": "ReadFile",
+                "port": "out"
+            },
             "tgt": {
-                "process": "Read File",
-                "port": "source"
+                "process": "SplitbyLines",
+                "port": "in"
             }
         },
         {
             "src": {
-                "process": "Read File",
-                "port": "out"
+                "process": "ReadFile",
+                "port": "error"
             },
             "tgt": {
-                "process": "Split by Lines",
+                "process": "Display",
                 "port": "in"
             }
         },
-        ...
+        {
+            "src": {
+                "process": "SplitbyLines",
+                "port": "out"
+            },
+            "tgt": {
+                "process": "CountLines",
+                "port": "in"
+            }
+        },
+        {
+            "src": {
+                "process": "CountLines",
+                "port": "count"
+            },
+            "tgt": {
+                "process": "Display",
+                "port": "in"
+            }
+        }
     ]
 }
+```
+
+YAML example:
+```yaml
+properties:
+    name: 'Count lines in a file'
+initializers: {  }
+processes:
+    ReadFile:
+        component: ReadFile
+        metadata: { label: ReadFile }
+    SplitbyLines:
+        component: SplitStr
+        metadata: { label: SplitStr }
+    Display:
+        component: Output
+        metadata: { label: Output }
+    CountLines:
+        component: Counter
+        metadata: { label: Counter }
+connections:
+    -
+        src: { process: ReadFile, port: OUT }
+        tgt: { process: SplitbyLines, port: IN }
+    -
+        src: { process: ReadFile, port: ERROR }
+        tgt: { process: Display, port: IN }
+    -
+        src: { process: SplitbyLines, port: OUT }
+        tgt: { process: CountLines, port: IN }
+    -
+        src: { process: CountLines, port: COUNT }
+        tgt: { process: Display, port: IN }
 ```
 
 To run a graph file, load it via the PhpFlow API:
@@ -231,7 +309,7 @@ To run a graph file, load it via the PhpFlow API:
 ```php
 <?php
 
-$network = PhpFlo\Network::loadFile('example.json');
+$network = PhpFlo\Network::loadFile('example.fbp');
 ```
 
 Note that after this the graph is _live_, meaning that you can add and remove nodes and connections, or send new _initial data_ to it. See [example](https://github.com/bergie/phpflo/blob/master/examples/linecount/countFromJson.php).

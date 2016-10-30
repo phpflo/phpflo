@@ -49,7 +49,7 @@ class Component implements ComponentInterface
      */
     public function inPorts()
     {
-        if (null == $this->inPorts) {
+        if (null === $this->inPorts) {
             $this->inPorts = new PortRegistry();
         }
 
@@ -61,10 +61,26 @@ class Component implements ComponentInterface
      */
     public function outPorts()
     {
-        if (null == $this->outPorts) {
+        if (null === $this->outPorts) {
             $this->outPorts = new PortRegistry();
         }
 
         return $this->outPorts;
+    }
+
+    /**
+     * @return $this;
+     */
+    public function shutdown()
+    {
+        foreach ($this->inPorts()->get() as $port) {
+            $port->emit('shutdown', [$port]);
+        }
+
+        foreach ($this->outPorts()->get() as $port) {
+            $port->emit('shutdown', [$port]);
+        }
+
+        return $this;
     }
 }

@@ -7,5 +7,3 @@ if (!is_file($autoloadFile)) {
 }
 
 $loader = require_once $autoloadFile;
-
-$loader->add('Evenement\Tests', __DIR__."/../vendor/evenement/evenement/tests");

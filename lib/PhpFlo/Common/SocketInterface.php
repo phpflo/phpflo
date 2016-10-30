@@ -23,14 +23,28 @@ interface SocketInterface
      */
     public function getId();
 
+    /**
+     * Emits connect event.
+     */
     public function connect();
 
     /**
+     * Send data from connected out port to connected in port.
+     * Emits data event.
+     *
      * @param mixed $data
      */
     public function send($data);
 
+    /**
+     * Disconnect port, emit disconnect event.
+     */
     public function disconnect();
+
+    /**
+     * Disconnect socket, emit shutdown event.
+     */
+    public function shutdown();
 
     /**
      * @return boolean
