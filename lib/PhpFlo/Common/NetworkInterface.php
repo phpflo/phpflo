@@ -21,47 +21,10 @@ use PhpFlo\Graph;
  */
 interface NetworkInterface
 {
-    /**
-     * @return bool|\DateInterval
-     */
-    public function uptime();
-
-    /**
-     * @param array $node
-     * @return $this
-     * @throws InvalidDefinitionException
-     */
-    public function addNode(array $node);
-
-    /**
-     * @param array $node
-     * @return $this
-     */
-    public function removeNode(array $node);
-
-    /**
-     * @param string $id
-     * @return mixed|null
-     */
-    public function getNode($id);
-
-    /**
+     /**
      * @return null|Graph
      */
     public function getGraph();
-
-    /**
-     * @param array $edge
-     * @return Network
-     * @throws InvalidDefinitionException
-     */
-    public function addEdge(array $edge);
-
-    /**
-     * @param array $edge
-     * @return $this
-     */
-    public function removeEdge(array $edge);
 
     /**
      * @param mixed $data
@@ -78,32 +41,4 @@ interface NetworkInterface
      * @return $this
      */
     public function shutdown();
-
-    /**
-     * @param Graph $graph
-     * @param ComponentBuilderInterface $builder
-     * @return Network
-     * @throws InvalidDefinitionException
-     */
-    public static function create(Graph $graph, ComponentBuilderInterface $builder);
-
-    /**
-     * Load PhpFlo graph definition from string.
-     *
-     * @param string $string
-     * @param ComponentBuilderInterface $builder
-     * @return Network
-     * @throws InvalidDefinitionException
-     */
-    public static function loadString($string, ComponentBuilderInterface $builder);
-
-    /**
-     * Load PhpFlo graph definition from file.
-     *
-     * @param string $file
-     * @param ComponentBuilderInterface $builder
-     * @return Network
-     * @throws InvalidDefinitionException
-     */
-    public static function loadFile($file, ComponentBuilderInterface $builder);
 }
