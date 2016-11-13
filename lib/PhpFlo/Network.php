@@ -12,6 +12,7 @@ namespace PhpFlo;
 
 use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Common\NetworkInterface;
 use PhpFlo\Common\PortInterface;
 use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\IncompatibleDatatypeException;
@@ -25,7 +26,7 @@ use PhpFlo\Interaction\Port;
  * @package PhpFlo
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-class Network
+class Network implements NetworkInterface
 {
     /**
      * @var array
