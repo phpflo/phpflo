@@ -10,7 +10,6 @@
 
 namespace PhpFlo\Builder;
 
-
 use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\ComponentInterface;
 use PhpFlo\Exception\InvalidDefinitionException;

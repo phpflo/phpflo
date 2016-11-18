@@ -14,6 +14,7 @@ use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\ComponentInterface;
 use PhpFlo\Common\PortInterface;
 use PhpFlo\Common\SocketInterface;
+use PhpFlo\Exception\FlowException;
 use PhpFlo\Exception\IncompatibleDatatypeException;
 use PhpFlo\Exception\InvalidDefinitionException;
 use PhpFlo\Interaction\InternalSocket;
@@ -197,6 +198,7 @@ class Network
      * @param string $port
      * @return $this
      * @throws InvalidDefinitionException
+     * @throws \Exception
      */
     public function addInitial($data, $node, $port)
     {
@@ -218,13 +220,20 @@ class Network
 
         $port = $this->connectInboundPort($socket, $to, $initializer['to']['port']);
         $socket->connect();
-        $socket->send($initializer['from']['data']);
 
-        // cleanup initialization
-        $socket->disconnect();
-        $port->detach($socket);
+        // this starts the event-cascade
+        try {
+            $socket->send($initializer['from']['data']);
 
-        $this->connections[] = $socket;
+            // cleanup initialization
+            $socket->disconnect();
+            $port->detach($socket);
+
+            $this->connections[] = $socket;
+        } catch (\Exception $e) {
+            $this->shutdown(); // cleanup ports on error
+            throw $e; // bubble exception
+        }
 
         return $this;
     }
@@ -258,7 +267,7 @@ class Network
      * @param Graph $graph
      * @param ComponentBuilderInterface $builder
      * @return Network
-     * @throws InvalidDefinitionException
+     * @throws \Exception
      */
     public static function create(Graph $graph, ComponentBuilderInterface $builder)
     {
@@ -272,12 +281,17 @@ class Network
             $network->addEdge($edge);
         }
 
-        foreach ($graph->initializers as $initializer) {
-            $network->addInitial(
-                $initializer['from']['data'],
-                $initializer['to']['node'],
-                $initializer['to']['port']
-            );
+        try {
+            foreach ($graph->initializers as $initializer) {
+                $network->addInitial(
+                    $initializer['from']['data'],
+                    $initializer['to']['node'],
+                    $initializer['to']['port']
+                );
+            }
+        } catch (\Exception $e) {
+            $network->shutdown(); // cleanup ports on error
+            throw $e; // bubble exception
         }
 
         return $network;
