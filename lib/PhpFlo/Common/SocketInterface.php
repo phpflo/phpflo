@@ -19,6 +19,14 @@ namespace PhpFlo\Common;
 interface SocketInterface
 {
     /**
+     * SocketInterface constructor.
+     *
+     * @param array $from
+     * @param array $to
+     */
+    public function __construct(array $from = [], array $to = []);
+
+    /**
      * @return string
      */
     public function getId();
@@ -60,4 +68,16 @@ interface SocketInterface
      * @param string $groupName
      */
     public function endGroup($groupName);
+
+    /**
+     * @param array $from
+     * @return mixed
+     */
+    public function from(array $from = []);
+
+    /**
+     * @param array $to
+     * @return $this|array
+     */
+    public function to(array $to = []);
 }

@@ -10,10 +10,8 @@
 
 namespace PhpFlo;
 
-use PhpFlo\Common\ComponentBuilderInterface;
-use PhpFlo\Common\ComponentInterface;
 use PhpFlo\Common\NetworkInterface;
-use PhpFlo\Common\PortInterface;
+use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\IncompatibleDatatypeException;
 use PhpFlo\Exception\InvalidDefinitionException;
@@ -151,7 +149,6 @@ class Network implements NetworkInterface
                 $edge['to']['port']
             );
         }
-        $socket = new InternalSocket();
 
         $from = $this->getNode($edge['from']['node']);
         if (!$from) {
@@ -163,7 +160,7 @@ class Network implements NetworkInterface
             throw new InvalidDefinitionException("No process defined for inbound node {$edge['to']['node']}");
         }
 
-        $this->connectPorts($socket, $from, $to, $edge['from']['port'], $edge['to']['port']);
+        $socket = $this->connectPorts($from, $to, $edge['from']['port'], $edge['to']['port']);
         $this->connections[] = $socket;
 
         return $this;
@@ -211,12 +208,12 @@ class Network implements NetworkInterface
             ],
         ];
 
-        $socket = new InternalSocket();
         $to = $this->getNode($initializer['to']['node']);
         if (!$to) {
             throw new InvalidDefinitionException("No process defined for inbound node {$initializer['to']['node']}");
         }
 
+        $socket = new InternalSocket();
         $port = $this->connectInboundPort($socket, $to, $initializer['to']['port']);
         $socket->connect();
         $socket->send($initializer['from']['data']);
@@ -323,14 +320,16 @@ class Network implements NetworkInterface
      */
     private function connectInboundPort(SocketInterface $socket, array $process, $port)
     {
-        $socket->to = [
-            'process' => $process,
-            'port' => $port,
-        ];
-
         if (!$process['component']->inPorts()->has($port)) {
             throw new InvalidDefinitionException("No inport {$port} defined for process {$process['id']}");
         }
+
+        $socket->to(
+            [
+                'process' => $process,
+                'port' => $port,
+            ]
+        );
 
         return $process['component']
             ->inPorts()
@@ -341,34 +340,34 @@ class Network implements NetworkInterface
     /**
      * Connect out to inport and compare data types.
      *
-     * @param SocketInterface $socket
      * @param array $from
      * @param array $to
      * @param string $edgeFrom
      * @param string $edgeTo
-     * @return $this
+     * @return SocketInterface
      * @throws IncompatibleDatatypeException
      * @throws InvalidDefinitionException
      */
-    private function connectPorts(SocketInterface $socket, array $from, array $to, $edgeFrom, $edgeTo)
+    private function connectPorts(array $from, array $to, $edgeFrom, $edgeTo)
     {
-        $socket->from = [
-            'process' => $from,
-            'port' => $edgeFrom,
-        ];
-
         if (!$from['component']->outPorts()->has($edgeFrom)) {
             throw new InvalidDefinitionException("No outport {$edgeFrom} defined for process {$from['id']}");
         }
 
-        $socket->to = [
-            'process' => $to,
-            'port' => $edgeTo,
-        ];
-
         if (!$to['component']->inPorts()->has($edgeTo)) {
             throw new InvalidDefinitionException("No inport {$edgeTo} defined for process {$to['id']}");
         }
+
+        $socket = new InternalSocket(
+            [
+                'process' => $from,
+                'port' => $edgeFrom,
+            ],
+            [
+                'process' => $to,
+                'port' => $edgeTo,
+            ]
+        );
 
         $fromType = $from['component']->outPorts()->get($edgeFrom)->getAttribute('datatype');
         $toType = $to['component']->inPorts()->get($edgeTo)->getAttribute('datatype');

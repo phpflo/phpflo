@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the <phpflo/phpflo> package.
+ * This file is part of the phpflo/phpflo package.
  *
  * (c) Marc Aschmann <maschmann@gmail.com>
  *
@@ -10,7 +10,6 @@
 
 namespace PhpFlo\Common;
 
-use PhpFlo\Exception\InvalidDefinitionException;
 use PhpFlo\Graph;
 
 /**
@@ -19,26 +18,70 @@ use PhpFlo\Graph;
  * @package PhpFlo\Common
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-interface NetworkInterface
+interface NetworkInterface extends BaseNetworkInterface
 {
-     /**
-     * @return null|Graph
+    /**
+     * @return bool|\DateInterval
      */
-    public function getGraph();
+    public function uptime();
 
     /**
-     * @param mixed $data
-     * @param string $node
-     * @param string $port
+     * @param array $node
      * @return $this
      * @throws InvalidDefinitionException
      */
-    public function addInitial($data, $node, $port);
+    public function addNode(array $node);
 
     /**
-     * Cleanup network state after runs.
-     *
+     * @param array $node
      * @return $this
      */
-    public function shutdown();
+    public function removeNode(array $node);
+
+    /**
+     * @param string $id
+     * @return mixed|null
+     */
+    public function getNode($id);
+
+    /**
+     * @param array $edge
+     * @return Network
+     * @throws InvalidDefinitionException
+     */
+    public function addEdge(array $edge);
+
+    /**
+     * @param array $edge
+     * @return $this
+     */
+    public function removeEdge(array $edge);
+
+    /**
+     * @param Graph $graph
+     * @param ComponentBuilderInterface $builder
+     * @return Network
+     * @throws InvalidDefinitionException
+     */
+    public static function create(Graph $graph, ComponentBuilderInterface $builder);
+
+    /**
+     * Load PhpFlo graph definition from string.
+     *
+     * @param string $string
+     * @param ComponentBuilderInterface $builder
+     * @return Network
+     * @throws InvalidDefinitionException
+     */
+    public static function loadString($string, ComponentBuilderInterface $builder);
+
+    /**
+     * Load PhpFlo graph definition from file.
+     *
+     * @param string $file
+     * @param ComponentBuilderInterface $builder
+     * @return Network
+     * @throws InvalidDefinitionException
+     */
+    public static function loadFile($file, ComponentBuilderInterface $builder);
 }

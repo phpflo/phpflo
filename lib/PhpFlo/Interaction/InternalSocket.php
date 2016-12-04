@@ -29,18 +29,24 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @var array
      */
-    public $from;
+    private $from;
 
     /**
      * @var array
      */
-    public $to;
+    private $to;
 
-    public function __construct()
+    /**
+     * InternalSocket constructor.
+     *
+     * @param array $from
+     * @param array $to
+     */
+    public function __construct(array $from = [], array $to = [])
     {
         $this->connected = false;
-        $this->from = [];
-        $this->to = [];
+        $this->from = $from;
+        $this->to = $to;
     }
 
     /**
@@ -117,5 +123,35 @@ class InternalSocket extends EventEmitter implements SocketInterface
     public function isConnected()
     {
         return $this->connected;
+    }
+
+    /**
+     * @param array $from
+     * @return $this|array
+     */
+    public function from(array $from = [])
+    {
+        if (empty($from)) {
+            return $this->from;
+        } else {
+            $this->from = $from;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array $to
+     * @return $this|array
+     */
+    public function to(array $to = [])
+    {
+        if (empty($to)) {
+            return $this->to;
+        } else {
+            $this->to = $to;
+        }
+
+        return $this;
     }
 }
