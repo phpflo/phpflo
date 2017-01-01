@@ -238,10 +238,9 @@ class Network implements HookableNetworkInterface
             $process['component']->shutdown();
         }
 
-        // explicitly destroy the sockets
-        foreach ($this->connections as $socket) {
-            $socket->shutdown();
-            $socket = null;
+        // explicitly destroy the $connections
+        foreach ($this->connections as $connection) {
+            $connection = null;
         }
 
         $this->graph = null;

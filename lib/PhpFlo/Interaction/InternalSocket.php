@@ -116,6 +116,8 @@ class InternalSocket extends EventEmitter implements SocketInterface
     public function shutdown()
     {
         $this->connected = false;
+        $this->from = [];
+        $this->to = [];
         $this->removeAllListeners();
         $this->emit('shutdown', [$this]);
     }
