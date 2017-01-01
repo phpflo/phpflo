@@ -58,30 +58,11 @@ interface NetworkInterface extends BaseNetworkInterface
     public function removeEdge(array $edge);
 
     /**
-     * @param Graph $graph
-     * @param ComponentBuilderInterface $builder
-     * @return Network
-     * @throws InvalidDefinitionException
-     */
-    public static function create(Graph $graph, ComponentBuilderInterface $builder);
-
-    /**
-     * Load PhpFlo graph definition from string.
      *
-     * @param string $string
-     * @param ComponentBuilderInterface $builder
-     * @return Network
-     * @throws InvalidDefinitionException
-     */
-    public static function loadString($string, ComponentBuilderInterface $builder);
-
-    /**
-     * Load PhpFlo graph definition from file.
      *
-     * @param string $file
-     * @param ComponentBuilderInterface $builder
+     * @param mixed $graph
      * @return Network
      * @throws InvalidDefinitionException
      */
-    public static function loadFile($file, ComponentBuilderInterface $builder);
+    public function create($graph);
 }

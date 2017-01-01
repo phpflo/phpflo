@@ -10,11 +10,14 @@
 
 namespace PhpFlo;
 
-use PhpFlo\Common\NetworkInterface;
+use PhpFlo\Common\HookableNetworkInterface;
 use PhpFlo\Common\ComponentBuilderInterface;
+use PhpFlo\Common\HookableNetworkTrait;
 use PhpFlo\Common\SocketInterface;
+use PhpFlo\Exception\FlowException;
 use PhpFlo\Exception\IncompatibleDatatypeException;
 use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Exception\InvalidTypeException;
 use PhpFlo\Interaction\InternalSocket;
 use PhpFlo\Interaction\Port;
 
@@ -24,8 +27,11 @@ use PhpFlo\Interaction\Port;
  * @package PhpFlo
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-class Network implements NetworkInterface
+class Network implements HookableNetworkInterface
 {
+
+    use HookableNetworkTrait;
+
     /**
      * @var array
      */
@@ -52,19 +58,13 @@ class Network implements NetworkInterface
     private $builder;
 
     /**
-     * @param Graph $graph
      * @param ComponentBuilderInterface $builder
      */
-    public function __construct(Graph $graph, ComponentBuilderInterface $builder)
+    public function __construct(ComponentBuilderInterface $builder)
     {
-        $this->graph = $graph;
+        //$this->graph = $graph;
         $this->builder = $builder;
         $this->startup();
-
-        $this->graph->on('add.node', [$this, 'addNode']);
-        $this->graph->on('remove.node', [$this, 'removeNode']);
-        $this->graph->on('add.edge', [$this, 'addEdge']);
-        $this->graph->on('remove.edge', [$this, 'removeEdge']);
 
         $this->processes = [];
         $this->connections = [];
@@ -213,7 +213,7 @@ class Network implements NetworkInterface
             throw new InvalidDefinitionException("No process defined for inbound node {$initializer['to']['node']}");
         }
 
-        $socket = new InternalSocket();
+        $socket = $this->addHooks(new InternalSocket());
         $port = $this->connectInboundPort($socket, $to, $initializer['to']['port']);
         $socket->connect();
         $socket->send($initializer['from']['data']);
@@ -253,62 +253,85 @@ class Network implements NetworkInterface
     }
 
     /**
-     * @param Graph $graph
-     * @param ComponentBuilderInterface $builder
-     * @return Network
-     * @throws InvalidDefinitionException
+     * Add initialization data
+     *
+     * @param mixed $data
+     * @param string $node
+     * @param string $port
+     * @return $this
+     * @throws FlowException
      */
-    public static function create(Graph $graph, ComponentBuilderInterface $builder)
+    public function run($data, $node, $port)
     {
-        $network = new Network($graph, $builder);
+        if (empty($this->graph)) {
+            throw new FlowException(
+                "Graph is not yet initialized!"
+            );
+        }
 
+        $this->graph->addInitial($data, $node, $port);
+
+        return $this;
+    }
+
+    /**
+     * Add a flow definition as Graph object or definition file/string
+     *
+     * @param mixed $graph
+     * @return $this
+     * @throws InvalidTypeException
+     */
+    public function create($graph)
+    {
+        switch (true) {
+            case (is_a(Graph::class, $graph)):
+                break;
+            case (is_file($graph)):
+                $graph = Graph::loadFile($graph);
+                break;
+            case (is_string($graph)):
+                $graph = Graph::loadString($graph);
+                break;
+            default:
+                throw new InvalidTypeException(
+                    "Graph has to be either a Graph object or a compatible definition file/string"
+                );
+        }
+
+        $graph->on('add.node', [$this, 'addNode']);
+        $graph->on('remove.node', [$this, 'removeNode']);
+        $graph->on('add.edge', [$this, 'addEdge']);
+        $graph->on('remove.edge', [$this, 'removeEdge']);
+
+        /** @todo think of caching graphs here, maybe */
+        $this->graph = $graph;
+        $this->loadGraph($graph);
+
+        return $this;
+    }
+
+    /**
+     * Load Graph into Network
+     *
+     * @param Graph $graph
+     */
+    private function loadGraph(Graph $graph)
+    {
         foreach ($graph->nodes as $node) {
-            $network->addNode($node);
+            $this->addNode($node);
         }
 
         foreach ($graph->edges as $edge) {
-            $network->addEdge($edge);
+            $this->addEdge($edge);
         }
 
         foreach ($graph->initializers as $initializer) {
-            $network->addInitial(
+            $this->addInitial(
                 $initializer['from']['data'],
                 $initializer['to']['node'],
                 $initializer['to']['port']
             );
         }
-
-        return $network;
-    }
-
-    /**
-     * Load PhpFlo graph definition from string.
-     *
-     * @param string $string
-     * @param ComponentBuilderInterface $builder
-     * @return Network
-     * @throws InvalidDefinitionException
-     */
-    public static function loadString($string, ComponentBuilderInterface $builder)
-    {
-        $graph = Graph::loadString($string);
-
-        return Network::create($graph, $builder);
-    }
-
-    /**
-     * Load PhpFlo graph definition from file.
-     *
-     * @param string $file
-     * @param ComponentBuilderInterface $builder
-     * @return Network
-     * @throws InvalidDefinitionException
-     */
-    public static function loadFile($file, ComponentBuilderInterface $builder)
-    {
-        $graph = Graph::loadFile($file);
-
-        return Network::create($graph, $builder);
     }
 
     /**
@@ -358,15 +381,17 @@ class Network implements NetworkInterface
             throw new InvalidDefinitionException("No inport {$edgeTo} defined for process {$to['id']}");
         }
 
-        $socket = new InternalSocket(
-            [
-                'process' => $from,
-                'port' => $edgeFrom,
-            ],
-            [
-                'process' => $to,
-                'port' => $edgeTo,
-            ]
+        $socket = $this->addHooks(
+            new InternalSocket(
+                [
+                    'process' => $from,
+                    'port' => $edgeFrom,
+                ],
+                [
+                    'process' => $to,
+                    'port' => $edgeTo,
+                ]
+            )
         );
 
         $fromType = $from['component']->outPorts()->get($edgeFrom)->getAttribute('datatype');
