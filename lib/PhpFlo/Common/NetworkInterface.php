@@ -58,11 +58,12 @@ interface NetworkInterface extends BaseNetworkInterface
     public function removeEdge(array $edge);
 
     /**
-     *
+     * Add a flow definition as Graph object or definition file/string
+     * and initialize the network processes/connections
      *
      * @param mixed $graph
      * @return Network
      * @throws InvalidDefinitionException
      */
-    public function create($graph);
+    public function boot($graph);
 }

@@ -275,12 +275,13 @@ class Network implements HookableNetworkInterface
 
     /**
      * Add a flow definition as Graph object or definition file/string
+     * and initialize the network processes/connections
      *
      * @param mixed $graph
      * @return $this
      * @throws InvalidTypeException
      */
-    public function create($graph)
+    public function boot($graph)
     {
         switch (true) {
             case (is_a(Graph::class, $graph)):

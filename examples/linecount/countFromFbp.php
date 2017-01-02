@@ -15,9 +15,8 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 $builder = new PhpFlo\Builder\ComponentFactory();
 
-// Load network from graph file
-//$network = PhpFlo\Network::loadFile(__DIR__.'/count.fbp', $builder);
-$network = new \PhpFlo\Network($builder);
+// create network
+$network = new PhpFlo\Network($builder);
 $network
     ->hook(
         'data',
@@ -26,10 +25,9 @@ $network
             echo $socket->getId() . print_r($data, true) . "\n";
         }
     )
-    ->create(__DIR__.'/count.fbp')
-    ->run($fileName, "ReadFile", "source")
-    ->shutdown();
+    ->boot(__DIR__.'/count.fbp')
+    ->run($fileName, "ReadFile", "source");
 
-// Kick-start the process by sending filename
-//$network->getGraph()->addInitial($fileName, "ReadFile", "source");
-//$network->shutdown();
+// re-run the process by sending filename
+$network->run($fileName, "ReadFile", "source");
+$network->shutdown();

@@ -10,10 +10,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new ComponentFactory();
 
-        $network = Network::loadFile(
-            __DIR__.'/../../examples/linecount/count.json',
-            $builder
-        );
+        $network = new Network($builder);
+        $network
+            ->boot(__DIR__.'/../../examples/linecount/count.json');
+
         $readFile = $network->getNode('ReadFile');
         $this->assertEquals('ReadFile', $readFile['id']);
     }
