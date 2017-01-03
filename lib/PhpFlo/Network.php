@@ -10,9 +10,9 @@
 
 namespace PhpFlo;
 
-use PhpFlo\Common\HookableNetworkInterface;
 use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\HookableNetworkTrait;
+use PhpFlo\Common\NetworkInterface;
 use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\FlowException;
 use PhpFlo\Exception\IncompatibleDatatypeException;
@@ -27,7 +27,7 @@ use PhpFlo\Interaction\Port;
  * @package PhpFlo
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-class Network implements HookableNetworkInterface
+class Network implements NetworkInterface
 {
 
     use HookableNetworkTrait;

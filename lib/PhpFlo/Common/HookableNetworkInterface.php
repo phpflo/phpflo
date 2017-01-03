@@ -19,7 +19,7 @@ use PhpFlo\Exception\InvalidTypeException;
  * @package PhpFlo\Common
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-interface HookableNetworkInterface extends NetworkInterface
+interface HookableNetworkInterface
 {
     /**
      * Add a closure to an event

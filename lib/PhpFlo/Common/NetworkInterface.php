@@ -18,7 +18,7 @@ use PhpFlo\Graph;
  * @package PhpFlo\Common
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-interface NetworkInterface extends BaseNetworkInterface
+interface NetworkInterface extends BaseNetworkInterface, HookableNetworkInterface
 {
     /**
      * @return bool|\DateInterval
