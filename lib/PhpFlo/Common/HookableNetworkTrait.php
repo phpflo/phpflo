@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the <package> package.
+ * This file is part of the phpflo/phpflo package.
  *
  * (c) Marc Aschmann <maschmann@gmail.com>
  *
@@ -48,7 +48,8 @@ trait HookableNetworkTrait
     {
         if (!array_key_exists($event, $this->hooks)) {
             throw new InvalidTypeException(
-                "Invalid event {$event} given for hook {$alias}! Please use" . array_keys($this->hooks)
+                "Invalid event {$event} given for hook {$alias}! Please use" .
+                implode(', ', array_keys($this->hooks))
             );
         }
 
@@ -61,6 +62,16 @@ trait HookableNetworkTrait
         $this->hooks[$event][$alias] = $closure;
 
         return $this;
+    }
+
+    /**
+     * Get all defined custom event hooks
+     *
+     * @return array
+     */
+    public function hooks()
+    {
+        return $this->hooks;
     }
 
     /**

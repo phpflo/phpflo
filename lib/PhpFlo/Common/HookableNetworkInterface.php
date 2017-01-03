@@ -35,4 +35,11 @@ interface HookableNetworkInterface extends NetworkInterface
      * @return $this
      */
     public function hook($alias, $event, \Closure $closure);
+
+    /**
+     * Get all defined custom event hooks
+     *
+     * @return array
+     */
+    public function hooks();
 }
