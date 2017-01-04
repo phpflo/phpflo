@@ -27,14 +27,14 @@ interface HookableNetworkInterface
      * Accepted events are connect, disconnect and data
      * Closures will be given the
      *
-     * @param string $alias
      * @param string $event
+     * @param string $alias
      * @param \Closure $closure
      * @throws FlowException
      * @throws InvalidTypeException
      * @return $this
      */
-    public function hook($alias, $event, \Closure $closure);
+    public function hook($event, $alias, \Closure $closure);
 
     /**
      * Get all defined custom event hooks
