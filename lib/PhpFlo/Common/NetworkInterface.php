@@ -18,32 +18,8 @@ use PhpFlo\Graph;
  * @package PhpFlo\Common
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-interface NetworkInterface extends BaseNetworkInterface, HookableNetworkInterface
+interface NetworkInterface extends HookableNetworkInterface
 {
-    /**
-     * @return bool|\DateInterval
-     */
-    public function uptime();
-
-    /**
-     * @param array $node
-     * @return $this
-     * @throws InvalidDefinitionException
-     */
-    public function addNode(array $node);
-
-    /**
-     * @param array $node
-     * @return $this
-     */
-    public function removeNode(array $node);
-
-    /**
-     * @param string $id
-     * @return mixed|null
-     */
-    public function getNode($id);
-
     /**
      * @param array $edge
      * @return Network
@@ -52,10 +28,11 @@ interface NetworkInterface extends BaseNetworkInterface, HookableNetworkInterfac
     public function addEdge(array $edge);
 
     /**
-     * @param array $edge
+     * @param array $node
      * @return $this
+     * @throws InvalidDefinitionException
      */
-    public function removeEdge(array $edge);
+    public function addNode(array $node);
 
     /**
      * Add a flow definition as Graph object or definition file/string
@@ -66,4 +43,50 @@ interface NetworkInterface extends BaseNetworkInterface, HookableNetworkInterfac
      * @throws InvalidDefinitionException
      */
     public function boot($graph);
+
+    /**
+     * @return null|Graph
+     */
+    public function getGraph();
+
+    /**
+     * @param string $id
+     * @return mixed|null
+     */
+    public function getNode($id);
+
+    /**
+     * @param array $edge
+     * @return $this
+     */
+    public function removeEdge(array $edge);
+
+    /**
+     * @param array $node
+     * @return $this
+     */
+    public function removeNode(array $node);
+
+    /**
+     * Add initialization data
+     *
+     * @param mixed $data
+     * @param string $node
+     * @param string $port
+     * @return $this
+     * @throws FlowException
+     */
+    public function run($data, $node, $port);
+
+    /**
+     * Cleanup network state after runs.
+     *
+     * @return $this
+     */
+    public function shutdown();
+
+    /**
+     * @return bool|\DateInterval
+     */
+    public function uptime();
 }

@@ -137,7 +137,7 @@ class Network implements NetworkInterface
 
     /**
      * @param array $edge
-     * @return Network
+     * @return $this
      * @throws InvalidDefinitionException
      */
     public function addEdge(array $edge)
@@ -196,7 +196,7 @@ class Network implements NetworkInterface
      * @return $this
      * @throws InvalidDefinitionException
      */
-    public function addInitial($data, $node, $port)
+    protected function addInitial($data, $node, $port)
     {
         $initializer = [
             'from' => [
