@@ -29,6 +29,8 @@ trait HookableNetworkTrait
         'data' => [],
         'connect' => [],
         'disconnect' => [],
+        'begin.group' => [],
+        'end.group' => [],
     ];
 
     /**
