@@ -9,7 +9,7 @@
 
 If you need reusable components for your next flow, this is the place to find them!
 As you might have guessed, the focus lies on reusability and simplicity, just like the [flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) paradigm suggests.
-Contributions welcome!
+Contributions are welcome!
 
 ## Installation
 
