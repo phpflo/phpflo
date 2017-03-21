@@ -12,6 +12,7 @@ namespace PhpFlo;
 
 use Evenement\EventEmitter;
 use PhpFlo\Common\DefinitionInterface;
+use PhpFlo\Common\NetworkInterface;
 use PhpFlo\Exception\InvalidDefinitionException;
 use PhpFlo\Fbp\FbpParser;
 use PhpFlo\Loader\Loader;
@@ -69,12 +70,12 @@ class Graph extends EventEmitter
     public function addNode($id, $component)
     {
         $node = [
-            'id' => $id,
-            'component' => $component,
+            NetworkInterface::NODE_ID => $id,
+            NetworkInterface::COMPONENT => $component,
         ];
 
         $this->nodes[$id] = $node;
-        $this->emit('add.node', [$node]);
+        $this->emit(NetworkInterface::EVENT_ADD, [$node]);
 
         return $this;
     }
@@ -86,17 +87,17 @@ class Graph extends EventEmitter
     public function removeNode($id)
     {
         foreach ($this->edges as $edge) {
-            if ($edge['from']['node'] == $id) {
-                $this->removeEdge($id, $edge['from']['port']);
+            if ($edge[NetworkInterface::SOURCE][NetworkInterface::NODE] == $id) {
+                $this->removeEdge($id, $edge[NetworkInterface::SOURCE][NetworkInterface::PORT]);
             }
-            if ($edge['to']['node'] == $id) {
-                $this->removeEdge($id, $edge['to']['port']);
+            if ($edge[NetworkInterface::TARGET][NetworkInterface::NODE] == $id) {
+                $this->removeEdge($id, $edge[NetworkInterface::TARGET][NetworkInterface::PORT]);
             }
         }
 
         foreach ($this->initializers as $initializer) {
-            if ($initializer['to']['node'] == $id) {
-                $this->removeEdge($id, $initializer['to']['port']);
+            if ($initializer[NetworkInterface::TARGET][NetworkInterface::NODE] == $id) {
+                $this->removeEdge($id, $initializer[NetworkInterface::TARGET][NetworkInterface::PORT]);
             }
         }
 
@@ -130,18 +131,18 @@ class Graph extends EventEmitter
     public function addEdge($outNode, $outPort, $inNode, $inPort)
     {
         $edge = [
-            'from' => [
-                'node' => $outNode,
-                'port' => $outPort,
+            NetworkInterface::SOURCE => [
+                NetworkInterface::NODE => $outNode,
+                NetworkInterface::PORT => $outPort,
             ],
-            'to' => [
-                'node' => $inNode,
-                'port' => $inPort,
+            NetworkInterface::TARGET => [
+                NetworkInterface::NODE => $inNode,
+                NetworkInterface::PORT => $inPort,
             ],
         ];
 
         $this->edges[] = $edge;
-        $this->emit('add.edge', [$edge]);
+        $this->emit(NetworkInterface::EVENT_ADD_EDGE, [$edge]);
 
         return $this;
     }
@@ -154,20 +155,26 @@ class Graph extends EventEmitter
     public function removeEdge($node, $port)
     {
         foreach ($this->edges as $index => $edge) {
-            if ($edge['from']['node'] == $node && $edge['from']['port'] == $port) {
-                $this->emit('remove.edge', [$edge]);
+            if ($edge[NetworkInterface::SOURCE][NetworkInterface::NODE] == $node
+                && $edge[NetworkInterface::SOURCE][NetworkInterface::PORT] == $port
+            ) {
+                $this->emit(NetworkInterface::EVENT_REMOVE_EDGE, [$edge]);
                 $this->edges = array_splice($this->edges, $index, 1);
             }
 
-            if ($edge['to']['node'] == $node && $edge['to']['port'] == $port) {
-                $this->emit('remove.edge', [$edge]);
+            if ($edge[NetworkInterface::TARGET][NetworkInterface::NODE] == $node
+                && $edge[NetworkInterface::TARGET][NetworkInterface::PORT] == $port
+            ) {
+                $this->emit(NetworkInterface::EVENT_REMOVE_EDGE, [$edge]);
                 $this->edges = array_splice($this->edges, $index, 1);
             }
         }
 
         foreach ($this->initializers as $index => $initializer) {
-            if ($initializer['to']['node'] == $node && $initializer['to']['port'] == $port) {
-                $this->emit('remove.edge', [$initializer]);
+            if ($initializer[NetworkInterface::TARGET][NetworkInterface::NODE] == $node
+                && $initializer[NetworkInterface::TARGET][NetworkInterface::PORT] == $port
+            ) {
+                $this->emit(NetworkInterface::EVENT_REMOVE_EDGE, [$initializer]);
                 $this->initializers = array_splice($this->initializers, $index, 1);
             }
         }
@@ -184,17 +191,17 @@ class Graph extends EventEmitter
     public function addInitial($data, $node, $port)
     {
         $initializer = [
-            'from' => [
-                'data' => $data,
+            NetworkInterface::SOURCE => [
+                NetworkInterface::DATA => $data,
             ],
-            'to' => [
-                'node' => $node,
-                'port' => $port,
+            NetworkInterface::TARGET => [
+                NetworkInterface::NODE => $node,
+                NetworkInterface::PORT => $port,
             ],
         ];
 
         $this->initializers[] = $initializer;
-        $this->emit('add.edge', [$initializer]);
+        $this->emit(NetworkInterface::EVENT_ADD_EDGE, [$initializer]);
 
         return $this;
     }
@@ -280,23 +287,23 @@ class Graph extends EventEmitter
         $graph = new Graph($definition);
 
         foreach ($definition->processes() as $id => $def) {
-            $graph->addNode($id, $def['component']);
+            $graph->addNode($id, $def[NetworkInterface::COMPONENT]);
         }
 
         foreach ($definition->initializers() as $initializer) {
             $graph->addInitial(
-                $initializer['data'],
-                $initializer['tgt']['process'],
-                $initializer['tgt']['port']
+                $initializer[NetworkInterface::DATA],
+                $initializer[NetworkInterface::CONNECTION_TARGET][NetworkInterface::PROCESS],
+                $initializer[NetworkInterface::CONNECTION_TARGET][NetworkInterface::PORT]
             );
         }
 
         foreach ($definition->connections() as $conn) {
             $graph->addEdge(
-                $conn['src']['process'],
-                $conn['src']['port'],
-                $conn['tgt']['process'],
-                $conn['tgt']['port']
+                $conn[NetworkInterface::CONNECTION_SOURCE][NetworkInterface::PROCESS],
+                $conn[NetworkInterface::CONNECTION_SOURCE][NetworkInterface::PORT],
+                $conn[NetworkInterface::CONNECTION_TARGET][NetworkInterface::PROCESS],
+                $conn[NetworkInterface::CONNECTION_TARGET][NetworkInterface::PORT]
             );
         }
 

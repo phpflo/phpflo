@@ -20,6 +20,21 @@ use PhpFlo\Graph;
  */
 interface NetworkInterface extends HookableNetworkInterface
 {
+    const SOURCE = 'from';
+    const TARGET = 'to';
+    const NODE_ID = 'id';
+    const COMPONENT = 'component';
+    const PROCESS = 'process';
+    const DATA = 'data';
+    const NODE = 'node';
+    const PORT = 'port';
+    const CONNECTION_SOURCE = 'src';
+    const CONNECTION_TARGET = 'tgt';
+    const EVENT_ADD = 'add.node';
+    const EVENT_REMOVE = 'remove.node';
+    const EVENT_ADD_EDGE = 'add.edge';
+    const EVENT_REMOVE_EDGE = 'remove.edge';
+
     /**
      * @param array $edge
      * @return Network

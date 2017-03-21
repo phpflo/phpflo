@@ -7,12 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PhpFlo;
 
 use PhpFlo\Common\ComponentInterface;
 use PhpFlo\Common\ComponentTrait;
-use PhpFlo\Interaction\PortRegistry;
 
 /**
  * Class Component
