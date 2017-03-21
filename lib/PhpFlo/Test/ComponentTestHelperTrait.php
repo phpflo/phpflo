@@ -49,7 +49,6 @@ trait ComponentTestHelperTrait
     protected function connectOutPorts(ComponentInterface $component)
     {
         $this->outPortSockets = [];
-        $this->outPortCallbacks = [];
         foreach ($component->outPorts() as $port) {
             $socket = $this->stub(
                 InternalSocket::class,
