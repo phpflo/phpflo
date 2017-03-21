@@ -60,7 +60,7 @@ interface NetworkInterface extends HookableNetworkInterface
      * and initialize the network processes/connections
      *
      * @param mixed $graph
-     * @return Network
+     * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
     public function boot($graph);
