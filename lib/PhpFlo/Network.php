@@ -382,7 +382,7 @@ class Network implements NetworkInterface
      * @param array $to
      * @param string $edgeFrom
      * @param string $edgeTo
-     * @return SocketInterface
+     * @return NetworkInterface
      * @throws IncompatibleDatatypeException
      * @throws InvalidDefinitionException
      */
