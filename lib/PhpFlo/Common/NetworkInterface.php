@@ -28,12 +28,18 @@ interface NetworkInterface extends HookableNetworkInterface
     const DATA = 'data';
     const NODE = 'node';
     const PORT = 'port';
+    const CONNECT = 'connect';
+    const DISCONNECT = 'disconnect';
+    const SHUTDOWN = 'shutdown';
+    const DETACH = 'detach';
     const CONNECTION_SOURCE = 'src';
     const CONNECTION_TARGET = 'tgt';
     const EVENT_ADD = 'add.node';
     const EVENT_REMOVE = 'remove.node';
     const EVENT_ADD_EDGE = 'add.edge';
     const EVENT_REMOVE_EDGE = 'remove.edge';
+    const BEGIN_GROUP = 'begin.group';
+    const END_GROUP = 'end.group';
 
     /**
      * @param array $edge

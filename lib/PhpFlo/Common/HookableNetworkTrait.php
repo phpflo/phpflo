@@ -26,11 +26,11 @@ trait HookableNetworkTrait
      * @var array
      */
     protected $hooks = [
-        'data' => [],
-        'connect' => [],
-        'disconnect' => [],
-        'begin.group' => [],
-        'end.group' => [],
+        NetworkInterface::DATA => [],
+        NetworkInterface::CONNECT => [],
+        NetworkInterface::DISCONNECT => [],
+        NetworkInterface::BEGIN_GROUP => [],
+        NetworkInterface::END_GROUP => [],
     ];
 
     /**
