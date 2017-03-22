@@ -61,7 +61,6 @@ class Network implements NetworkInterface
      */
     public function __construct(ComponentBuilderInterface $builder)
     {
-        //$this->graph = $graph;
         $this->builder = $builder;
         $this->startup();
 

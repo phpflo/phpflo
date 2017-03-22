@@ -1,10 +1,10 @@
 PhpFlo: Flow-based programming for PHP
 ==============================================
 
-[![Build Status](https://secure.travis-ci.org/bergie/phpflo.png)](http://travis-ci.org/bergie/phpflo)
+[![Build Status](https://secure.travis-ci.org/phpflo/phpflo.png)](http://travis-ci.org/phpflo/phpflo)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
-PhpFlo is a simple [flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) implementation for PHP. It is a PHP port of [NoFlo](https://github.com/bergie/noflo), a similar tool for Node.js. From WikiPedia:
+PhpFlo is a simple [flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) implementation for PHP. It is a PHP port of [NoFlo](https://noflojs.org), a similar tool for Node.js. From WikiPedia:
 
 > In computer science, flow-based programming (FBP) is a programming paradigm that defines applications as networks of "black box" processes, which exchange data across predefined connections by message passing, where the connections are specified externally to the processes. These black box processes can be reconnected endlessly to form different applications without having to be changed internally. FBP is thus naturally component-oriented.
 
@@ -27,9 +27,8 @@ PhpFlo can be installed from [Packagist.org](http://packagist.org/view/PhpFlo/Ph
 ```json
 {
     "require": {
-        "phpflo/phpflo": "dev-master"
-    },
-    "minimum-stability": "dev"
+        "phpflo/phpflo": "^1.0.0"
+    }
 }
 ```
 
@@ -39,6 +38,8 @@ and run:
 $ wget http://getcomposer.org/composer.phar
 $ php composer.phar install
 ```
+
+or do a quick ```php composer.phar require phpflo/phpflo``` from within your existing project.
 
 ## Autoloading
 
@@ -118,6 +119,7 @@ class Forwarder extends Component
 }
 ```
 
+Alternatively you can now use ```PhpFlo\Common\ComponentTrait``` together with ```PhpFlo\Common\ComponentInterface````if you're more into composition.
 This example component register two ports: _in_ and _out_. When it receives data in the _in_ port, it opens the _out_ port and sends the same data there. When the _in_ connection closes, it will also close the _out_ connection. So basically this component would be a simple repeater.
 You can find more examples of components in the `lib/PhpFlo/Component` folder.
 Please mind that there's an mandatory second parameter for the "add" command. This array receives the port's meta information and has following defaults:
@@ -186,13 +188,14 @@ When a port has no connections, meaning that it was initialized without a connec
 
 ## Graph file format
 
-In addition to using PhpFlo in _embedded mode_ where you create the FBP graph programmatically (see [example](https://github.com/bergie/phpflo/blob/master/examples/linecount/count.php)), you can also initialize and run graphs defined using a FBP file.
+In addition to using PhpFlo in _embedded mode_ where you create the FBP graph programmatically (see [example](https://github.com/phpflo/phpflo/blob/master/examples/linecount/count.php)), you can also initialize and run graphs defined using a FBP file.
 This format gives you the advantage of much less definition work, compared to the deprecated (but still valid) JSON files.
 
 If you have older JSON definitions, you can still use them or convert then to FBP, using the dumper wrapped by the graph or directly from definition:
 ```php
 $builder = new \PhpFlo\Builder\ComponentFactory();
-$network = PhpFlo\Network::loadFile(__DIR__.'/count.json', $builder);
+$network = new PhpFlo\Network($builder);
+$network->boot(__DIR__.'/count.json', $builder);
 file_put_contents('./count.fbp', $network->getGraph()->toFbp());
 ```
 
@@ -309,19 +312,50 @@ To run a graph file, load it via the PhpFlow API:
 ```php
 <?php
 
-$network = PhpFlo\Network::loadFile('example.fbp');
+$builder = new PhpFlo\Builder\ComponentFactory();
+
+// create network
+$network = new PhpFlo\Network($builder);
+$network
+    ->boot(__DIR__.'/count.fbp')
+    ->run($fileName, "ReadFile", "source")
+    ->shutdown();
 ```
 
-Note that after this the graph is _live_, meaning that you can add and remove nodes and connections, or send new _initial data_ to it. See [example](https://github.com/bergie/phpflo/blob/master/examples/linecount/countFromJson.php).
+Note that after this the graph is _live_, meaning that you can add and remove nodes and connections, or send new _initial data_ to it. See [example](https://github.com/phpflo/phpflo/blob/master/examples/linecount/countFromJson.php).
+
+Since the network now also features the ```HookableInterface```, you can easily add callbacks on events for e.g. debugging purposes:
+
+```php
+<?php
+$builder = new PhpFlo\Builder\ComponentFactory();
+
+// create network
+$network = new PhpFlo\Network($builder);
+$network
+    ->hook(
+        'data',
+        'trace',
+        function ($data, $socket) {
+            echo $socket->getId() . print_r($data, true) . "\n";
+        }
+    )
+    ->boot(__DIR__.'/count.fbp')
+    ->run($fileName, "ReadFile", "source")
+    ->shutdown();
+```
+
+As you can see, there's a lot of potential in the callbacks, since they can also use object references to store and/or manipulate data, but natively receive socket and data from the supported events.
+This feature is also used in the upcoming [phpflo/flowtrace](https://github.com/phpflo/flowtrace) library, which decorates the ```Network``` class and adds PSR-3 compatible logging.
 
 ## Development
 
-PhpFlo development happens on GitHub. Just fork the [main repository](https://github.com/bergie/phpflo), make modifications and send a pull request.
+PhpFlo development happens on GitHub. Just fork the [main repository](https://github.com/phpflo/phpflo), make modifications and send a pull request.
 
-To run the unit tests you need PHPUnit. Run the tests with:
+To run the unit tests you need PHPUnit. Run the tests with in development:
 
 ```sh
-$ phpunit
+$ bin/phpunit
 ```
 
 ### Some ideas
