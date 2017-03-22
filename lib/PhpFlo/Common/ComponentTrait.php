@@ -38,7 +38,7 @@ trait ComponentTrait
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription() : string
     {
         return $this->description;
     }
@@ -46,7 +46,7 @@ trait ComponentTrait
     /**
      * @return PortRegistry
      */
-    public function inPorts()
+    public function inPorts() : PortRegistry
     {
         if (null === $this->inPorts) {
             $this->inPorts = new PortRegistry();
@@ -58,7 +58,7 @@ trait ComponentTrait
     /**
      * @return PortRegistry
      */
-    public function outPorts()
+    public function outPorts() : PortRegistry
     {
         if (null === $this->outPorts) {
             $this->outPorts = new PortRegistry();

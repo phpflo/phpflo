@@ -32,14 +32,14 @@ interface HookableNetworkInterface
      * @param \Closure $closure
      * @throws FlowException
      * @throws InvalidTypeException
-     * @return $this
+     * @return HookableNetworkInterface
      */
-    public function hook($event, $alias, \Closure $closure);
+    public function hook(string $event, string $alias, \Closure $closure) : HookableNetworkInterface;
 
     /**
      * Get all defined custom event hooks
      *
      * @return array
      */
-    public function hooks();
+    public function hooks() : array;
 }

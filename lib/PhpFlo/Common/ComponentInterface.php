@@ -23,22 +23,22 @@ interface ComponentInterface
     /**
      * @return string
      */
-    public function getDescription();
+    public function getDescription() : string;
 
     /**
      * @return PortRegistry
      */
-    public function inPorts();
+    public function inPorts() : PortRegistry;
 
     /**
      * @return PortRegistry
      */
-    public function outPorts();
+    public function outPorts() : PortRegistry;
 
     /**
      * Detach all sockets, disconnect all ports.
      *
-     * @return $this;
+     * @return ComponentInterface;
      */
-    public function shutdown();
+    public function shutdown() : ComponentInterface;
 }

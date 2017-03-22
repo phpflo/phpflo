@@ -36,13 +36,13 @@ interface PortInterface
     /**
      * @return array
      */
-    public function getAttributes();
+    public function getAttributes() : array ;
 
     /**
      * @param string $name
      * @return mixed|null
      */
-    public function getAttribute($name);
+    public function getAttribute(string $name);
 
     /**
      * @return string
@@ -66,13 +66,13 @@ interface PortInterface
      * @param string $groupName
      * @param SocketInterface $socket
      */
-    public function onBeginGroup($groupName, SocketInterface $socket);
+    public function onBeginGroup(string $groupName, SocketInterface $socket);
 
     /**
      * @param string $groupName
      * @param SocketInterface $socket
      */
-    public function onEndGroup($groupName, SocketInterface $socket);
+    public function onEndGroup(string $groupName, SocketInterface $socket);
 
     /**
      * Callback for shutdown event, disconnects and detaches port and sockets.
@@ -107,10 +107,10 @@ interface PortInterface
     public function isAttached();
 
     /**
-     * @param $groupName
+     * @param string $groupName
      * @throws PortException
      */
-    public function endGroup($groupName);
+    public function endGroup(string $groupName);
 
     /**
      * @param mixed $data
@@ -129,5 +129,5 @@ interface PortInterface
      * @return null
      * @throws PortException
      */
-    public function beginGroup($groupName);
+    public function beginGroup(string $groupName);
 }
