@@ -78,15 +78,15 @@ interface NetworkInterface extends HookableNetworkInterface
 
     /**
      * @param array $edge
-     * @return $this
+     * @return NetworkInterface
      */
-    public function removeEdge(array $edge);
+    public function removeEdge(array $edge) : NetworkInterface;
 
     /**
      * @param array $node
-     * @return $this
+     * @return NetworkInterface
      */
-    public function removeNode(array $node);
+    public function removeNode(array $node) : NetworkInterface;
 
     /**
      * Add initialization data

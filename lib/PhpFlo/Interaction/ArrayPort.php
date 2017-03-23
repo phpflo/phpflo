@@ -30,9 +30,9 @@ final class ArrayPort extends AbstractPort implements PortInterface
 
     /**
      * @param SocketInterface $socket
-     * @return $this
+     * @return PortInterface
      */
-    public function attach(SocketInterface $socket)
+    public function attach(SocketInterface $socket) : PortInterface
     {
         $this->sockets[] = $socket;
         $this->attachSocket($socket);
@@ -60,7 +60,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @return null
      * @throws SocketException
      */
-    public function beginGroup($groupName, $socketId = 0)
+    public function beginGroup(string $groupName, int $socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
             throw new SocketException("No socket {$socketId} connected");
@@ -81,7 +81,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param int $socketId
      * @throws SocketException
      */
-    public function endGroup($groupName, $socketId = 0)
+    public function endGroup(string $groupName, int $socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
             throw new SocketException("No socket {$socketId} connected");
@@ -96,7 +96,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @return mixed
      * @throws SocketException
      */
-    public function send($data, $socketId = 0)
+    public function send($data, int $socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
             throw new SocketException("No socket {$socketId} connected");
@@ -116,7 +116,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param int $socketId
      * @throws SocketException
      */
-    public function connect($socketId = 0)
+    public function connect(int $socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
             throw new SocketException("No socket {$socketId} connected");
@@ -129,7 +129,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param int $socketId
      * @return $this|void
      */
-    public function disconnect($socketId = 0)
+    public function disconnect(int $socketId = 0)
     {
         if (!isset($this->sockets[$socketId])) {
             return;
@@ -144,7 +144,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param int $socketId
      * @return bool
      */
-    public function isConnected($socketId = 0)
+    public function isConnected(int $socketId = 0) : bool
     {
         if (!isset($this->sockets[$socketId])) {
             return false;
@@ -159,7 +159,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param int $socketId
      * @return bool
      */
-    public function isAttached($socketId = 0)
+    public function isAttached(int $socketId = 0) : bool
     {
         if (!isset($this->sockets[$socketId])) {
             return false;
@@ -171,7 +171,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
     /**
      * return int[]
      */
-    public function listAttached()
+    public function listAttached() : array
     {
         return array_keys($this->sockets);
     }
@@ -189,7 +189,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param string $groupName
      * @param SocketInterface $socket
      */
-    public function onBeginGroup($groupName, SocketInterface $socket)
+    public function onBeginGroup(string $groupName, SocketInterface $socket)
     {
         $this->emit(NetworkInterface::BEGIN_GROUP, [$groupName, $this->getSocketIndex($socket)]);
     }
@@ -198,7 +198,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param string $groupName
      * @param SocketInterface $socket
      */
-    public function onEndGroup($groupName, SocketInterface $socket)
+    public function onEndGroup(string $groupName, SocketInterface $socket)
     {
         $this->emit(NetworkInterface::END_GROUP, [$groupName, $this->getSocketIndex($socket)]);
     }
@@ -218,7 +218,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param SocketInterface $socket
      * @return int
      */
-    protected function getSocketIndex($socket)
+    protected function getSocketIndex(SocketInterface $socket) : int
     {
         $index = 0;
         foreach($this->sockets as $subSocket) {

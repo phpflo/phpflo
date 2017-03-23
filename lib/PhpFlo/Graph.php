@@ -65,9 +65,9 @@ class Graph extends EventEmitter
     /**
      * @param string $id
      * @param string $component
-     * @return $this
+     * @return Graph
      */
-    public function addNode($id, $component)
+    public function addNode(string $id, string $component) : Graph
     {
         $node = [
             NetworkInterface::NODE_ID => $id,
@@ -82,9 +82,9 @@ class Graph extends EventEmitter
 
     /**
      * @param string $id
-     * @return $this
+     * @return Graph
      */
-    public function removeNode($id)
+    public function removeNode(string $id) : Graph
     {
         foreach ($this->edges as $edge) {
             if ($edge[NetworkInterface::SOURCE][NetworkInterface::NODE] == $id) {
@@ -112,7 +112,7 @@ class Graph extends EventEmitter
      * @param string $id
      * @return mixed|null
      */
-    public function getNode($id)
+    public function getNode(string $id)
     {
         if (!isset($this->nodes[$id])) {
             return null;
@@ -126,10 +126,14 @@ class Graph extends EventEmitter
      * @param string $outPort
      * @param string $inNode
      * @param string $inPort
-     * @return $this
+     * @return Graph
      */
-    public function addEdge($outNode, $outPort, $inNode, $inPort)
-    {
+    public function addEdge(
+        string $outNode,
+        string $outPort,
+        string $inNode,
+        string $inPort
+    ) : Graph {
         $edge = [
             NetworkInterface::SOURCE => [
                 NetworkInterface::NODE => $outNode,
@@ -150,9 +154,9 @@ class Graph extends EventEmitter
     /**
      * @param string $node
      * @param string $port
-     * @return $this
+     * @return Graph
      */
-    public function removeEdge($node, $port)
+    public function removeEdge(string $node, string $port) : Graph
     {
         foreach ($this->edges as $index => $edge) {
             if ($edge[NetworkInterface::SOURCE][NetworkInterface::NODE] == $node
@@ -186,9 +190,9 @@ class Graph extends EventEmitter
      * @param mixed $data
      * @param string $node
      * @param string $port
-     * @return $this
+     * @return Graph
      */
-    public function addInitial($data, $node, $port)
+    public function addInitial($data, string $node, string $port) : Graph
     {
         $initializer = [
             NetworkInterface::SOURCE => [
@@ -209,7 +213,7 @@ class Graph extends EventEmitter
     /**
      * @return string
      */
-    public function toFbp()
+    public function toFbp() : string
     {
         return $this->definition->toFbp();
     }
@@ -217,7 +221,7 @@ class Graph extends EventEmitter
     /**
      * @return string
      */
-    public function toYaml()
+    public function toYaml() : string
     {
         return $this->definition->toYaml();
     }
@@ -225,7 +229,7 @@ class Graph extends EventEmitter
     /**
      * @return string
      */
-    public function toJson()
+    public function toJson() : string
     {
         return $this->definition->toJson();
     }
@@ -236,7 +240,7 @@ class Graph extends EventEmitter
      * @param string $file
      * @return bool
      */
-    public function save($file)
+    public function save(string $file) : bool
     {
         $stat = file_put_contents($file, $this->definition->toFbp());
 
@@ -254,7 +258,7 @@ class Graph extends EventEmitter
      * @throws InvalidDefinitionException
      * @return Graph
      */
-    public static function loadString($string)
+    public static function loadString(string $string) : Graph
     {
         $loader = new FbpParser($string);
         $definition = $loader->run();
@@ -269,7 +273,7 @@ class Graph extends EventEmitter
      * @throws InvalidDefinitionException
      * @return Graph
      */
-    public static function loadFile($file)
+    public static function loadFile(string $file) : Graph
     {
         return self::loadDefinition(
             Loader::load($file)
@@ -280,9 +284,9 @@ class Graph extends EventEmitter
      * Load PhpFlo graph definition.
      *
      * @param DefinitionInterface $definition
-     * @return \PhpFlo\Graph
+     * @return Graph
      */
-    public static function loadDefinition(DefinitionInterface $definition)
+    public static function loadDefinition(DefinitionInterface $definition) : Graph
     {
         $graph = new Graph($definition);
 

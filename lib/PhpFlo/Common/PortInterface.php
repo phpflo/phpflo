@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PhpFlo\Common;
 
 use PhpFlo\Exception\InvalidDefinitionException;
@@ -47,14 +46,14 @@ interface PortInterface
     /**
      * @return string
      */
-    public function getName();
+    public function getName() : string;
 
     /**
      * @param SocketInterface $socket
      * @throws InvalidDefinitionException
-     * @return $this
+     * @return PortInterface
      */
-    public function attach(SocketInterface $socket);
+    public function attach(SocketInterface $socket) : PortInterface;
 
     /**
      * @param mixed $data
@@ -97,14 +96,14 @@ interface PortInterface
     /**
      * @return bool
      */
-    public function isConnected();
+    public function isConnected() : bool;
 
     /**
      * Checks if port is attached.
      *
      * @return bool
      */
-    public function isAttached();
+    public function isAttached() : bool;
 
     /**
      * @param string $groupName

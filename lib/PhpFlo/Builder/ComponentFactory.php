@@ -32,7 +32,7 @@ class ComponentFactory implements ComponentBuilderInterface
      * @return ComponentInterface
      * @throws InvalidDefinitionException
      */
-    public function build($component)
+    public function build(string $component) : ComponentInterface
     {
         if (!class_exists($component) && strpos($component, '\\') === false) {
             $component = "PhpFlo\\Component\\{$component}";

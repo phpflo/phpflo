@@ -53,7 +53,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @return string
      */
-    public function getId()
+    public function getId() : string
     {
         if ($this->from && !$this->to) {
             return "{$this->from[NetworkInterface::PROCESS][NetworkInterface::NODE_ID]}.{$this->from[NetworkInterface::PORT]}:ANON";
@@ -77,7 +77,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @param string $groupName
      */
-    public function beginGroup($groupName)
+    public function beginGroup(string $groupName)
     {
         $this->emit(NetworkInterface::BEGIN_GROUP, [$groupName, $this]);
     }
@@ -85,7 +85,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @param string $groupName
      */
-    public function endGroup($groupName)
+    public function endGroup(string $groupName)
     {
         $this->emit(NetworkInterface::END_GROUP, [$groupName, $this]);
     }
@@ -93,7 +93,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @inheritdoc
      */
-    public function send($data)
+    public function send($data) : SocketInterface
     {
         $this->emit(NetworkInterface::DATA, [$data, $this]);
 
@@ -123,7 +123,10 @@ class InternalSocket extends EventEmitter implements SocketInterface
         $this->emit(NetworkInterface::SHUTDOWN, [$this]);
     }
 
-    public function isConnected()
+    /**
+     * @return bool
+     */
+    public function isConnected() : bool
     {
         return $this->connected;
     }
