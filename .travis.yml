@@ -10,6 +10,3 @@ before_script:
   - php composer.phar install --dev
 
 script: phpunit
-
-notifications:
-    irc: "irc.freenode.org#fbp"
