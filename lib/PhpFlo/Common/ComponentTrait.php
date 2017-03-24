@@ -68,9 +68,9 @@ trait ComponentTrait
     }
 
     /**
-     * @return $this;
+     * @return ComponentInterface
      */
-    public function shutdown()
+    public function shutdown() : ComponentInterface
     {
         foreach ($this->inPorts()->get() as $port) {
             $port->emit('shutdown', [$port]);

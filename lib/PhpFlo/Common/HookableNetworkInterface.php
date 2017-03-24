@@ -34,7 +34,7 @@ interface HookableNetworkInterface
      * @throws InvalidTypeException
      * @return HookableNetworkInterface
      */
-    public function hook(string $event, string $alias, \Closure $closure) : HookableNetworkInterface;
+    public function hook(string $event, string $alias, \Closure $closure);
 
     /**
      * Get all defined custom event hooks

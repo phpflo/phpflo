@@ -46,7 +46,7 @@ trait HookableNetworkTrait
      * @throws FlowException
      * @throws InvalidTypeException
      */
-    public function hook(string $event, string $alias, \Closure $closure) : HookableNetworkInterface
+    public function hook(string $event, string $alias, \Closure $closure)
     {
         if (!array_key_exists($event, $this->hooks)) {
             throw new InvalidTypeException(
@@ -71,7 +71,7 @@ trait HookableNetworkTrait
      *
      * @return array
      */
-    public function hooks()
+    public function hooks() : array
     {
         return $this->hooks;
     }
