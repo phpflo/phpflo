@@ -7,10 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Component;
 
-use PhpFlo\Component;
+use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Common\ComponentTrait;
 
 /**
  * Class Output
@@ -18,8 +19,10 @@ use PhpFlo\Component;
  * @package PhpFlo\Component
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-class Output extends Component
+class Output implements ComponentInterface
 {
+    use ComponentTrait;
+
     public function __construct()
     {
         $this->inPorts()->add('in', ['datatype' => 'all', 'addressable' => true]);

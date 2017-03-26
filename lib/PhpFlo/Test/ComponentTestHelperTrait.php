@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare(strict_types=1);
 namespace PhpFlo\Test;
 
 use PhpFlo\Common\ComponentInterface;
@@ -31,7 +32,7 @@ trait ComponentTestHelperTrait
      * @param ComponentInterface $component
      * @return ComponentInterface
      */
-    protected function connectInPorts(ComponentInterface $component)
+    protected function connectInPorts(ComponentInterface $component) : ComponentInterface
     {
         foreach ($component->inPorts() as $alias => $inPort) {
             $inPort->attach($this->stub(InternalSocket::class));
@@ -46,7 +47,7 @@ trait ComponentTestHelperTrait
      * @param ComponentInterface $component
      * @return ComponentInterface
      */
-    protected function connectOutPorts(ComponentInterface $component)
+    protected function connectOutPorts(ComponentInterface $component) : ComponentInterface
     {
         $this->outPortSockets = [];
         foreach ($component->outPorts() as $port) {
@@ -76,10 +77,22 @@ trait ComponentTestHelperTrait
     }
 
     /**
+     * @param ComponentInterface $component
+     * @return ComponentInterface
+     */
+    public function connectPorts(ComponentInterface $component) : ComponentInterface
+    {
+        $this->connectInPorts($component);
+        $this->connectOutPorts($component);
+
+        return $component;
+    }
+
+    /**
      * @param string $port
      * @return array|mixed
      */
-    protected function getOutPortData($port = '')
+    protected function getOutPortData(string $port = '')
     {
         if ('' !== $port) {
             if (array_key_exists($port, $this->outPortSockets)) {
@@ -94,7 +107,7 @@ trait ComponentTestHelperTrait
      * @param string $port
      * @return bool
      */
-    protected function wasCalled($port)
+    protected function wasCalled(string $port) : bool
     {
         return !empty($this->outPortSockets[$port]);
     }

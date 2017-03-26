@@ -7,10 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Component;
 
-use PhpFlo\Component;
+use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Common\ComponentTrait;
 
 /**
  * Class SplitStr
@@ -18,8 +19,10 @@ use PhpFlo\Component;
  * @package PhpFlo\Component
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
-class SplitStr extends Component
+class SplitStr implements ComponentInterface
 {
+    use ComponentTrait;
+
     /**
      * @var string
      */
@@ -48,7 +51,7 @@ class SplitStr extends Component
     /**
      * @param string $data
      */
-    public function setDelimiter($data)
+    public function setDelimiter(string $data)
     {
         $this->delimiterString = $data;
     }
@@ -56,7 +59,7 @@ class SplitStr extends Component
     /**
      * @param string $data
      */
-    public function appendString($data)
+    public function appendString(string $data)
     {
         $this->string .= $data;
     }

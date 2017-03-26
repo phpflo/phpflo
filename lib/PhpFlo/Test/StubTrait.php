@@ -32,8 +32,12 @@ trait StubTrait
      * @param bool $forceMethods
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function stub($class, array $methods = [], $className = '', $forceMethods = false)
-    {
+    protected function stub(
+        string $class,
+        array $methods = [],
+        string $className = '',
+        bool $forceMethods = false
+    ) : \PHPUnit_Framework_MockObject_MockObject {
         $builder = $this->getMockBuilder($class)
             ->disableOriginalConstructor();
 
