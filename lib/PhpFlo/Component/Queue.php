@@ -7,10 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Component;
 
-use PhpFlo\Component;
+use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Common\ComponentTrait;
 
 /**
  * Component for creating a simple queue of messages.
@@ -25,8 +26,10 @@ use PhpFlo\Component;
  *
  * @author Marijn Huizendveld <marijn@pink-tie.com>
  */
-class Queue extends Component
+class Queue implements ComponentInterface
 {
+    use ComponentTrait;
+
     /**
      * @var integer
      */
