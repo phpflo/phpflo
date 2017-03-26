@@ -62,7 +62,7 @@ trait ComponentTestHelperTrait
                 ->willReturnCallback(
                     \Closure::bind(
                         function ($data) {
-                            $this->data = $data;
+                            $this->data[] = $data;
                         },
                         $socket
                     )

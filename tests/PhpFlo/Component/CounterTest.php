@@ -34,6 +34,7 @@ class CounterTest extends \PHPUnit_Framework_TestCase
 
         $counter->sendCount();
 
-        $this->assertEquals(3, $this->getOutPortData('count'));
+        $countData = $this->getOutPortData('count');
+        $this->assertEquals(3, $countData[0]);
     }
 }
