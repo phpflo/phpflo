@@ -12,6 +12,7 @@ namespace PhpFlo\Common;
 
 use PhpFlo\Exception\FlowException;
 use PhpFlo\Exception\InvalidTypeException;
+use PhpFlo\Common\NetworkInterface as Net;
 
 /**
  * Class HookableNetworkTrait
@@ -26,11 +27,11 @@ trait HookableNetworkTrait
      * @var array
      */
     protected $hooks = [
-        NetworkInterface::DATA => [],
-        NetworkInterface::CONNECT => [],
-        NetworkInterface::DISCONNECT => [],
-        NetworkInterface::BEGIN_GROUP => [],
-        NetworkInterface::END_GROUP => [],
+        Net::DATA => [],
+        Net::CONNECT => [],
+        Net::DISCONNECT => [],
+        Net::BEGIN_GROUP => [],
+        Net::END_GROUP => [],
     ];
 
     /**

@@ -10,7 +10,7 @@
 
 namespace PhpFlo\Interaction;
 
-use PhpFlo\Common\NetworkInterface;
+use PhpFlo\Common\NetworkInterface as Net;
 use PhpFlo\Common\PortInterface;
 use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\SocketException;
@@ -50,7 +50,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
             return;
         }
 
-        $this->emit(NetworkInterface::DETACH, [$socket]);
+        $this->emit(Net::DETACH, [$socket]);
         $this->sockets = array_splice($this->sockets, $index, 1);
     }
 
@@ -70,7 +70,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
             return $this->sockets[$socketId]->beginGroup($groupName);
         }
 
-        $this->sockets[$socketId]->once(NetworkInterface::CONNECT, function(SocketInterface $socket) use ($groupName) {
+        $this->sockets[$socketId]->once(Net::CONNECT, function(SocketInterface $socket) use ($groupName) {
             $socket->beginGroup($groupName);
         });
         $this->sockets[$socketId]->connect();
@@ -106,7 +106,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
             return $this->sockets[$socketId]->send($data);
         }
 
-        $this->sockets[$socketId]->once(NetworkInterface::CONNECT, function(SocketInterface $socket) use ($data) {
+        $this->sockets[$socketId]->once(Net::CONNECT, function(SocketInterface $socket) use ($data) {
             $socket->send($data);
         });
         $this->sockets[$socketId]->connect();
@@ -182,7 +182,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      */
     public function onData($data, SocketInterface $socket)
     {
-        $this->emit(NetworkInterface::DATA, [$data, $this->getSocketIndex($socket)]);
+        $this->emit(Net::DATA, [$data, $this->getSocketIndex($socket)]);
     }
 
     /**
@@ -191,7 +191,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      */
     public function onBeginGroup($groupName, SocketInterface $socket)
     {
-        $this->emit(NetworkInterface::BEGIN_GROUP, [$groupName, $this->getSocketIndex($socket)]);
+        $this->emit(Net::BEGIN_GROUP, [$groupName, $this->getSocketIndex($socket)]);
     }
 
     /**
@@ -200,7 +200,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      */
     public function onEndGroup($groupName, SocketInterface $socket)
     {
-        $this->emit(NetworkInterface::END_GROUP, [$groupName, $this->getSocketIndex($socket)]);
+        $this->emit(Net::END_GROUP, [$groupName, $this->getSocketIndex($socket)]);
     }
 
     /**
