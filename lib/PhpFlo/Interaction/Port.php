@@ -10,7 +10,7 @@
 declare(strict_types=1);
 namespace PhpFlo\Interaction;
 
-use PhpFlo\Common\NetworkInterface;
+use PhpFlo\Common\NetworkInterface as Net;
 use PhpFlo\Common\PortInterface;
 use PhpFlo\Common\SocketInterface;
 use PhpFlo\Exception\InvalidDefinitionException;
@@ -49,7 +49,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function onData($data, SocketInterface $socket)
     {
-        $this->emit(NetworkInterface::DATA, [$data, $socket]);
+        $this->emit(Net::DATA, [$data, $socket]);
     }
 
     /**
@@ -58,7 +58,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function onBeginGroup(string $groupName, SocketInterface $socket)
     {
-        $this->emit(NetworkInterface::BEGIN_GROUP, [$groupName, $socket]);
+        $this->emit(Net::BEGIN_GROUP, [$groupName, $socket]);
     }
 
     /**
@@ -67,7 +67,7 @@ final class Port extends AbstractPort implements PortInterface
      */
     public function onEndGroup(string $groupName, SocketInterface $socket)
     {
-        $this->emit(NetworkInterface::END_GROUP, [$groupName, $socket]);
+        $this->emit(Net::END_GROUP, [$groupName, $socket]);
     }
 
     /**
@@ -81,7 +81,7 @@ final class Port extends AbstractPort implements PortInterface
             $this->socket = null;
         }
 
-        $this->emit(NetworkInterface::SHUTDOWN, [$this]);
+        $this->emit(Net::SHUTDOWN, [$this]);
     }
 
     /**
@@ -160,7 +160,7 @@ final class Port extends AbstractPort implements PortInterface
             return $this->socket->send($data);
         }
 
-        $this->socket->once(NetworkInterface::CONNECT, function (SocketInterface $socket) use ($data) {
+        $this->socket->once(Net::CONNECT, function (SocketInterface $socket) use ($data) {
             $socket->send($data);
         });
 
@@ -194,7 +194,7 @@ final class Port extends AbstractPort implements PortInterface
             return $this->socket->beginGroup($groupName);
         }
 
-        $this->socket->once(NetworkInterface::CONNECT, function (SocketInterface $socket) use ($groupName) {
+        $this->socket->once(Net::CONNECT, function (SocketInterface $socket) use ($groupName) {
             $socket->beginGroup($groupName);
         });
 
