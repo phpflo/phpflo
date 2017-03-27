@@ -11,6 +11,7 @@
 namespace PhpFlo\Interaction;
 
 use Evenement\EventEmitter;
+use PhpFlo\Common\NetworkInterface as Net;
 use PhpFlo\Common\SocketInterface;
 
 /**
@@ -106,7 +107,7 @@ class AbstractPort extends EventEmitter
      */
     public function onConnect(SocketInterface $socket)
     {
-        $this->emit('connect', [$socket]);
+        $this->emit(Net::CONNECT, [$socket]);
     }
 
     /**
@@ -160,14 +161,14 @@ class AbstractPort extends EventEmitter
     {
         $this->emit('attach', [$socket]);
 
-        $this->from = $socket->from;
+        $this->from = $socket->from();
 
-        $socket->on('connect', [$this, 'onConnect']);
-        $socket->on('begin.group', [$this, 'onBeginGroup']);
-        $socket->on('data', [$this, 'onData']);
-        $socket->on('end.group', [$this, 'onEndGroup']);
-        $socket->on('disconnect', [$this, 'onDisconnect']);
-        $socket->on('detach', [$this, 'onDetach']);
-        $this->once('shutdown', [$this, 'onShutdown']);
+        $socket->on(Net::CONNECT, [$this, 'onConnect']);
+        $socket->on(Net::BEGIN_GROUP, [$this, 'onBeginGroup']);
+        $socket->on(Net::DATA, [$this, 'onData']);
+        $socket->on(Net::END_GROUP, [$this, 'onEndGroup']);
+        $socket->on(Net::DISCONNECT, [$this, 'onDisconnect']);
+        $socket->on(Net::DETACH, [$this, 'onDetach']);
+        $this->once(Net::SHUTDOWN, [$this, 'onShutdown']);
     }
 }
