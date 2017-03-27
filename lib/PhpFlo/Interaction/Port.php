@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Interaction;
 
 use PhpFlo\Common\NetworkInterface as Net;
@@ -29,9 +29,9 @@ final class Port extends AbstractPort implements PortInterface
     /**
      * @param SocketInterface $socket
      * @throws InvalidDefinitionException
-     * @return $this
+     * @return PortInterface
      */
-    public function attach(SocketInterface $socket)
+    public function attach(SocketInterface $socket) : PortInterface
     {
         if ($this->socket) {
             throw new InvalidDefinitionException("{$this->name} socket already attached {$this->socket->getId()}");
@@ -56,7 +56,7 @@ final class Port extends AbstractPort implements PortInterface
      * @param string $groupName
      * @param SocketInterface $socket
      */
-    public function onBeginGroup($groupName, SocketInterface $socket)
+    public function onBeginGroup(string $groupName, SocketInterface $socket)
     {
         $this->emit(Net::BEGIN_GROUP, [$groupName, $socket]);
     }
@@ -65,7 +65,7 @@ final class Port extends AbstractPort implements PortInterface
      * @param string $groupName
      * @param SocketInterface $socket
      */
-    public function onEndGroup($groupName, SocketInterface $socket)
+    public function onEndGroup(string $groupName, SocketInterface $socket)
     {
         $this->emit(Net::END_GROUP, [$groupName, $socket]);
     }
@@ -109,7 +109,7 @@ final class Port extends AbstractPort implements PortInterface
     /**
      * @return bool
      */
-    public function isConnected()
+    public function isConnected() : bool
     {
         if (null === $this->socket) {
             return false;
@@ -123,7 +123,7 @@ final class Port extends AbstractPort implements PortInterface
      *
      * @return bool
      */
-    public function isAttached()
+    public function isAttached() : bool
     {
         if (!$this->socket) {
             return false;
@@ -136,7 +136,7 @@ final class Port extends AbstractPort implements PortInterface
      * @param $groupName
      * @throws PortException
      */
-    public function endGroup($groupName)
+    public function endGroup(string $groupName)
     {
         if (null !== $this->socket) {
             $this->socket->endGroup($groupName);
@@ -184,7 +184,7 @@ final class Port extends AbstractPort implements PortInterface
      * @return null
      * @throws PortException
      */
-    public function beginGroup($groupName)
+    public function beginGroup(string $groupName)
     {
         if (null === $this->socket) {
             throw new PortException("This port is not connected");

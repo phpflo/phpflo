@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Common;
 
 use PhpFlo\Exception\InvalidDefinitionException;
@@ -36,25 +36,25 @@ interface PortInterface
     /**
      * @return array
      */
-    public function getAttributes();
+    public function getAttributes() : array ;
 
     /**
      * @param string $name
      * @return mixed|null
      */
-    public function getAttribute($name);
+    public function getAttribute(string $name);
 
     /**
      * @return string
      */
-    public function getName();
+    public function getName() : string;
 
     /**
      * @param SocketInterface $socket
      * @throws InvalidDefinitionException
-     * @return $this
+     * @return PortInterface
      */
-    public function attach(SocketInterface $socket);
+    public function attach(SocketInterface $socket) : PortInterface;
 
     /**
      * @param mixed $data
@@ -66,13 +66,13 @@ interface PortInterface
      * @param string $groupName
      * @param SocketInterface $socket
      */
-    public function onBeginGroup($groupName, SocketInterface $socket);
+    public function onBeginGroup(string $groupName, SocketInterface $socket);
 
     /**
      * @param string $groupName
      * @param SocketInterface $socket
      */
-    public function onEndGroup($groupName, SocketInterface $socket);
+    public function onEndGroup(string $groupName, SocketInterface $socket);
 
     /**
      * Callback for shutdown event, disconnects and detaches port and sockets.
@@ -97,20 +97,20 @@ interface PortInterface
     /**
      * @return bool
      */
-    public function isConnected();
+    public function isConnected() : bool;
 
     /**
      * Checks if port is attached.
      *
      * @return bool
      */
-    public function isAttached();
+    public function isAttached() : bool;
 
     /**
-     * @param $groupName
+     * @param string $groupName
      * @throws PortException
      */
-    public function endGroup($groupName);
+    public function endGroup(string $groupName);
 
     /**
      * @param mixed $data
@@ -129,5 +129,5 @@ interface PortInterface
      * @return null
      * @throws PortException
      */
-    public function beginGroup($groupName);
+    public function beginGroup(string $groupName);
 }

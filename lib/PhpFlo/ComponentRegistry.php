@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo;
 
 use PhpFlo\Common\ComponentInterface;
@@ -38,7 +38,7 @@ class ComponentRegistry implements ComponentRegistryInterface
      * @return ComponentInterface
      * @throws ComponentNotFoundException
      */
-    public function get($alias)
+    public function get(string $alias) : ComponentInterface
     {
         if (array_key_exists($alias, $this->references)) {
             return $this->references[$alias];
@@ -50,10 +50,10 @@ class ComponentRegistry implements ComponentRegistryInterface
     /**
      * @param ComponentInterface $component
      * @param string $alias
-     * @return $this
+     * @return ComponentRegistryInterface
      * @throws ComponentException
      */
-    public function add(ComponentInterface $component, $alias)
+    public function add(ComponentInterface $component, string $alias) : ComponentRegistryInterface
     {
         if (!array_key_exists($alias, $this->references)) {
             $this->references[$alias] = $component;

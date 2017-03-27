@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Common;
 
 use PhpFlo\Interaction\PortRegistry;
@@ -38,7 +38,7 @@ trait ComponentTrait
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription() : string
     {
         return $this->description;
     }
@@ -46,7 +46,7 @@ trait ComponentTrait
     /**
      * @return PortRegistry
      */
-    public function inPorts()
+    public function inPorts() : PortRegistry
     {
         if (null === $this->inPorts) {
             $this->inPorts = new PortRegistry();
@@ -58,7 +58,7 @@ trait ComponentTrait
     /**
      * @return PortRegistry
      */
-    public function outPorts()
+    public function outPorts() : PortRegistry
     {
         if (null === $this->outPorts) {
             $this->outPorts = new PortRegistry();
@@ -68,9 +68,9 @@ trait ComponentTrait
     }
 
     /**
-     * @return $this;
+     * @return ComponentInterface
      */
-    public function shutdown()
+    public function shutdown() : ComponentInterface
     {
         foreach ($this->inPorts()->get() as $port) {
             $port->emit('shutdown', [$port]);

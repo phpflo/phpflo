@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Interaction;
 
 use Evenement\EventEmitter;
@@ -64,7 +64,7 @@ class AbstractPort extends EventEmitter
      * @param string $name
      * @param array $attributes
      */
-    public function __construct($name, array $attributes)
+    public function __construct(string $name, array $attributes)
     {
         $defaultAttributes = [
             'datatype' => 'all',
@@ -86,7 +86,7 @@ class AbstractPort extends EventEmitter
      * @param string $toType
      * @return bool
      */
-    public static function isCompatible($fromType, $toType)
+    public static function isCompatible(string $fromType, string $toType) : bool
     {
         switch(true) {
             case (($fromType == $toType) || ($toType == 'all' || $toType == 'bang')):
@@ -126,7 +126,7 @@ class AbstractPort extends EventEmitter
     /**
      * @return array
      */
-    public function getAttributes()
+    public function getAttributes() : array
     {
         return $this->attributes;
     }
@@ -135,7 +135,7 @@ class AbstractPort extends EventEmitter
      * @param string $name
      * @return mixed|null
      */
-    public function getAttribute($name)
+    public function getAttribute(string $name)
     {
         $attribute = null;
 
@@ -149,9 +149,9 @@ class AbstractPort extends EventEmitter
     /**
      * @return string
      */
-    public function getName()
+    public function getName() : string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**

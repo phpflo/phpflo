@@ -2,7 +2,7 @@
     "name": "phpflo/phpflo",
     "type": "library",
     "description": "Flow-based programming for PHP",
-    "keywords": ["fbp", "flow"],
+    "keywords": ["fbp", "flow", "flow based programming"],
     "homepage": "https://github.com/bergie/phpflo",
     "license": "MIT",
     "authors": [
@@ -13,13 +13,14 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "evenement/evenement": "~2.0",
+        "php": ">=7.0.0",
+        "evenement/evenement": "^2.0",
         "phpflo/phpflo-core": "^1.0",
-        "phpflo/phpflo-fbp": "^1.0"
+        "phpflo/phpflo-fbp": "^1.0",
+        "psr/container": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "<5.0"
+        "phpunit/phpunit": "^5.0"
     },
     "autoload": {
         "psr-4": {

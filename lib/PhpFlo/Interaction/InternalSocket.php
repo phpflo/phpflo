@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Interaction;
 
 use Evenement\EventEmitter;
@@ -53,7 +53,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @return string
      */
-    public function getId()
+    public function getId() : string
     {
         if ($this->from && !$this->to) {
             return "{$this->from[Net::PROCESS][Net::NODE_ID]}.{$this->from[Net::PORT]}:ANON";
@@ -77,7 +77,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @param string $groupName
      */
-    public function beginGroup($groupName)
+    public function beginGroup(string $groupName)
     {
         $this->emit(Net::BEGIN_GROUP, [$groupName, $this]);
     }
@@ -85,7 +85,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @param string $groupName
      */
-    public function endGroup($groupName)
+    public function endGroup(string $groupName)
     {
         $this->emit(Net::END_GROUP, [$groupName, $this]);
     }
@@ -93,7 +93,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @inheritdoc
      */
-    public function send($data)
+    public function send($data) : SocketInterface
     {
         $this->emit(Net::DATA, [$data, $this]);
 
@@ -123,7 +123,10 @@ class InternalSocket extends EventEmitter implements SocketInterface
         $this->emit(Net::SHUTDOWN, [$this]);
     }
 
-    public function isConnected()
+    /**
+     * @return bool
+     */
+    public function isConnected() : bool
     {
         return $this->connected;
     }

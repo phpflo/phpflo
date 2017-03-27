@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Common;
 
 use PhpFlo\Exception\FlowException;
@@ -32,14 +32,14 @@ interface HookableNetworkInterface
      * @param \Closure $closure
      * @throws FlowException
      * @throws InvalidTypeException
-     * @return $this
+     * @return HookableNetworkInterface
      */
-    public function hook($event, $alias, \Closure $closure);
+    public function hook(string $event, string $alias, \Closure $closure);
 
     /**
      * Get all defined custom event hooks
      *
      * @return array
      */
-    public function hooks();
+    public function hooks() : array;
 }

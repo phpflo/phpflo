@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Builder;
 
 use PhpFlo\Common\ComponentBuilderInterface;
@@ -32,7 +32,7 @@ class ComponentFactory implements ComponentBuilderInterface
      * @return ComponentInterface
      * @throws InvalidDefinitionException
      */
-    public function build($component)
+    public function build(string $component) : ComponentInterface
     {
         if (!class_exists($component) && strpos($component, '\\') === false) {
             $component = "PhpFlo\\Component\\{$component}";
