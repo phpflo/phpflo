@@ -27,6 +27,7 @@ class ComponentFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidComponentException()
     {
-        $this->markTestIncomplete('If someone finds an easy way to mock non-existing classes in autoload: Give it a try');
+        $diFactory = new ComponentFactory();
+        $diFactory->build("\stdClass");
     }
 }
