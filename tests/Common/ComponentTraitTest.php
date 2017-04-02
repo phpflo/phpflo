@@ -40,11 +40,11 @@ class ComponentTraitTest extends \PHPUnit_Framework_TestCase
         $component = $this->mockComponentTrait();
         $component->inPorts()->add('source', []);
         $component->outPorts()->add('out', []);
-        $this->assertInstanceOf(ComponentInterface::class, $component->shutdown());
+        $this->assertSame($component, $component->shutdown());
     }
 
     private function mockComponentTrait()
     {
-        return new Component();
+        return $this->getObjectForTrait(ComponentTrait::class);
     }
 }
