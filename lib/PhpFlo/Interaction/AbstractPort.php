@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Interaction;
 
 use Evenement\EventEmitter;
-use PhpFlo\Common\NetworkInterface;
+use PhpFlo\Common\NetworkInterface as Net;
 use PhpFlo\Common\SocketInterface;
 
 /**
@@ -64,7 +64,7 @@ class AbstractPort extends EventEmitter
      * @param string $name
      * @param array $attributes
      */
-    public function __construct($name, array $attributes)
+    public function __construct(string $name, array $attributes)
     {
         $defaultAttributes = [
             'datatype' => 'all',
@@ -86,7 +86,7 @@ class AbstractPort extends EventEmitter
      * @param string $toType
      * @return bool
      */
-    public static function isCompatible($fromType, $toType)
+    public static function isCompatible(string $fromType, string $toType) : bool
     {
         switch(true) {
             case (($fromType == $toType) || ($toType == 'all' || $toType == 'bang')):
@@ -107,7 +107,7 @@ class AbstractPort extends EventEmitter
      */
     public function onConnect(SocketInterface $socket)
     {
-        $this->emit(NetworkInterface::CONNECT, [$socket]);
+        $this->emit(Net::CONNECT, [$socket]);
     }
 
     /**
@@ -126,7 +126,7 @@ class AbstractPort extends EventEmitter
     /**
      * @return array
      */
-    public function getAttributes()
+    public function getAttributes() : array
     {
         return $this->attributes;
     }
@@ -135,7 +135,7 @@ class AbstractPort extends EventEmitter
      * @param string $name
      * @return mixed|null
      */
-    public function getAttribute($name)
+    public function getAttribute(string $name)
     {
         $attribute = null;
 
@@ -149,9 +149,9 @@ class AbstractPort extends EventEmitter
     /**
      * @return string
      */
-    public function getName()
+    public function getName() : string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**
@@ -163,12 +163,12 @@ class AbstractPort extends EventEmitter
 
         $this->from = $socket->from();
 
-        $socket->on(NetworkInterface::CONNECT, [$this, 'onConnect']);
-        $socket->on(NetworkInterface::BEGIN_GROUP, [$this, 'onBeginGroup']);
-        $socket->on(NetworkInterface::DATA, [$this, 'onData']);
-        $socket->on(NetworkInterface::END_GROUP, [$this, 'onEndGroup']);
-        $socket->on(NetworkInterface::DISCONNECT, [$this, 'onDisconnect']);
-        $socket->on(NetworkInterface::DETACH, [$this, 'onDetach']);
-        $this->once(NetworkInterface::SHUTDOWN, [$this, 'onShutdown']);
+        $socket->on(Net::CONNECT, [$this, 'onConnect']);
+        $socket->on(Net::BEGIN_GROUP, [$this, 'onBeginGroup']);
+        $socket->on(Net::DATA, [$this, 'onData']);
+        $socket->on(Net::END_GROUP, [$this, 'onEndGroup']);
+        $socket->on(Net::DISCONNECT, [$this, 'onDisconnect']);
+        $socket->on(Net::DETACH, [$this, 'onDetach']);
+        $this->once(Net::SHUTDOWN, [$this, 'onShutdown']);
     }
 }

@@ -26,22 +26,9 @@ PhpFlo is still quite experimental, but may be useful for implementing flow cont
 
 PhpFlo can be installed from [Packagist.org](http://packagist.org/view/PhpFlo/PhpFlo) with the [composer](https://github.com/composer/composer) package manager. Just ensure your `composer.json` has the following:
 
-```json
-{
-    "require": {
-        "phpflo/phpflo": "^1.0.0"
-    }
-}
-```
-
-and run:
-
 ```sh
-$ wget http://getcomposer.org/composer.phar
-$ php composer.phar install
+php composer.phar require phpflo/phpflo
 ```
-
-or do a quick ```php composer.phar require phpflo/phpflo``` from within your existing project.
 
 ## Autoloading
 
@@ -90,10 +77,12 @@ A minimal component would look like the following:
 ```php
 <?php
 
-use PhpFlo\Component;
+use PhpFlo\Common\ComponentTrait;
+use PhpFlo\Common\ComponentInterface;
 
-class Forwarder extends Component
+class Forwarder implements ComponentInterface
 {
+    use ComponentTrait;
     protected $description = "This component receives data on a single input port and sends the same data out to the output port";
 
     public function __construct()
@@ -121,7 +110,7 @@ class Forwarder extends Component
 }
 ```
 
-Alternatively you can now use ```PhpFlo\Common\ComponentTrait``` together with ```PhpFlo\Common\ComponentInterface````if you're more into composition.
+Alternatively you can use ```PhpFlo\Component``` via direct inheritance, which internally uses the trait.
 This example component register two ports: _in_ and _out_. When it receives data in the _in_ port, it opens the _out_ port and sends the same data there. When the _in_ connection closes, it will also close the _out_ connection. So basically this component would be a simple repeater.
 You can find more examples of components in the `lib/PhpFlo/Component` folder.
 Please mind that there's an mandatory second parameter for the "add" command. This array receives the port's meta information and has following defaults:
@@ -349,6 +338,49 @@ $network
 
 As you can see, there's a lot of potential in the callbacks, since they can also use object references to store and/or manipulate data, but natively receive socket and data from the supported events.
 This feature is also used in the upcoming [phpflo/flowtrace](https://github.com/phpflo/flowtrace) library, which decorates the ```Network``` class and adds PSR-3 compatible logging.
+
+## Testing
+
+To be able to test your components, two traits are provided in [phpflo-core](https://github.com/phpflo/phpflo-core) which is automatically included as a dependency for phpflo. 
+```PhpFlo\Test\ComponentTestTrait``` and ```PhpFlo\Test\Stub\Trait``` contain the necessary tools to make testing easier.
+
+```php
+<?php
+namespace Tests\PhpFlo\Component;
+
+use PhpFlo\Component\Counter;
+use PhpFlo\Test\ComponentTestHelperTrait;
+use PhpFlo\Test\StubTrait;
+
+class CounterTest extends \PHPUnit_Framework_TestCase
+{
+    use StubTrait;
+    use ComponentTestHelperTrait;
+
+    public function testBehavior()
+    {
+        $counter = new Counter();
+        $this->connectPorts($counter);
+
+        $this->assertTrue($counter->inPorts()->has('in'));
+        $this->assertTrue($counter->outPorts()->has('count'));
+
+        $counter->appendCount(1);
+        $counter->appendCount("2");
+        $counter->appendCount(null);
+
+        $counter->sendCount();
+
+        $countData = $this->getOutPortData('count');
+        $this->assertEquals(3, $countData[0]);
+    }
+}
+
+```
+
+Within this code example you can see that the outPorts are available via ```getOutportData('alias'')``` method. This will always return an array of data sent to that specific port, because you can iteratively call ports within a component.
+On codelevel this is nothing more than callbacks with an internal storage of your data, so you can test a component and its interaction in isolation.
+To be able to use the component in testing you will first need to ```connectPorts($component)``` or separately ```connectInPorts($component); connectOutPorts($component)```, so phpflo won't throw any "port not connected" errors at you.
 
 ## Development
 

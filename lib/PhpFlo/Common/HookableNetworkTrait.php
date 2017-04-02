@@ -7,11 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Common;
 
 use PhpFlo\Exception\FlowException;
 use PhpFlo\Exception\InvalidTypeException;
+use PhpFlo\Common\NetworkInterface as Net;
 
 /**
  * Class HookableNetworkTrait
@@ -26,11 +27,11 @@ trait HookableNetworkTrait
      * @var array
      */
     protected $hooks = [
-        NetworkInterface::DATA => [],
-        NetworkInterface::CONNECT => [],
-        NetworkInterface::DISCONNECT => [],
-        NetworkInterface::BEGIN_GROUP => [],
-        NetworkInterface::END_GROUP => [],
+        Net::DATA => [],
+        Net::CONNECT => [],
+        Net::DISCONNECT => [],
+        Net::BEGIN_GROUP => [],
+        Net::END_GROUP => [],
     ];
 
     /**
@@ -42,11 +43,11 @@ trait HookableNetworkTrait
      * @param string $event
      * @param string $alias
      * @param \Closure $closure
-     * @return $this
+     * @return HookableNetworkInterface
      * @throws FlowException
      * @throws InvalidTypeException
      */
-    public function hook($event, $alias, \Closure $closure)
+    public function hook(string $event, string $alias, \Closure $closure)
     {
         if (!array_key_exists($event, $this->hooks)) {
             throw new InvalidTypeException(
@@ -71,7 +72,7 @@ trait HookableNetworkTrait
      *
      * @return array
      */
-    public function hooks()
+    public function hooks() : array
     {
         return $this->hooks;
     }
@@ -80,7 +81,7 @@ trait HookableNetworkTrait
      * @param SocketInterface $socket
      * @return SocketInterface
      */
-    protected function addHooks(SocketInterface $socket)
+    protected function addHooks(SocketInterface $socket) : SocketInterface
     {
         // examine events
         foreach ($this->hooks as $event => $hooks) {

@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Builder;
 
 use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\ComponentInterface;
 use PhpFlo\Exception\InvalidDefinitionException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Example of how to use a depency injection container with builder.
@@ -35,7 +35,7 @@ class ComponentDiFinder implements ComponentBuilderInterface
      *
      * @param ContainerInterface $container dependency injection container
      */
-    public function __construct($container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
@@ -45,7 +45,7 @@ class ComponentDiFinder implements ComponentBuilderInterface
      * @return ComponentInterface
      * @throws InvalidDefinitionException
      */
-    public function build($component)
+    public function build(string $component) : ComponentInterface
     {
         $instance = $this->container->get($component);
 

@@ -7,9 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Interaction;
 
+use PhpFlo\Common\PortInterface;
 use PhpFlo\Exception\PortException;
 
 /**
@@ -39,10 +40,10 @@ class PortRegistry implements \Iterator, \Countable
     /**
      * @param string $name
      * @param array $attributes
-     * @return $this
+     * @return PortRegistry
      * @throws PortException
      */
-    public function add($name, array $attributes)
+    public function add(string $name, array $attributes) : PortRegistry
     {
         switch (true) {
             case (!$this->has($name) && (isset($attributes['addressable']) && false !== $attributes['addressable'])):
@@ -68,7 +69,7 @@ class PortRegistry implements \Iterator, \Countable
      * @param string $name
      * @return bool
      */
-    public function has($name)
+    public function has(string $name) : bool
     {
         $hasPort = false;
 
@@ -83,10 +84,10 @@ class PortRegistry implements \Iterator, \Countable
      * Return one or all ports.
      *
      * @param string $name
-     * @return array|ArrayPort|Port
+     * @return PortInterface[]|PortInterface
      * @throws PortException
      */
-    public function get($name = '')
+    public function get(string $name = '')
     {
         switch (true) {
             case ('' == $name):
@@ -104,9 +105,9 @@ class PortRegistry implements \Iterator, \Countable
 
     /**
      * @param string $name
-     * @return $this
+     * @return PortRegistry
      */
-    public function remove($name)
+    public function remove(string $name) : PortRegistry
     {
         if ($this->has($name)) {
             $this->ports[$name] = null;
@@ -121,7 +122,7 @@ class PortRegistry implements \Iterator, \Countable
      * @return Port|ArrayPort
      * @throws PortException
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         return $this->get($name);
     }

@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Interaction;
 
 use Evenement\EventEmitter;
-use PhpFlo\Common\NetworkInterface;
+use PhpFlo\Common\NetworkInterface as Net;
 use PhpFlo\Common\SocketInterface;
 
 /**
@@ -53,16 +53,16 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @return string
      */
-    public function getId()
+    public function getId() : string
     {
         if ($this->from && !$this->to) {
-            return "{$this->from[NetworkInterface::PROCESS][NetworkInterface::NODE_ID]}.{$this->from[NetworkInterface::PORT]}:ANON";
+            return "{$this->from[Net::PROCESS][Net::NODE_ID]}.{$this->from[Net::PORT]}:ANON";
         }
         if (!$this->from) {
-            return "ANON:{$this->to[NetworkInterface::PROCESS][NetworkInterface::NODE_ID]}.{$this->to[NetworkInterface::PORT]}";
+            return "ANON:{$this->to[Net::PROCESS][Net::NODE_ID]}.{$this->to[Net::PORT]}";
         }
 
-        return "{$this->from[NetworkInterface::PROCESS][NetworkInterface::NODE_ID]}.{$this->from[NetworkInterface::PORT]}:{$this->to[NetworkInterface::PROCESS][NetworkInterface::NODE_ID]}.{$this->to[NetworkInterface::PORT]}";
+        return "{$this->from[Net::PROCESS][Net::NODE_ID]}.{$this->from[Net::PORT]}:{$this->to[Net::PROCESS][Net::NODE_ID]}.{$this->to[Net::PORT]}";
     }
 
     /**
@@ -71,31 +71,31 @@ class InternalSocket extends EventEmitter implements SocketInterface
     public function connect()
     {
         $this->connected = true;
-        $this->emit(NetworkInterface::CONNECT, [$this]);
+        $this->emit(Net::CONNECT, [$this]);
     }
 
     /**
      * @param string $groupName
      */
-    public function beginGroup($groupName)
+    public function beginGroup(string $groupName)
     {
-        $this->emit(NetworkInterface::BEGIN_GROUP, [$groupName, $this]);
+        $this->emit(Net::BEGIN_GROUP, [$groupName, $this]);
     }
 
     /**
      * @param string $groupName
      */
-    public function endGroup($groupName)
+    public function endGroup(string $groupName)
     {
-        $this->emit(NetworkInterface::END_GROUP, [$groupName, $this]);
+        $this->emit(Net::END_GROUP, [$groupName, $this]);
     }
 
     /**
      * @inheritdoc
      */
-    public function send($data)
+    public function send($data) : SocketInterface
     {
-        $this->emit(NetworkInterface::DATA, [$data, $this]);
+        $this->emit(Net::DATA, [$data, $this]);
 
         return $this;
     }
@@ -106,7 +106,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     public function disconnect()
     {
         $this->connected = false;
-        $this->emit(NetworkInterface::DISCONNECT, [$this]);
+        $this->emit(Net::DISCONNECT, [$this]);
 
         return $this;
     }
@@ -120,10 +120,13 @@ class InternalSocket extends EventEmitter implements SocketInterface
         $this->from = [];
         $this->to = [];
         $this->removeAllListeners();
-        $this->emit(NetworkInterface::SHUTDOWN, [$this]);
+        $this->emit(Net::SHUTDOWN, [$this]);
     }
 
-    public function isConnected()
+    /**
+     * @return bool
+     */
+    public function isConnected() : bool
     {
         return $this->connected;
     }

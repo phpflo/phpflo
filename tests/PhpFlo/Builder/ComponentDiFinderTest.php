@@ -2,6 +2,9 @@
 namespace Test\PhpFlo\Builder;
 
 use PhpFlo\Builder\ComponentDiFinder;
+use PhpFlo\Common\ComponentBuilderInterface;
+use PhpFlo\Common\ComponentInterface;
+use Psr\Container\ContainerInterface;
 
 class ComponentDiFinderTest extends \PHPUnit_Framework_TestCase
 {
@@ -9,19 +12,20 @@ class ComponentDiFinderTest extends \PHPUnit_Framework_TestCase
     public function testInstance()
     {
         $diFinder = new ComponentDiFinder(
-            $this->stub('\Symfony\Component\DependencyInjection\ContainerInterface')
+            $this->stub(ContainerInterface::class)
         );
 
-        $this->assertInstanceOf('PhpFlo\Builder\ComponentDiFinder', $diFinder);
+        $this->assertInstanceOf(ComponentBuilderInterface::class, $diFinder);
     }
 
     public function testFindComponentInDi()
     {
         $diFinder = new ComponentDiFinder(
             $this->stub(
-                '\Symfony\Component\DependencyInjection\ContainerInterface',
+                ContainerInterface::class,
                 [
-                    'get' => $this->stub('PhpFlo\Common\ComponentInterface', [], 'SomeComponent'),
+                    'get' => $this->stub(ComponentInterface::class, [], 'SomeComponent'),
+                    'has' => false,
                 ]
             )
         );
@@ -38,9 +42,10 @@ class ComponentDiFinderTest extends \PHPUnit_Framework_TestCase
     {
         $diFinder = new ComponentDiFinder(
             $this->stub(
-                '\Symfony\Component\DependencyInjection\ContainerInterface',
+                ContainerInterface::class,
                 [
                     'get' => $this->stub('SomeInvalidComponent'),
+                    'has' => false,
                 ]
             )
         );

@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
+declare(strict_types=1);
 namespace PhpFlo\Common;
 
 use PhpFlo\Graph;
@@ -43,17 +43,17 @@ interface NetworkInterface extends HookableNetworkInterface
 
     /**
      * @param array $edge
-     * @return Network
+     * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
-    public function addEdge(array $edge);
+    public function addEdge(array $edge) : NetworkInterface;
 
     /**
      * @param array $node
-     * @return $this
+     * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
-    public function addNode(array $node);
+    public function addNode(array $node) : NetworkInterface;
 
     /**
      * Add a flow definition as Graph object or definition file/string
@@ -63,7 +63,7 @@ interface NetworkInterface extends HookableNetworkInterface
      * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
-    public function boot($graph);
+    public function boot($graph) : NetworkInterface;
 
     /**
      * @return null|Graph
@@ -74,19 +74,19 @@ interface NetworkInterface extends HookableNetworkInterface
      * @param string $id
      * @return mixed|null
      */
-    public function getNode($id);
+    public function getNode(string $id);
 
     /**
      * @param array $edge
-     * @return $this
+     * @return NetworkInterface
      */
-    public function removeEdge(array $edge);
+    public function removeEdge(array $edge) : NetworkInterface;
 
     /**
      * @param array $node
-     * @return $this
+     * @return NetworkInterface
      */
-    public function removeNode(array $node);
+    public function removeNode(array $node) : NetworkInterface;
 
     /**
      * Add initialization data
@@ -94,17 +94,17 @@ interface NetworkInterface extends HookableNetworkInterface
      * @param mixed $data
      * @param string $node
      * @param string $port
-     * @return $this
+     * @return NetworkInterface
      * @throws FlowException
      */
-    public function run($data, $node, $port);
+    public function run($data, string $node, string $port) : NetworkInterface;
 
     /**
      * Cleanup network state after runs.
      *
-     * @return $this
+     * @return NetworkInterface
      */
-    public function shutdown();
+    public function shutdown() : NetworkInterface;
 
     /**
      * @return bool|\DateInterval
