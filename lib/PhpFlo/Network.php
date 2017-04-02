@@ -294,24 +294,10 @@ class Network implements NetworkInterface
      *
      * @param mixed $graph
      * @return NetworkInterface
-     * @throws InvalidTypeException
      */
     public function boot($graph) : NetworkInterface
     {
-        switch (true) {
-            case (is_a(Graph::class, $graph)):
-                break;
-            case (is_file($graph)):
-                $graph = Graph::loadFile($graph);
-                break;
-            case (is_string($graph)):
-                $graph = Graph::loadString($graph);
-                break;
-            default:
-                throw new InvalidTypeException(
-                    "Graph has to be either a Graph object or a compatible definition file/string"
-                );
-        }
+        $graph = $this->buildGraph($graph);
 
         $graph->on(self::EVENT_ADD, [$this, 'addNode']);
         $graph->on(self::EVENT_REMOVE, [$this, 'removeNode']);
@@ -323,6 +309,32 @@ class Network implements NetworkInterface
         $this->loadGraph($graph);
 
         return $this;
+    }
+
+    /**
+     * Use appropriate strategy to build graph according to parameter type
+     *
+     * @param Graph|string $graph
+     * @return Graph
+     * @throws InvalidTypeException
+     */
+    public function buildGraph($graph) : Graph
+    {
+        if(is_a($graph, Graph::class)) {
+            return $graph;
+        }
+
+        if(is_string($graph)) {
+            if (is_file($graph)) {
+                return Graph::loadFile($graph);
+            }
+
+            return Graph::loadString($graph);
+        }
+
+        throw new InvalidTypeException(
+            "Graph has to be either a Graph object or a compatible definition file/string"
+        );
     }
 
     /**
