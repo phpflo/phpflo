@@ -19,7 +19,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     {
         $content = <<<EOF
 ReadFile(ReadFile) out -> in SplitbyLines(SplitStr)
-ReadFile(ReadFile) error -> in Display(Output)
 SplitbyLines(SplitStr) out -> in CountLines(Counter)
 CountLines(Counter) count -> in Display(Output)
 EOF;
@@ -61,6 +60,8 @@ EOF;
         $this->assertNull($network->getNode('CountLines'));
         $network->addNode(['id' => 'CountLines']);
         $this->assertTrue(is_array($network->getNode('CountLines')));
+        // Test adding the existing node again
+        $this->assertInstanceOf(NetworkInterface::class, $network->addNode(['id' => 'CountLines']));
     }
 
     /**
@@ -76,9 +77,101 @@ EOF;
      * @param NetworkInterface $network
      * @depends testLoadFile
      */
-    /*public function testEdeges(NetworkInterface $network)
+    public function testAddEdge(NetworkInterface $network)
     {
-        $network->addEdge('Count Lines', 'count', 'Display', 'in');
-        $network->removeEdge();
-    }*/
+        $network->addEdge(
+            [
+                'from' => [
+                    'node' => 'ReadFile',
+                    'port' => 'error',
+                ],
+                'to' => [
+                    'node' => 'Display',
+                    'port' => 'in',
+                ]
+            ]
+        );
+    }
+
+    /**
+     * @param NetworkInterface $network
+     * @depends testLoadFile
+     */
+    public function testAddEdgeWithSource(NetworkInterface $network)
+    {
+        $network->addEdge(
+            [
+                'from' => [
+                    'data' => 'somefilename.txt',
+                ],
+                'to' => [
+                    'node' => 'ReadFile',
+                    'port' => 'source',
+                ]
+            ]
+        );
+    }
+
+    /**
+     * @param NetworkInterface $network
+     * @depends testLoadFile
+     * @expectedException \PhpFlo\Exception\InvalidDefinitionException
+     */
+    public function testAddEdgeWithInvalidInitializerTarget(NetworkInterface $network)
+    {
+        $network->addEdge(
+            [
+                'from' => [
+                    'data' => 'somefilename.txt',
+                ],
+                'to' => [
+                    'node' => 'IDoNotExist',
+                    'port' => 'source',
+                ]
+            ]
+        );
+    }
+
+    /**
+     * @param NetworkInterface $network
+     * @depends testLoadFile
+     * @expectedException \PhpFlo\Exception\InvalidDefinitionException
+     */
+    public function testNoProcessForInportException(NetworkInterface $network)
+    {
+        $network->addEdge(
+            [
+                'from' => [
+                    'node' => 'SomeNonExistentComponent',
+                    'port' => 'error',
+                ],
+                'to' => [
+                    'node' => 'Display',
+                    'port' => 'in',
+                ]
+            ]
+        );
+    }
+
+
+    /**
+     * @param NetworkInterface $network
+     * @depends testLoadFile
+     * @expectedException \PhpFlo\Exception\InvalidDefinitionException
+     */
+    public function testNoProcessForOutPortException(NetworkInterface $network)
+    {
+        $network->addEdge(
+            [
+                'from' => [
+                    'node' => 'ReadFile',
+                    'port' => 'error',
+                ],
+                'to' => [
+                    'node' => 'SomeNonExistentComponent',
+                    'port' => 'in',
+                ]
+            ]
+        );
+    }
 }
