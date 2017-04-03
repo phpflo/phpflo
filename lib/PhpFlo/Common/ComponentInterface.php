@@ -40,5 +40,5 @@ interface ComponentInterface
      *
      * @return ComponentInterface;
      */
-    public function shutdown() : ComponentInterface;
+    public function shutdown();
 }

@@ -70,7 +70,7 @@ trait ComponentTrait
     /**
      * @return ComponentInterface
      */
-    public function shutdown() : ComponentInterface
+    public function shutdown()
     {
         foreach ($this->inPorts()->get() as $port) {
             $port->emit('shutdown', [$port]);

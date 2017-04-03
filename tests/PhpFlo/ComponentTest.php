@@ -10,6 +10,7 @@
 
 namespace Tests\PhpFlo;
 
+use PhpFlo\Common\ComponentInterface;
 use PhpFlo\Component;
 use PhpFlo\Interaction\PortRegistry;
 
@@ -19,7 +20,7 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
     {
         $component = new Component();
 
-        $this->assertInstanceOf(Component::class, $component);
+        $this->assertInstanceOf(ComponentInterface::class, $component);
     }
 
     public function testRegistryInstantiation()
