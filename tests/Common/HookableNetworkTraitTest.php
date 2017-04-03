@@ -11,13 +11,24 @@
 namespace Tests\PhpFlo\Common;
 
 
+use PhpFlo\Common\HookableNetworkTrait;
+use PhpFlo\Interaction\InternalSocket;
+
 class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var HookableNetworkTrait | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $hookTrait;
+
+    public function setUp()
+    {
+        $this->hookTrait = $this->getObjectForTrait(HookableNetworkTrait::class);
+    }
+
     public function testSetHook()
     {
-        $trait = $this->getMockForTrait('\PhpFlo\Common\HookableNetworkTrait');
-
-        $trait->hook(
+        $this->hookTrait->hook(
             'data',
             'somename',
             function () {
@@ -25,7 +36,7 @@ class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
             }
         );
 
-        $hooks = $trait->hooks();
+        $hooks = $this->hookTrait->hooks();
 
         $this->assertTrue(is_array($hooks));
         $this->assertArrayHasKey('data', $hooks);
@@ -39,9 +50,7 @@ class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidEventNameException()
     {
-        $trait = $this->getMockForTrait('\PhpFlo\Common\HookableNetworkTrait');
-
-        $trait->hook(
+        $this->hookTrait->hook(
             'i_am_inavlid',
             'somename',
             function () {
@@ -55,9 +64,7 @@ class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function testEventAlreadyExistsException()
     {
-        $trait = $this->getMockForTrait('\PhpFlo\Common\HookableNetworkTrait');
-
-        $trait->hook(
+        $this->hookTrait->hook(
             'data',
             'somename',
             function () {
@@ -74,9 +81,7 @@ class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testAddHooksToSocket()
     {
-        $trait = $this->getMockForTrait('\PhpFlo\Common\HookableNetworkTrait');
-
-        $trait->hook(
+        $this->hookTrait->hook(
             'data',
             'somename',
             function () {
@@ -85,11 +90,11 @@ class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
         );
 
         /** since we want to test the protected method, this is the only way in php -.- */
-        $reflector = new \ReflectionClass(get_class($trait));
+        $reflector = new \ReflectionClass(get_class($this->hookTrait));
         $method = $reflector->getMethod('addHooks');
         $method->setAccessible(true);
 
-        $socket = $this->getMockBuilder('\PhpFlo\Interaction\InternalSocket')
+        $socket = $this->getMockBuilder(InternalSocket::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -107,7 +112,7 @@ class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
             ->willReturnCallback($cb);
 
         // we just want to test if the $socket->on() method is called
-        $socket = $method->invokeArgs($trait, [$socket]);
+        $socket = $method->invokeArgs($this->hookTrait, [$socket]);
         $this->assertEquals('somename', $socket->set_listener['data']);
     }
 }

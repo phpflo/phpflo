@@ -10,6 +10,8 @@
 
 namespace Tests\PhpFlo\Interaction;
 
+use PhpFlo\Common\PortInterface;
+use PhpFlo\Interaction\ArrayPort;
 use PhpFlo\Interaction\PortRegistry;
 
 class PortRegistryTest extends \PHPUnit_Framework_TestCase
@@ -17,7 +19,7 @@ class PortRegistryTest extends \PHPUnit_Framework_TestCase
     public function testInstance()
     {
         $registry = new PortRegistry();
-        $this->assertInstanceOf('\PhpFlo\Interaction\PortRegistry', $registry);
+        $this->assertInstanceOf(PortRegistry::class, $registry);
     }
 
     public function testPortInteraction()
@@ -27,12 +29,12 @@ class PortRegistryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($registry->has('test'));
 
         $port = $registry->get('test');
-        $this->assertInstanceOf('\PhpFlo\Common\PortInterface', $port);
+        $this->assertInstanceOf(PortInterface::class, $port);
         $this->assertEquals('test', $port->getName());
 
 
         $registry->add('test2', ['datatype' => 'all', 'addressable' => true]);
-        $this->assertInstanceOf('\PhpFlo\Interaction\ArrayPort', $registry->test2);
+        $this->assertInstanceOf(ArrayPort::class, $registry->test2);
         $this->assertEquals('test2', $registry->test2->getName());
 
         $ports = $registry->get();
@@ -54,7 +56,7 @@ class PortRegistryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($registry));
 
         foreach ($registry as $port) {
-            $this->assertInstanceOf('\PhpFlo\Interaction\Port', $port);
+            $this->assertInstanceOf(PortInterface::class, $port);
         }
     }
 }

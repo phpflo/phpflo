@@ -19,7 +19,7 @@ class PortTest extends \PHPUnit_Framework_TestCase
     {
         $port = new Port('testport', []);
 
-        $this->assertInstanceOf('\PhpFlo\Interaction\Port', $port);
+        $this->assertInstanceOf(Port::class, $port);
     }
 
     public function testBaseFunctionality()

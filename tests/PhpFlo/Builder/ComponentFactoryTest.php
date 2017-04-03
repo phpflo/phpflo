@@ -9,7 +9,7 @@ class ComponentFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $diFactory = new ComponentFactory();
 
-        $this->assertInstanceOf('PhpFlo\Builder\ComponentFactory', $diFactory);
+        $this->assertInstanceOf(ComponentFactory::class, $diFactory);
     }
 
     /**
@@ -19,7 +19,7 @@ class ComponentFactoryTest extends \PHPUnit_Framework_TestCase
     public function testClassNotFoundException()
     {
         $diFactory = new ComponentFactory();
-        $component = $diFactory->build('SomeVirtualComponent');
+        $diFactory->build('SomeVirtualComponent');
     }
 
     /**
@@ -28,6 +28,6 @@ class ComponentFactoryTest extends \PHPUnit_Framework_TestCase
     public function testInvalidComponentException()
     {
         $diFactory = new ComponentFactory();
-        $diFactory->build("\stdClass");
+        $diFactory->build(\stdClass::class);
     }
 }
