@@ -16,7 +16,7 @@ namespace PhpFlo\Exception;
  * @package PhpFlo\Exception
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-class InvalidDefinitionException extends  FlowException
+class InvalidDefinitionException extends FlowException
 {
 
 }

@@ -10,7 +10,6 @@
 
 namespace Tests\PhpFlo\Common;
 
-
 class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetHook()
