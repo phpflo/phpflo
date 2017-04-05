@@ -40,6 +40,7 @@ class ComponentFactory implements ComponentBuilderInterface
                 throw new InvalidDefinitionException("Component class {$component} not found");
             }
         }
+
         $instance = new $component();
         if (!$instance instanceof ComponentInterface) {
             throw new InvalidDefinitionException(
