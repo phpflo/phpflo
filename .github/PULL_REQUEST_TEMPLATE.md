@@ -1,0 +1,30 @@
+## Description
+
+Describe your changes in detail.
+
+## Motivation and context
+
+Why is this change required? What problem does it solve?
+
+If it fixes an open issue, please link to the issue here (if you write `fixes #num`
+or `closes #num`, the issue will be automatically closed when the pull is accepted.)
+
+## Types of changes
+
+What types of changes does your code introduce? Put an `x` in all the boxes that apply:
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to change)
+
+**Consider our release cycle** - We try to follow [SemVer v2.0.0](http://semver.org/). Randomly breaking public APIs is not an option.
+
+## Checklist:
+
+Go over all the following points, and put an `x` in all the boxes that apply.
+
+- [ ] I have read the **[CONTRIBUTING](../CONTRIBUTING.md)** document.
+- [ ] My pull request addresses exactly one patch/feature.
+- [ ] I have added tests to cover my changes.
+- [ ] If my change requires a change to the documentation, I have updated it accordingly.
+
+If you're unsure about any of these, don't hesitate to ask. We're here to help!
