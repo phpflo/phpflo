@@ -70,7 +70,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
             return $this->sockets[$socketId]->beginGroup($groupName);
         }
 
-        $this->sockets[$socketId]->once(Net::CONNECT, function(SocketInterface $socket) use ($groupName) {
+        $this->sockets[$socketId]->once(Net::CONNECT, function (SocketInterface $socket) use ($groupName) {
             $socket->beginGroup($groupName);
         });
         $this->sockets[$socketId]->connect();
@@ -106,7 +106,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
             return $this->sockets[$socketId]->send($data);
         }
 
-        $this->sockets[$socketId]->once(Net::CONNECT, function(SocketInterface $socket) use ($data) {
+        $this->sockets[$socketId]->once(Net::CONNECT, function (SocketInterface $socket) use ($data) {
             $socket->send($data);
         });
         $this->sockets[$socketId]->connect();
@@ -221,8 +221,8 @@ final class ArrayPort extends AbstractPort implements PortInterface
     protected function getSocketIndex(SocketInterface $socket) : int
     {
         $index = 0;
-        foreach($this->sockets as $subSocket) {
-            if($subSocket->getId() == $socket->getId()) {
+        foreach ($this->sockets as $subSocket) {
+            if ($subSocket->getId() == $socket->getId()) {
                 break;
             }
             $index++;

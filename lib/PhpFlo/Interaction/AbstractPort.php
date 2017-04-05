@@ -88,7 +88,7 @@ class AbstractPort extends EventEmitter
      */
     public static function isCompatible(string $fromType, string $toType) : bool
     {
-        switch(true) {
+        switch (true) {
             case (($fromType == $toType) || ($toType == 'all' || $toType == 'bang')):
                 $isCompatible = true;
                 break;

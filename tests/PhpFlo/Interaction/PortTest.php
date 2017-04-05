@@ -10,7 +10,6 @@
 
 namespace Tests\PhpFlo\Interaction;
 
-
 use PhpFlo\Interaction\Port;
 
 class PortTest extends \PHPUnit_Framework_TestCase
