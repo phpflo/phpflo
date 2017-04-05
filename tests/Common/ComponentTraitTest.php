@@ -10,28 +10,33 @@
 
 namespace Tests\PhpFlo\Common;
 
+use PhpFlo\Common\ComponentTrait;
+use PhpFlo\Interaction\PortRegistry;
+
 class ComponentTraitTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ComponentTrait
+     */
+    private $componentTrait;
+
+    public function setUp()
+    {
+        $this->componentTrait = $this->getObjectForTrait(ComponentTrait::class);
+    }
+    
     public function testDescriptionAccessor()
     {
-        $trait = $this->mockComponentTrait();
-        $this->assertEquals("", $trait->getDescription());
+        $this->assertEquals("", $this->componentTrait->getDescription());
     }
 
     public function testInPorts()
     {
-        $trait = $this->mockComponentTrait();
-        $this->assertInstanceOf('\PhpFlo\Interaction\PortRegistry', $trait->inPorts());
+        $this->assertInstanceOf(PortRegistry::class, $this->componentTrait->inPorts());
     }
 
     public function testOutPorts()
     {
-        $trait = $this->mockComponentTrait();
-        $this->assertInstanceOf('\PhpFlo\Interaction\PortRegistry', $trait->outPorts());
-    }
-
-    private function mockComponentTrait()
-    {
-        return $this->getMockForTrait('\PhpFlo\Common\ComponentTrait');
+        $this->assertInstanceOf(PortRegistry::class, $this->componentTrait->outPorts());
     }
 }

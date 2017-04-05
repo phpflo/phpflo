@@ -18,6 +18,6 @@ class ArrayPortTest extends \PHPUnit_Framework_TestCase
     {
         $port = new ArrayPort('testport', []);
 
-        $this->assertInstanceOf('\PhpFlo\Interaction\ArrayPort', $port);
+        $this->assertInstanceOf(ArrayPort::class, $port);
     }
 }
