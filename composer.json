@@ -18,7 +18,11 @@
         "psr/container": "^1.0",
         "psr/log": "^1.0"
     },
-
+    "replace": {
+        "phpflo/phpflo-fbp": "self.version",
+        "phpflo/phpflo-common": "self.version",
+        "phpflo/phpflo-flowtrace": "self.version"
+    },
     "require-dev": {
         "phpunit/phpunit": "^5.0",
         "mikey179/vfsStream": "^1.6"
