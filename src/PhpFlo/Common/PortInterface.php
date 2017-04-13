@@ -10,10 +10,10 @@
 declare(strict_types=1);
 namespace PhpFlo\Common;
 
-use PhpFlo\Exception\InvalidDefinitionException;
-use PhpFlo\Exception\InvalidTypeException;
-use PhpFlo\Exception\PortException;
-use PhpFlo\Exception\SocketException;
+use PhpFlo\Common\Exception\InvalidDefinitionException;
+use PhpFlo\Common\Exception\InvalidTypeException;
+use PhpFlo\Common\Exception\PortException;
+use PhpFlo\Common\Exception\SocketException;
 
 /**
  * Interface PortInterface

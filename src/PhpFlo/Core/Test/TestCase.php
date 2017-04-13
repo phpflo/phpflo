@@ -1,22 +1,22 @@
 <?php
+declare(strict_types=1);
 /*
- * This file is part of the phpflo\phpflo-fbp package.
+ * This file is part of the phpflo/phpflo package.
  *
  * (c) Marc Aschmann <maschmann@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace PhpFlo\Common\Exception;
+namespace PhpFlo\Core\Test;
 
 /**
- * Class ParserException
+ * Class TestCase
  *
- * @package PhpFlo\Fbp
+ * @package PhpFlo\Core\Test
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-class ParserException extends \ErrorException
+abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
-
+    use TestUtilityTrait;
 }

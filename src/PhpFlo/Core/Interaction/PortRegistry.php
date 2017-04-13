@@ -8,15 +8,15 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Interaction;
+namespace PhpFlo\Core\Interaction;
 
 use PhpFlo\Common\PortInterface;
-use PhpFlo\Exception\PortException;
+use PhpFlo\Common\Exception\PortException;
 
 /**
  * Class PortRegistry
  *
- * @package PhpFlo\Interaction
+ * @package PhpFlo\Core\Interaction
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 class PortRegistry implements \Iterator, \Countable

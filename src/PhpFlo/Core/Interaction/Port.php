@@ -8,20 +8,19 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Interaction;
+namespace PhpFlo\Core\Interaction;
 
 use PhpFlo\Common\NetworkInterface as Net;
 use PhpFlo\Common\PortInterface;
 use PhpFlo\Common\SocketInterface;
-use PhpFlo\Exception\InvalidDefinitionException;
-use PhpFlo\Exception\InvalidTypeException;
-use PhpFlo\Exception\PortException;
-use PhpFlo\Exception\SocketException;
+use PhpFlo\Common\Exception\InvalidDefinitionException;
+use PhpFlo\Common\Exception\PortException;
+use PhpFlo\Common\Exception\SocketException;
 
 /**
  * Class Port
  *
- * @package PhpFlo\Interaction
+ * @package PhpFlo\Core\Interaction
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
 final class Port extends AbstractPort implements PortInterface

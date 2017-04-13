@@ -8,11 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\PhpFlo\Interaction;
+namespace Tests\PhpFlo\Core\Interaction;
 
-use PhpFlo\Interaction\Port;
+use PhpFlo\Core\Interaction\Port;
+use PhpFlo\Core\Test\TestCase;
 
-class PortTest extends \PHPUnit_Framework_TestCase
+class PortTest extends TestCase
 {
     public function testInstance()
     {

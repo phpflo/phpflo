@@ -1,13 +1,14 @@
 <?php
 namespace Tests\PhpFlo;
 
-use PhpFlo\Graph;
+use PhpFlo\Core\Graph;
+use PhpFlo\Core\Test\TestCase;
 
-class GraphTest extends \PHPUnit_Framework_TestCase
+class GraphTest extends TestCase
 {
     public function testLoadFile()
     {
-        $graph = Graph::loadFile(__DIR__.'/../../examples/linecount/count.json');
+        $graph = Graph::loadFile(__DIR__ . '/../../examples/linecount/count.json');
         $readFile = $graph->getNode('ReadFile');
         $this->assertEquals('ReadFile', $readFile['id']);
 

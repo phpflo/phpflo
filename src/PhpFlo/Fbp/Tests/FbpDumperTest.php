@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Tests\PhpFlo\Fbp;
+namespace PhpFlo\Fbp\Tests;
 
 use PhpFlo\Fbp\FbpDumper;
+use PhpFlo\Fbp\Test\TestCase;
 
-class FbpDumperTest extends \PHPUnit_Framework_TestCase
+class FbpDumperTest extends TestCase
 {
     /**
      * @var array

@@ -8,17 +8,16 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo;
+namespace PhpFlo\FlowTrace;
 
 use PhpFlo\Common\AbstractNetworkDecorator;
-use PhpFlo\Common\NetworkDecoratorInterface;
 use PhpFlo\Common\NetworkInterface;
 use Psr\Log\LoggerInterface;
 
 /**
  * Network for tracing events.
  *
- * @package PhpFlo
+ * @package PhpFlo\FlowTrace
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 class TraceableNetwork extends AbstractNetworkDecorator implements NetworkInterface

@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace PhpFlo\Fbp;
 
 use PhpFlo\Common\FbpDefinitionsInterface;
-use PhpFlo\Exception\DumperException;
+use PhpFlo\Common\Exception\DumperException;
 use Symfony\Component\Yaml\Yaml;
 
 /**

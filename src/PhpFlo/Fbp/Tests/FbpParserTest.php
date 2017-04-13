@@ -7,12 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Tests\PhpFlo\Fbp;
+namespace PhpFlo\Fbp\Tests;
 
-use PhpFlo\Exception\ParserException;
+use PhpFlo\Common\Exception\ParserException;
 use PhpFlo\Fbp\FbpParser;
+use PhpFlo\Fbp\Test\TestCase;
 
-class FbpParserTest extends \PHPUnit_Framework_TestCase
+class FbpParserTest extends TestCase
 {
     public function testSimpleSingleDef()
     {
@@ -389,7 +390,7 @@ EOF;
     }
 
     /**
-     * @expectedException \PhpFlo\Exception\ParserException
+     * @expectedException \PhpFlo\Common\Exception\ParserException
      */
     public function testParserException()
     {
@@ -491,7 +492,7 @@ EOF;
     }
 
     /**
-     * @expectedException PhpFlo\Exception\ParserException
+     * @expectedException PhpFlo\Common\Exception\ParserException
      */
     public function testComplexMultiDefSingleDefError()
     {

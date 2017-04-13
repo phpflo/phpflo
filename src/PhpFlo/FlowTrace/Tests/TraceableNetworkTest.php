@@ -8,16 +8,16 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace Tests\PhpFlo;
+namespace PhpFlo\Tests;
 
 use PhpFlo\Common\HookableNetworkInterface;
 use PhpFlo\Common\NetworkInterface;
-use PhpFlo\Graph;
-use PhpFlo\Test\TestUtilityTrait;
-use PhpFlo\TraceableNetwork;
+use PhpFlo\Core\Graph;
+use PhpFlo\FlowTrace\Test\TestCase;
+use PhpFlo\FlowTrace\TraceableNetwork;
 use Psr\Log\LoggerInterface;
 
-class TraceableNetworkTest extends \PHPUnit_Framework_TestCase
+class TraceableNetworkTest extends TestCase
 {
     use TestUtilityTrait;
 

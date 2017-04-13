@@ -8,19 +8,19 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo;
+namespace PhpFlo\Core;
 
 use Evenement\EventEmitter;
 use PhpFlo\Common\DefinitionInterface;
 use PhpFlo\Common\NetworkInterface as Net;
-use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Common\Exception\InvalidDefinitionException;
 use PhpFlo\Fbp\FbpParser;
 use PhpFlo\Loader\Loader;
 
 /**
  * Analyzes and creates definitions from flow graph file.
  *
- * @package PhpFlo
+ * @package PhpFlo\Core
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
 class Graph extends EventEmitter

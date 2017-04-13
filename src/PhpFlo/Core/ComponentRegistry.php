@@ -8,17 +8,17 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo;
+namespace PhpFlo\Core;
 
 use PhpFlo\Common\ComponentInterface;
 use PhpFlo\Common\ComponentRegistryInterface;
-use PhpFlo\Exception\ComponentException;
-use PhpFlo\Exception\ComponentNotFoundException;
+use PhpFlo\Common\Exception\ComponentException;
+use PhpFlo\Common\Exception\ComponentNotFoundException;
 
 /**
  * Class ComponentRegistry
  *
- * @package PhpFlo
+ * @package PhpFlo\Core
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 class ComponentRegistry implements ComponentRegistryInterface

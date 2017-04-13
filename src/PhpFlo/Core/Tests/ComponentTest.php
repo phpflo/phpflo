@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Tests\PhpFlo;
 
 use PhpFlo\Common\ComponentInterface;
-use PhpFlo\Component;
-use PhpFlo\Interaction\PortRegistry;
+use PhpFlo\Core\Component;
+use PhpFlo\Core\Interaction\PortRegistry;
+use PhpFlo\Core\Test\TestCase;
 
-class ComponentTest extends \PHPUnit_Framework_TestCase
+class ComponentTest extends TestCase
 {
     public function testInstance()
     {

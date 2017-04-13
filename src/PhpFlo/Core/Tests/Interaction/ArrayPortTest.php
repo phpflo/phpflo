@@ -10,9 +10,10 @@
 
 namespace Tests\PhpFlo\Interaction;
 
-use PhpFlo\Interaction\ArrayPort;
+use PhpFlo\Core\Test\TestCase;
+use PhpFlo\Core\Interaction\ArrayPort;
 
-class ArrayPortTest extends \PHPUnit_Framework_TestCase
+class ArrayPortTest extends TestCase
 {
     public function testInstance()
     {

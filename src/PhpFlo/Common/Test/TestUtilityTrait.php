@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Test;
+namespace PhpFlo\Common\Test;
 
 /**
  * Mock class helper.
  *
- * @package PhpFlo\Test
+ * @package PhpFlo\Common\Test
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 trait TestUtilityTrait

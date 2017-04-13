@@ -7,15 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Tests\PhpFlo\Common;
-
+declare(strict_types=1);
+namespace PhpFlo\Common\Tests;
 
 use PhpFlo\Common\HookableNetworkTrait;
-use PhpFlo\Interaction\InternalSocket;
+use PhpFlo\Core\Interaction\InternalSocket;
 
 class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
 {
+    use TestUtilityTrait;
+
     /**
      * @var HookableNetworkTrait | \PHPUnit_Framework_MockObject_MockObject
      */
@@ -46,7 +47,7 @@ class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \PhpFlo\Exception\InvalidTypeException
+     * @expectedException \PhpFlo\Common\Exception\InvalidTypeException
      */
     public function testInvalidEventNameException()
     {
@@ -60,7 +61,7 @@ class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \PhpFlo\Exception\FlowException
+     * @expectedException \PhpFlo\Common\Exception\FlowException
      */
     public function testEventAlreadyExistsException()
     {

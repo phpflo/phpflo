@@ -10,8 +10,8 @@
 declare(strict_types=1);
 namespace PhpFlo\Common;
 
-use PhpFlo\Exception\ComponentException;
-use PhpFlo\Exception\ComponentNotFoundException;
+use PhpFlo\Common\Exception\ComponentException;
+use PhpFlo\Common\Exception\ComponentNotFoundException;
 
 /**
  * Interface ComponentRegistryInterface

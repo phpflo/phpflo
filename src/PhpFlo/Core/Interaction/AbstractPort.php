@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Interaction;
+namespace PhpFlo\Core\Interaction;
 
 use Evenement\EventEmitter;
 use PhpFlo\Common\NetworkInterface as Net;
@@ -17,7 +17,7 @@ use PhpFlo\Common\SocketInterface;
 /**
  * Class AbstractPort
  *
- * @package PhpFlo\Interaction
+ * @package PhpFlo\Core\Interaction
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 class AbstractPort extends EventEmitter

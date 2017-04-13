@@ -10,8 +10,8 @@
 declare(strict_types=1);
 namespace PhpFlo\Common;
 
-use PhpFlo\Exception\FlowException;
-use PhpFlo\Exception\InvalidTypeException;
+use PhpFlo\Common\Exception\FlowException;
+use PhpFlo\Common\Exception\InvalidTypeException;
 
 /**
  * Interface HookableNetworkInterface

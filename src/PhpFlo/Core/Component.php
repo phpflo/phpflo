@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo;
+namespace PhpFlo\Core;
 
 use PhpFlo\Common\ComponentInterface;
 use PhpFlo\Common\ComponentTrait;
@@ -16,7 +16,7 @@ use PhpFlo\Common\ComponentTrait;
 /**
  * Class Component
  *
- * @package PhpFlo
+ * @package PhpFlo\Core
  * @author Henri Bergius <henri.bergius@iki.fi>
  */
 class Component implements ComponentInterface

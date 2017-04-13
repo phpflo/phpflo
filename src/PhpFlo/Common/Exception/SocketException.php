@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PhpFlo\Exception;
+namespace PhpFlo\Common\Exception;
 
 /**
  * Class SocketException
  *
- * @package PhpFlo\Exception
+ * @package PhpFlo\Common\Exception
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 class SocketException extends FlowException

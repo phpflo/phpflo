@@ -8,13 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\PhpFlo\Interaction;
+namespace Tests\PhpFlo\Core\Interaction;
 
 use PhpFlo\Common\PortInterface;
-use PhpFlo\Interaction\ArrayPort;
-use PhpFlo\Interaction\PortRegistry;
+use PhpFlo\Core\Interaction\ArrayPort;
+use PhpFlo\Core\Interaction\PortRegistry;
+use PhpFlo\Core\Test\TestCase;
 
-class PortRegistryTest extends \PHPUnit_Framework_TestCase
+class PortRegistryTest extends TestCase
 {
     public function testInstance()
     {

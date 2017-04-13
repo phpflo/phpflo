@@ -12,13 +12,13 @@ namespace PhpFlo\Fbp;
 
 use PhpFlo\Common\DefinitionInterface;
 use PhpFlo\Common\FbpDefinitionsInterface;
-use PhpFlo\Exception\ParserDefinitionException;
-use PhpFlo\Exception\ParserException;
+use PhpFlo\Common\Exception\ParserDefinitionException;
+use PhpFlo\Common\Exception\ParserException;
 
 /**
  * Class FbpParser
  *
- * @package PhpFlo\Parser
+ * @package PhpFlo\Fbp
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 final class FbpParser implements FbpDefinitionsInterface

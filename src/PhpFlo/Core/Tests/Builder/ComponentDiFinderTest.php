@@ -1,11 +1,12 @@
 <?php
-namespace Test\PhpFlo\Builder;
+namespace Test\PhpFlo\Core\Builder;
 
-use PhpFlo\Builder\ComponentDiFinder;
+use PhpFlo\Core\Builder\ComponentDiFinder;
 use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Core\Test\TestCase;
 use Psr\Container\ContainerInterface;
 
-class ComponentDiFinderTest extends \PHPUnit_Framework_TestCase
+class ComponentDiFinderTest extends TestCase
 {
 
     public function testInstance()
@@ -34,7 +35,7 @@ class ComponentDiFinderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \PhpFlo\Exception\InvalidDefinitionException
+     * @expectedException \PhpFlo\Common\Exception\InvalidDefinitionException
      * @expectedExceptionMessage Component SomeInvalidComponent doesn't appear to be a valid PhpFlo component
      */
     public function testInvalidComponent()

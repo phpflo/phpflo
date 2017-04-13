@@ -3,12 +3,13 @@ namespace Tests\PhpFlo;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamFile;
-use PhpFlo\Builder\ComponentFactory;
+use PhpFlo\Core\Builder\ComponentFactory;
 use PhpFlo\Common\NetworkInterface;
-use PhpFlo\Graph;
-use PhpFlo\Network;
+use PhpFlo\Core\Graph;
+use PhpFlo\Core\Network;
+use PhpFlo\Core\Test\TestCase;
 
-class NetworkTest extends \PHPUnit_Framework_TestCase
+class NetworkTest extends TestCase
 {
     /**
      * @var vfsStreamFile
@@ -115,7 +116,7 @@ EOF;
     /**
      * @param NetworkInterface $network
      * @depends testLoadFile
-     * @expectedException \PhpFlo\Exception\InvalidDefinitionException
+     * @expectedException \PhpFlo\Common\Exception\InvalidDefinitionException
      */
     public function testAddEdgeWithInvalidInitializerTarget(NetworkInterface $network)
     {
@@ -135,7 +136,7 @@ EOF;
     /**
      * @param NetworkInterface $network
      * @depends testLoadFile
-     * @expectedException \PhpFlo\Exception\InvalidDefinitionException
+     * @expectedException \PhpFlo\Common\Exception\InvalidDefinitionException
      */
     public function testNoProcessForInportException(NetworkInterface $network)
     {
@@ -157,7 +158,7 @@ EOF;
     /**
      * @param NetworkInterface $network
      * @depends testLoadFile
-     * @expectedException \PhpFlo\Exception\InvalidDefinitionException
+     * @expectedException \PhpFlo\Common\Exception\InvalidDefinitionException
      */
     public function testNoProcessForOutPortException(NetworkInterface $network)
     {

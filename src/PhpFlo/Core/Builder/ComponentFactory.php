@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Builder;
+namespace PhpFlo\Core\Builder;
 
 use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\ComponentInterface;
-use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Common\Exception\InvalidDefinitionException;
 
 /**
  * Example builder for components.
@@ -22,7 +22,7 @@ use PhpFlo\Exception\InvalidDefinitionException;
  * The build method is not static to allow for e.g. easy dependency injection and use
  * as a service.
  *
- * @package PhpFlo
+ * @package PhpFlo\Core\Builder
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 class ComponentFactory implements ComponentBuilderInterface

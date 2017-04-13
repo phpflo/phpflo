@@ -7,15 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Tests\PhpFlo;
 
 use PhpFlo\Common\ComponentInterface;
-use PhpFlo\ComponentRegistry;
-use PhpFlo\Exception\ComponentException;
-use PhpFlo\Exception\ComponentNotFoundException;
+use PhpFlo\Core\ComponentRegistry;
+use PhpFlo\Common\Exception\ComponentException;
+use PhpFlo\Common\Exception\ComponentNotFoundException;
+use PhpFlo\Core\Test\TestCase;
 
-class ComponentRegistryTest extends \PHPUnit_Framework_TestCase
+class ComponentRegistryTest extends TestCase
 {
     /**
      * @var ComponentRegistry|\PHPUnit_Framework_MockObject_MockObject

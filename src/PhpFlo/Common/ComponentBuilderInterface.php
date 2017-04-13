@@ -10,7 +10,7 @@
 declare(strict_types=1);
 namespace PhpFlo\Common;
 
-use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Common\Exception\InvalidDefinitionException;
 
 /**
  * Interface ComponentBuilderInterface

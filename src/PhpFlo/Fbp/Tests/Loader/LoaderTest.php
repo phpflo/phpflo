@@ -7,14 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Tests\PhpFlo\Loader;
+namespace PhpFlo\Fbp\Loader\Tests;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamFile;
-use PhpFlo\Exception\LoaderException;
-use PhpFlo\Loader\Loader;
+use PhpFlo\Common\Exception\LoaderException;
+use PhpFlo\Fbp\Loader\Loader;
+use PhpFlo\Fbp\Test\TestCase;
 
-class LoaderTest extends \PHPUnit_Framework_TestCase
+class LoaderTest extends TestCase
 {
     /**
      * @var vfsStreamFile
@@ -22,7 +23,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
     private $file;
 
     /**
-     * @expectedException \PhpFlo\Exception\LoaderException
+     * @expectedException \PhpFlo\Common\Exception\LoaderException
      */
     public function testStaticLoadException()
     {
@@ -171,7 +172,7 @@ EOF;
     }
 
     /**
-     * @expectedException \PhpFlo\Exception\LoaderException
+     * @expectedException \PhpFlo\Common\Exception\LoaderException
      */
     public function testLoadEmptyFileWithException()
     {
@@ -180,7 +181,7 @@ EOF;
     }
 
     /**
-     * @expectedException \PhpFlo\Exception\LoaderException
+     * @expectedException \PhpFlo\Common\Exception\LoaderException
      */
     public function testUnsupportedFileTypeException()
     {
@@ -188,7 +189,7 @@ EOF;
     }
 
     /**
-     * @expectedException \PhpFlo\Exception\LoaderException
+     * @expectedException \PhpFlo\Common\Exception\LoaderException
      */
     public function testFileNotFoundExcetion()
     {

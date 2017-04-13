@@ -8,23 +8,23 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo;
+namespace PhpFlo\Core;
 
 use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\HookableNetworkTrait;
 use PhpFlo\Common\NetworkInterface;
 use PhpFlo\Common\SocketInterface;
-use PhpFlo\Exception\FlowException;
-use PhpFlo\Exception\IncompatibleDatatypeException;
-use PhpFlo\Exception\InvalidDefinitionException;
-use PhpFlo\Exception\InvalidTypeException;
-use PhpFlo\Interaction\InternalSocket;
-use PhpFlo\Interaction\Port;
+use PhpFlo\Common\Exception\FlowException;
+use PhpFlo\Common\Exception\IncompatibleDatatypeException;
+use PhpFlo\Common\Exception\InvalidDefinitionException;
+use PhpFlo\Common\Exception\InvalidTypeException;
+use PhpFlo\Core\Interaction\InternalSocket;
+use PhpFlo\Core\Interaction\Port;
 
 /**
  * Builds the concrete network based on graph.
  *
- * @package PhpFlo
+ * @package PhpFlo\Core
  * @author Henri Bergius <henri.bergius@iki.fi>
  * @author Marc Aschmann <maschmann@gmail.com>
  */

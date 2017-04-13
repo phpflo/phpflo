@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Loader;
+namespace PhpFlo\Fbp\Loader;
 
 use PhpFlo\Common\DefinitionInterface;
 use PhpFlo\Common\LoaderInterface;
-use PhpFlo\Exception\LoaderException;
+use PhpFlo\Common\Exception\LoaderException;
 use PhpFlo\Fbp\FbpDefinition;
 use PhpFlo\Fbp\FbpParser;
 use Symfony\Component\Yaml\Yaml;
@@ -20,7 +20,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class Loader
  *
- * @package PhpFlo\Loader
+ * @package PhpFlo\Fbp\Loader
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 final class Loader implements LoaderInterface

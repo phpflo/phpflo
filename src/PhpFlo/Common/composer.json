@@ -1,15 +1,10 @@
 {
-  "name": "phpflo/phpflo-fbp",
-  "description": "fbp implementation for php",
+  "name": "phpflo/phpflo-common",
+  "description": "PhpFlo common files",
   "type": "library",
   "keywords": ["fbp", "flow"],
   "license": "MIT",
   "authors": [
-    {
-      "name": "Henri Bergius",
-      "email": "henri.bergius@iki.fi",
-      "homepage": "http://bergie.iki.fi/"
-    },
     {
       "name": "Marc Aschmann",
       "email": "maschmann@gmail.com"
@@ -17,17 +12,16 @@
   ],
   "require": {
     "php": ">=7.0.0",
-    "symfony/yaml": ">=2.7 <=4.0"
+    "phpflo/phpflo": "^2.1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.0",
-    "mikey179/vfsStream": "^1.6"
+    "phpunit/phpunit": "^5.0"
   },
   "config": {
     "bin-dir": "bin"
   },
   "autoload": {
-    "psr-4": { "PhpFlo\\Fbp\\": "" },
+    "psr-4": { "PhpFlo\\Common\\": "" },
     "exclude-from-classmap": [
       "/Tests/"
     ]

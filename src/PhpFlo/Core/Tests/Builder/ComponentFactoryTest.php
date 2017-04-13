@@ -1,10 +1,11 @@
 <?php
-namespace Test\PhpFlo\Builder;
+namespace Test\PhpFlo\Core\Builder;
 
-use PhpFlo\Builder\ComponentFactory;
-use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Core\Builder\ComponentFactory;
+use PhpFlo\Common\Exception\InvalidDefinitionException;
+use PhpFlo\Core\Test\TestCase;
 
-class ComponentFactoryTest extends \PHPUnit_Framework_TestCase
+class ComponentFactoryTest extends TestCase
 {
     public function testInstance()
     {

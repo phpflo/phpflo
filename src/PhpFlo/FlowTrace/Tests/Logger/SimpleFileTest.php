@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Tests\PhpFlo\Logger;
+namespace PhpFlo\Logger\Tests;
 
 use org\bovigo\vfs\vfsStream;
+use PhpFlo\FlowTrace\Test\TestCase;
 use PhpFlo\Logger\SimpleFile;
 use Psr\Log\LogLevel;
 
-class SimpleFileTest extends \PHPUnit_Framework_TestCase
+class SimpleFileTest extends TestCase
 {
     public function testBaseFunctionality()
     {

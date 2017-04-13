@@ -23,11 +23,9 @@
     "bin-dir": "bin"
   },
   "autoload": {
-    "psr-4": {
-      "PhpFlo\\": "lib/PhpFlo/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": { "Tests\\": "tests/" }
+    "psr-4": { "PhpFlo\\FlowTrace\\": "" },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
   }
 }

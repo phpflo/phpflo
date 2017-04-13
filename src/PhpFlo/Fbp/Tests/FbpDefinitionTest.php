@@ -1,9 +1,10 @@
 <?php
-namespace Tests\PhpFlo\Fbp;
+namespace PhpFlo\Fbp\Tests;
 
 use PhpFlo\Fbp\FbpDefinition;
+use PhpFlo\Fbp\Test\TestCase;
 
-class FbpDefinitionTest extends \PHPUnit_Framework_TestCase
+class FbpDefinitionTest extends TestCase
 {
     public function testInstance()
     {

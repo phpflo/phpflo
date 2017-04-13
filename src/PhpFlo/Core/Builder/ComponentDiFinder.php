@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Builder;
+namespace PhpFlo\Core\Builder;
 
 use PhpFlo\Common\ComponentBuilderInterface;
 use PhpFlo\Common\ComponentInterface;
-use PhpFlo\Exception\InvalidDefinitionException;
+use PhpFlo\Common\Exception\InvalidDefinitionException;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -20,7 +20,7 @@ use Psr\Container\ContainerInterface;
  *
  * Make leverage of an external DIC to find/factorize your components.
  *
- * @package PhpFlo\Builder
+ * @package PhpFlo\Core\Builder
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 class ComponentDiFinder implements ComponentBuilderInterface

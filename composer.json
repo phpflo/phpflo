@@ -15,23 +15,26 @@
     "require": {
         "php": ">=7.0.0",
         "evenement/evenement": "^2.0",
-        "phpflo/phpflo-core": "^1.0",
-        "phpflo/phpflo-fbp": "^1.0",
-        "psr/container": "^1.0"
+        "psr/container": "^1.0",
+        "psr/log": "^1.0"
     },
+
     "require-dev": {
         "phpunit/phpunit": "^5.0",
         "mikey179/vfsStream": "^1.6"
     },
     "autoload": {
         "psr-4": {
-            "": "lib/"
-        }
+            "PhpFlo\\Common\\": "src/PhpFlo/Common/",
+            "PhpFlo\\Core\\": "src/PhpFlo/Core/",
+            "PhpFlo\\Fbp\\": "src/PhpFlo/Fbp/",
+            "PhpFlo\\FlowTrace\\": "src/PhpFlo/FlowTrace/"
+        },
+        "exclude-from-classmap": [
+            "**/Tests/"
+        ]
     },
     "config": {
         "bin-dir": "bin"
-    },
-    "autoload-dev": {
-        "psr-4": { "Tests\\": "tests/" }
     }
 }
