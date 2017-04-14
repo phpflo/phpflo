@@ -19,8 +19,6 @@ use Psr\Log\LoggerInterface;
 
 class TraceableNetworkTest extends TestCase
 {
-    use TestUtilityTrait;
-
     public function testInstance()
     {
         //$this->markTestSkipped('Needs change in phpflo');

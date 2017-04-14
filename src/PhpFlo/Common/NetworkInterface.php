@@ -10,7 +10,7 @@
 declare(strict_types=1);
 namespace PhpFlo\Common;
 
-use PhpFlo\Graph;
+use PhpFlo\Core\Graph;
 
 /**
  * Interface NetworkInterface

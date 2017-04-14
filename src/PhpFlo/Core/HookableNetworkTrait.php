@@ -8,16 +8,17 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Common;
+namespace PhpFlo\Core;
 
 use PhpFlo\Common\Exception\FlowException;
 use PhpFlo\Common\Exception\InvalidTypeException;
 use PhpFlo\Common\NetworkInterface as Net;
+use PhpFlo\Common\SocketInterface;
 
 /**
  * Class HookableNetworkTrait
  *
- * @package PhpFlo\Common
+ * @package PhpFlo\Core
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 trait HookableNetworkTrait

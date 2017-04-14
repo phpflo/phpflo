@@ -8,14 +8,15 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Common;
+namespace PhpFlo\Core;
 
-use PhpFlo\Interaction\PortRegistry;
+use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Core\Interaction\PortRegistry;
 
 /**
  * Class ComponentTrait
  *
- * @package PhpFlo\Common
+ * @package PhpFlo\Core
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 trait ComponentTrait
@@ -70,7 +71,7 @@ trait ComponentTrait
     /**
      * @return ComponentInterface
      */
-    public function shutdown()
+    public function shutdown() : ComponentInterface
     {
         foreach ($this->inPorts()->get() as $port) {
             $port->emit('shutdown', [$port]);

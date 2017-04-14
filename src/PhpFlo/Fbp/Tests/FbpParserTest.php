@@ -492,7 +492,7 @@ EOF;
     }
 
     /**
-     * @expectedException PhpFlo\Common\Exception\ParserException
+     * @expectedException \PhpFlo\Common\Exception\ParserException
      */
     public function testComplexMultiDefSingleDefError()
     {

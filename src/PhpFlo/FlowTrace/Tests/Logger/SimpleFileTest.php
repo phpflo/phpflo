@@ -11,7 +11,7 @@ namespace PhpFlo\Logger\Tests;
 
 use org\bovigo\vfs\vfsStream;
 use PhpFlo\FlowTrace\Test\TestCase;
-use PhpFlo\Logger\SimpleFile;
+use PhpFlo\FlowTrace\Logger\SimpleFile;
 use Psr\Log\LogLevel;
 
 class SimpleFileTest extends TestCase

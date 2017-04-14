@@ -3,9 +3,14 @@ namespace Tests\PhpFlo;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamFile;
+use PhpFlo\Common\ComponentBuilderInterface;
+use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Common\PortInterface;
 use PhpFlo\Core\Builder\ComponentFactory;
 use PhpFlo\Common\NetworkInterface;
+use PhpFlo\Core\Component;
 use PhpFlo\Core\Graph;
+use PhpFlo\Core\Interaction\PortRegistry;
 use PhpFlo\Core\Network;
 use PhpFlo\Core\Test\TestCase;
 
@@ -30,12 +35,40 @@ EOF;
 
     public function testLoadFile()
     {
-        $builder = new ComponentFactory();
+        $builder = $this->stub(
+            ComponentBuilderInterface::class,
+            [
+                'build' => \Closure::bind(
+                    function ($name) {
+                        $component = new Component();
+                        switch ($name) {
+                            case 'ReadFile':
+                                $component->inPorts()->add('source', []);
+                                $component->outPorts()->add('out', []);
+                                $component->outPorts()->add('error', []);
+                                break;
+                            case 'SplitStr':
+                                $component->inPorts()->add('in', []);
+                                $component->outPorts()->add('out', []);
+                                break;
+                            case 'Counter':
+                                $component->inPorts()->add('in', []);
+                                $component->outPorts()->add('count', []);
+                                break;
+                            case 'Output':
+                                $component->inPorts()->add('in', ['addressable' => true]);
+                                break;
+                        }
+
+                        return $component;
+                    },
+                    $this
+                ),
+            ]
+        );
 
         $network = new Network($builder);
-        $network
-            ->boot($this->filesystem->url());
-
+        $network->boot($this->filesystem->url());
         $readFile = $network->getNode('ReadFile');
         $this->assertEquals('ReadFile', $readFile['id']);
 

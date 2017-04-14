@@ -10,7 +10,7 @@
 declare(strict_types=1);
 namespace PhpFlo\FlowTrace;
 
-use PhpFlo\Common\AbstractNetworkDecorator;
+use PhpFlo\Core\AbstractNetworkDecorator;
 use PhpFlo\Common\NetworkInterface;
 use Psr\Log\LoggerInterface;
 

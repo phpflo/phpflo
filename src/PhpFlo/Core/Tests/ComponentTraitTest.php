@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Common\Tests;
+namespace PhpFlo\Core\Tests;
 
-use PhpFlo\Common\ComponentTrait;
+use PhpFlo\Core\ComponentTrait;
 use PhpFlo\Common\Test\TestUtilityTrait;
-use PhpFlo\Interaction\PortRegistry;
+use PhpFlo\Core\Interaction\PortRegistry;
 
 class ComponentTraitTest extends \PHPUnit_Framework_TestCase
 {

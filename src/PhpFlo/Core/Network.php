@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace PhpFlo\Core;
 
 use PhpFlo\Common\ComponentBuilderInterface;
-use PhpFlo\Common\HookableNetworkTrait;
 use PhpFlo\Common\NetworkInterface;
 use PhpFlo\Common\SocketInterface;
 use PhpFlo\Common\Exception\FlowException;

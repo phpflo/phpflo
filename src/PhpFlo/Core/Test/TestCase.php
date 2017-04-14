@@ -10,6 +10,8 @@ declare(strict_types=1);
  */
 namespace PhpFlo\Core\Test;
 
+use PhpFlo\Common\Test\TestUtilityTrait;
+
 /**
  * Class TestCase
  *

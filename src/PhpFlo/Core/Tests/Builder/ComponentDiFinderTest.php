@@ -52,43 +52,4 @@ class ComponentDiFinderTest extends TestCase
 
         $diFinder->build('SomeInvalidComponent');
     }
-
-    /**
-     * Will create a stub with several methods and defined return values.
-     * definition:
-     * [
-     *   'myMethod' => 'somevalue',
-     *   'myOtherMethod' => $callback,
-     *   'anotherMethod' => function ($x) use ($y) {},
-     * ]
-     *
-     * @param string $class
-     * @param array $methods
-     * @param string $className classname for mock object
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function stub($class, array $methods = [], $className = '')
-    {
-        $builder = $this->getMockBuilder($class)
-            ->disableOriginalConstructor();
-
-        if (!empty($methods)) {
-            $builder->setMethods(array_keys($methods));
-        }
-
-        if ('' !== $className) {
-            $builder->setMockClassName($className);
-        }
-
-        $stub = $builder->getMock();
-        foreach ($methods as $method => $value) {
-            if (is_callable($value)) {
-                $stub->expects($this->any())->method($method)->willReturnCallback($value);
-            } else {
-                $stub->expects($this->any())->method($method)->willReturn($value);
-            }
-        }
-
-        return $stub;
-    }
 }

@@ -8,12 +8,14 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Common;
+namespace PhpFlo\Core;
+
+use PhpFlo\Common\NetworkInterface;
 
 /**
  * Class AbstractNetworkDecorator
  *
- * @package PhpFlo\Common
+ * @package PhpFlo\Core
  * @author Marc Aschmann <maschmann@gmail.com>
  */
 abstract class AbstractNetworkDecorator implements NetworkInterface

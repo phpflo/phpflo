@@ -8,9 +8,10 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
-namespace PhpFlo\Common\Tests;
+namespace PhpFlo\Core\Tests;
 
-use PhpFlo\Common\HookableNetworkTrait;
+use PhpFlo\Core\HookableNetworkTrait;
+use PhpFlo\Common\Test\TestUtilityTrait;
 use PhpFlo\Core\Interaction\InternalSocket;
 
 class HookableNetworkTraitTest extends \PHPUnit_Framework_TestCase

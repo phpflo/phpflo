@@ -15,7 +15,7 @@ use PhpFlo\Common\DefinitionInterface;
 use PhpFlo\Common\NetworkInterface as Net;
 use PhpFlo\Common\Exception\InvalidDefinitionException;
 use PhpFlo\Fbp\FbpParser;
-use PhpFlo\Loader\Loader;
+use PhpFlo\Fbp\Loader\Loader;
 
 /**
  * Analyzes and creates definitions from flow graph file.

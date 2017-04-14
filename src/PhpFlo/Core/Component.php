@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace PhpFlo\Core;
 
 use PhpFlo\Common\ComponentInterface;
-use PhpFlo\Common\ComponentTrait;
 
 /**
  * Class Component

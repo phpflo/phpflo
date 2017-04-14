@@ -10,7 +10,7 @@
 declare(strict_types=1);
 namespace PhpFlo\Common;
 
-use PhpFlo\Interaction\PortRegistry;
+use PhpFlo\Core\Interaction\PortRegistry;
 
 /**
  * Interface ComponentInterface
