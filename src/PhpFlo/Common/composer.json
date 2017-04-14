@@ -1,6 +1,6 @@
 {
   "name": "phpflo/phpflo-common",
-  "description": "PhpFlo common files",
+  "description": "PhpFlo commonly used interfaces and exception classes",
   "type": "library",
   "keywords": ["fbp", "flow"],
   "license": "MIT",
@@ -11,19 +11,17 @@
     }
   ],
   "require": {
-    "php": ">=7.0.0",
-    "phpflo/phpflo": "^2.1.0"
+    "php": ">=7.0.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.0"
+    "phpunit/phpunit": "^5.0",
+    "phpflo/phpflo": "^2.1.0"
   },
   "config": {
     "bin-dir": "bin"
   },
   "autoload": {
     "psr-4": { "PhpFlo\\Common\\": "" },
-    "exclude-from-classmap": [
-      "/Tests/"
-    ]
+    "exclude-from-classmap": [ "/Tests/" ]
   }
 }

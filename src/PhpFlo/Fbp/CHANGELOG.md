@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.1.0
+* Move to monorepo
+* Move interfaces and commonly stuff to separate repo
+
 ## v1.1.0
 * Improve error handling for FBP dumper
 * Improve parser error handling with debug information

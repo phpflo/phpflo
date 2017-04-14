@@ -12,7 +12,8 @@
   ],
   "require": {
     "php": ">=7.0.0",
-    "psr/log": "^1.0"
+    "psr/log": "^1.0",
+    "phpflo/phpflo-common": "^2.1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.0",
