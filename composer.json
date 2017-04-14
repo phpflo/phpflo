@@ -1,5 +1,5 @@
 {
-  "name": "phpflo/phpflo-core",
+  "name": "phpflo/phpflo-component",
   "description": "Collection of base components for usage with phpflo",
   "type": "library",
   "keywords": ["fbp", "flow"],
