@@ -1,4 +1,0 @@
-ReadFile(ReadFile) out -> in SplitbyLines(SplitStr)
-ReadFile(ReadFile) error -> in Display(Output)
-SplitbyLines(SplitStr) out -> in CountLines(Counter)
-CountLines(Counter) count -> in Display(Output)

@@ -1,4 +1,4 @@
-# phpflo-flowtrace
+# [READONLY] phpflo-flowtrace
 [![Build Status](https://travis-ci.org/phpflo/phpflo-flowtrace.svg?branch=master)](https://travis-ci.org/phpflo/phpflo-flowtrace)
 [![Code Coverage](https://scrutinizer-ci.com/g/phpflo/phpflo-flowtrace/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/phpflo/phpflo-flowtrace/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/phpflo/phpflo-flowtrace/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/phpflo/phpflo-flowtrace/?branch=master)
@@ -21,11 +21,11 @@ Add a ```composer require phpflo/flowtrace``` and initialise like this:
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
 
-$traceableNetwork = new \PhpFlo\TraceableNetwork(
-    new PhpFlo\Network(
-        new PhpFlo\Builder\ComponentFactory()
+$traceableNetwork = new \PhpFlo\FlowTrace\TraceableNetwork(
+    new PhpFlo\Core\Network(
+        new PhpFlo\Core\Builder\ComponentFactory()
     ),
-    new \PhpFlo\Logger\SimpleFile(__DIR__ . DIRECTORY_SEPARATOR . 'flow.log', 'info')
+    new \PhpFlo\FlowTrace\Logger\SimpleFile(__DIR__ . DIRECTORY_SEPARATOR . 'flow.log', 'info')
 );
 $traceableNetwork
     ->boot(__DIR__.'/count.fbp')
@@ -37,7 +37,7 @@ As you might have noticed, the logger has a "level" given, which is PSR3 compati
 You can easily replace this logger with your own PSR compatible one. Providing a certain level will give you more detailed information. "debug" will also give you all connects/disconnects, "info" will just provide data flows and data.
 
 ## Logs
-The logs should be compatible with [flowbased/flowtrace](https://github.com/flowbased/flowtrace) and reproduce flows within Flowhub.
+The logs are compatible with [flowbased/flowtrace](https://github.com/flowbased/flowtrace) and reproduce flows within Flowhub.
 
 Example of reading the count.fbp file (info):
 ```log

@@ -1,4 +1,4 @@
-# phpflo-fbp: load, parse, dump
+# [READONLY] phpflo-fbp: load, parse, dump
 Flowbased programming protocol (FBP) config file loader, using the FBP domain specific language (DSL).
 
 [![Build Status](https://travis-ci.org/phpflo/phpflo-fbp.svg?branch=master)](https://travis-ci.org/phpflo)

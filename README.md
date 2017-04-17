@@ -30,6 +30,8 @@ PhpFlo can be installed from [Packagist.org](http://packagist.org/view/PhpFlo/Ph
 php composer.phar require phpflo/phpflo
 ```
 
+This gives you phpflo, common, fbp and flowtrace packages. 
+
 ## Autoloading
 
 To use PhpFlo, you need a [PHP Standards Group -compatible autoloader](http://groups.google.com/group/php-standards/web/psr-0-final-proposal). You can use the Composer-supplied autoloader:
@@ -40,13 +42,9 @@ To use PhpFlo, you need a [PHP Standards Group -compatible autoloader](http://gr
 require 'vendor/autoload.php';
 ```
 
-## Running the examples
+## Examples
 
-File line count using _embedded_ PhpFlo:
-
-```sh
-$ ./examples/linecount/count.php somefile.txt
-```
+You can find examples on how to use phpflo in the [phpflo-component](https://github.com/phpflo/phpflo-component) package.
 
 ## Terminology
 
@@ -77,7 +75,7 @@ A minimal component would look like the following:
 ```php
 <?php
 
-use PhpFlo\Common\ComponentTrait;
+use PhpFlo\Core\ComponentTrait;
 use PhpFlo\Common\ComponentInterface;
 
 class Forwarder implements ComponentInterface
@@ -110,9 +108,9 @@ class Forwarder implements ComponentInterface
 }
 ```
 
-Alternatively you can use ```PhpFlo\Component``` via direct inheritance, which internally uses the trait.
+Alternatively you can use ```PhpFlo\Core\Component``` via direct inheritance, which internally uses the trait.
 This example component register two ports: _in_ and _out_. When it receives data in the _in_ port, it opens the _out_ port and sends the same data there. When the _in_ connection closes, it will also close the _out_ connection. So basically this component would be a simple repeater.
-You can find more examples of components in the `lib/PhpFlo/Component` folder.
+You can find more examples of components in the [phpflo-compoent](https://github.com/phpflo/phpflo-component) package.
 Please mind that there's an mandatory second parameter for the "add" command. This array receives the port's meta information and has following defaults:
  
 ``` php
@@ -184,8 +182,8 @@ This format gives you the advantage of much less definition work, compared to th
 
 If you have older JSON definitions, you can still use them or convert then to FBP, using the dumper wrapped by the graph or directly from definition:
 ```php
-$builder = new \PhpFlo\Builder\ComponentFactory();
-$network = new PhpFlo\Network($builder);
+$builder = new \PhpFlo\Core\Builder\ComponentFactory();
+$network = new PhpFlo\Core\Network($builder);
 $network->boot(__DIR__.'/count.json', $builder);
 file_put_contents('./count.fbp', $network->getGraph()->toFbp());
 ```
@@ -303,10 +301,10 @@ To run a graph file, load it via the PhpFlow API:
 ```php
 <?php
 
-$builder = new PhpFlo\Builder\ComponentFactory();
+$builder = new PhpFlo\Core\Builder\ComponentFactory();
 
 // create network
-$network = new PhpFlo\Network($builder);
+$network = new PhpFlo\Core\Network($builder);
 $network
     ->boot(__DIR__.'/count.fbp')
     ->run($fileName, "ReadFile", "source")
@@ -319,10 +317,10 @@ Since the network now also features the ```HookableInterface```, you can easily 
 
 ```php
 <?php
-$builder = new PhpFlo\Builder\ComponentFactory();
+$builder = new PhpFlo\Core\Builder\ComponentFactory();
 
 // create network
-$network = new PhpFlo\Network($builder);
+$network = new PhpFlo\Core\Network($builder);
 $network
     ->hook(
         'data',
