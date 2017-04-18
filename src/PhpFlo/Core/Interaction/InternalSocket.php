@@ -53,7 +53,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @return string
      */
-    public function getId() : string
+    public function getId(): string
     {
         if ($this->from && !$this->to) {
             return "{$this->from[Net::PROCESS][Net::NODE_ID]}.{$this->from[Net::PORT]}:ANON";
@@ -93,7 +93,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @inheritdoc
      */
-    public function send($data) : SocketInterface
+    public function send($data): SocketInterface
     {
         $this->emit(Net::DATA, [$data, $this]);
 
@@ -126,7 +126,7 @@ class InternalSocket extends EventEmitter implements SocketInterface
     /**
      * @return bool
      */
-    public function isConnected() : bool
+    public function isConnected(): bool
     {
         return $this->connected;
     }

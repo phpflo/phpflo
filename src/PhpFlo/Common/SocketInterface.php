@@ -29,7 +29,7 @@ interface SocketInterface
     /**
      * @return string
      */
-    public function getId() : string;
+    public function getId(): string;
 
     /**
      * Emits connect event.
@@ -57,7 +57,7 @@ interface SocketInterface
     /**
      * @return bool
      */
-    public function isConnected() : bool;
+    public function isConnected(): bool;
 
     /**
      * @param string $groupName

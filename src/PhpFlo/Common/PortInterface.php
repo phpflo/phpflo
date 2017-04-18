@@ -36,7 +36,7 @@ interface PortInterface
     /**
      * @return array
      */
-    public function getAttributes() : array ;
+    public function getAttributes(): array ;
 
     /**
      * @param string $name
@@ -47,14 +47,14 @@ interface PortInterface
     /**
      * @return string
      */
-    public function getName() : string;
+    public function getName(): string;
 
     /**
      * @param SocketInterface $socket
      * @throws InvalidDefinitionException
      * @return PortInterface
      */
-    public function attach(SocketInterface $socket) : PortInterface;
+    public function attach(SocketInterface $socket): PortInterface;
 
     /**
      * @param mixed $data
@@ -97,14 +97,14 @@ interface PortInterface
     /**
      * @return bool
      */
-    public function isConnected() : bool;
+    public function isConnected(): bool;
 
     /**
      * Checks if port is attached.
      *
      * @return bool
      */
-    public function isAttached() : bool;
+    public function isAttached(): bool;
 
     /**
      * @param string $groupName

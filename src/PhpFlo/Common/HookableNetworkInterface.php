@@ -41,5 +41,5 @@ interface HookableNetworkInterface
      *
      * @return array
      */
-    public function hooks() : array;
+    public function hooks(): array;
 }

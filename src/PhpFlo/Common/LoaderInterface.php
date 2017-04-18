@@ -25,5 +25,5 @@ interface LoaderInterface
      * @return DefinitionInterface
      * @throws LoaderException
      */
-    public static function load(string $file) : DefinitionInterface;
+    public static function load(string $file): DefinitionInterface;
 }

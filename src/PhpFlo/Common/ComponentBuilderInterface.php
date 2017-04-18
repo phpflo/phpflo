@@ -25,5 +25,5 @@ interface ComponentBuilderInterface
      * @return ComponentInterface
      * @throws InvalidDefinitionException
      */
-    public function build(string $component) : ComponentInterface;
+    public function build(string $component): ComponentInterface;
 }

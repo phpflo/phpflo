@@ -23,17 +23,17 @@ interface ComponentInterface
     /**
      * @return string
      */
-    public function getDescription() : string;
+    public function getDescription(): string;
 
     /**
      * @return PortRegistry
      */
-    public function inPorts() : PortRegistry;
+    public function inPorts(): PortRegistry;
 
     /**
      * @return PortRegistry
      */
-    public function outPorts() : PortRegistry;
+    public function outPorts(): PortRegistry;
 
     /**
      * Detach all sockets, disconnect all ports.

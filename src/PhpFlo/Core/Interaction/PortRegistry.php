@@ -43,7 +43,7 @@ class PortRegistry implements \Iterator, \Countable
      * @return PortRegistry
      * @throws PortException
      */
-    public function add(string $name, array $attributes) : PortRegistry
+    public function add(string $name, array $attributes): PortRegistry
     {
         switch (true) {
             case (!$this->has($name) && (isset($attributes['addressable']) && false !== $attributes['addressable'])):
@@ -69,7 +69,7 @@ class PortRegistry implements \Iterator, \Countable
      * @param string $name
      * @return bool
      */
-    public function has(string $name) : bool
+    public function has(string $name): bool
     {
         $hasPort = false;
 
@@ -107,7 +107,7 @@ class PortRegistry implements \Iterator, \Countable
      * @param string $name
      * @return PortRegistry
      */
-    public function remove(string $name) : PortRegistry
+    public function remove(string $name): PortRegistry
     {
         if ($this->has($name)) {
             $this->ports[$name] = null;

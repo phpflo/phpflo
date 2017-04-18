@@ -38,7 +38,7 @@ abstract class AbstractNetworkDecorator implements NetworkInterface
     /**
      * @return NetworkInterface
      */
-    public function getNetwork() : NetworkInterface
+    public function getNetwork(): NetworkInterface
     {
         return $this->network;
     }
@@ -56,7 +56,7 @@ abstract class AbstractNetworkDecorator implements NetworkInterface
      *
      * @return NetworkInterface
      */
-    public function shutdown() : NetworkInterface
+    public function shutdown(): NetworkInterface
     {
         $this->network->shutdown();
 
@@ -70,7 +70,7 @@ abstract class AbstractNetworkDecorator implements NetworkInterface
      * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
-    public function addInitial($data, string $node, string $port) : NetworkInterface
+    public function addInitial($data, string $node, string $port): NetworkInterface
     {
         $this->network->addInitial($data, $node, $port);
 
@@ -102,7 +102,7 @@ abstract class AbstractNetworkDecorator implements NetworkInterface
      *
      * @return array
      */
-    public function hooks() : array
+    public function hooks(): array
     {
         return $this->network->hooks();
     }
@@ -120,7 +120,7 @@ abstract class AbstractNetworkDecorator implements NetworkInterface
      * @return NetworkInterface
      * @throws \PhpFlo\Common\InvalidDefinitionException
      */
-    public function addNode(array $node) : NetworkInterface
+    public function addNode(array $node): NetworkInterface
     {
         $this->network->addNode($node);
 
@@ -131,7 +131,7 @@ abstract class AbstractNetworkDecorator implements NetworkInterface
      * @param array $node
      * @return NetworkInterface
      */
-    public function removeNode(array $node) : NetworkInterface
+    public function removeNode(array $node): NetworkInterface
     {
         $this->network->removeNode($node);
 
@@ -152,7 +152,7 @@ abstract class AbstractNetworkDecorator implements NetworkInterface
      * @return NetworkInterface
      * @throws \PhpFlo\Common\InvalidDefinitionException
      */
-    public function addEdge(array $edge) : NetworkInterface
+    public function addEdge(array $edge): NetworkInterface
     {
         $this->network->addEdge($edge);
 
@@ -163,7 +163,7 @@ abstract class AbstractNetworkDecorator implements NetworkInterface
      * @param array $edge
      * @return NetworkInterface
      */
-    public function removeEdge(array $edge) : NetworkInterface
+    public function removeEdge(array $edge): NetworkInterface
     {
         $this->network->removeEdge($edge);
 
@@ -178,7 +178,7 @@ abstract class AbstractNetworkDecorator implements NetworkInterface
      * @return NetworkInterface
      * @throws \PhpFlo\Common\InvalidDefinitionException
      */
-    public function boot($graph) : NetworkInterface
+    public function boot($graph): NetworkInterface
     {
         $this->network->boot($graph);
 
@@ -194,7 +194,7 @@ abstract class AbstractNetworkDecorator implements NetworkInterface
      * @return NetworkInterface
      * @throws FlowException
      */
-    public function run($data, string $node, string $port) : NetworkInterface
+    public function run($data, string $node, string $port): NetworkInterface
     {
         $this->network->run($data, $node, $port);
 

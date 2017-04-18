@@ -30,7 +30,7 @@ final class Port extends AbstractPort implements PortInterface
      * @throws InvalidDefinitionException
      * @return PortInterface
      */
-    public function attach(SocketInterface $socket) : PortInterface
+    public function attach(SocketInterface $socket): PortInterface
     {
         if ($this->socket) {
             throw new InvalidDefinitionException("{$this->name} socket already attached {$this->socket->getId()}");
@@ -108,7 +108,7 @@ final class Port extends AbstractPort implements PortInterface
     /**
      * @return bool
      */
-    public function isConnected() : bool
+    public function isConnected(): bool
     {
         if (null === $this->socket) {
             return false;
@@ -122,7 +122,7 @@ final class Port extends AbstractPort implements PortInterface
      *
      * @return bool
      */
-    public function isAttached() : bool
+    public function isAttached(): bool
     {
         if (!$this->socket) {
             return false;

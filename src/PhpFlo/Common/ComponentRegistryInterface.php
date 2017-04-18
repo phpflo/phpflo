@@ -26,7 +26,7 @@ interface ComponentRegistryInterface
      * @return ComponentInterface
      * @throws ComponentNotFoundException
      */
-    public function get(string $alias) : ComponentInterface;
+    public function get(string $alias): ComponentInterface;
 
     /**
      * @param ComponentInterface $component
@@ -34,5 +34,5 @@ interface ComponentRegistryInterface
      * @return ComponentRegistryInterface
      * @throws ComponentException
      */
-    public function add(ComponentInterface $component, string $alias) : ComponentRegistryInterface;
+    public function add(ComponentInterface $component, string $alias): ComponentRegistryInterface;
 }

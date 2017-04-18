@@ -73,7 +73,7 @@ trait HookableNetworkTrait
      *
      * @return array
      */
-    public function hooks() : array
+    public function hooks(): array
     {
         return $this->hooks;
     }
@@ -82,7 +82,7 @@ trait HookableNetworkTrait
      * @param SocketInterface $socket
      * @return SocketInterface
      */
-    protected function addHooks(SocketInterface $socket) : SocketInterface
+    protected function addHooks(SocketInterface $socket): SocketInterface
     {
         // examine events
         foreach ($this->hooks as $event => $hooks) {

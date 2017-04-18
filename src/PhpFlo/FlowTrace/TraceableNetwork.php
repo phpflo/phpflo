@@ -66,7 +66,7 @@ class TraceableNetwork extends AbstractNetworkDecorator implements NetworkInterf
      * @param string $type
      * @return \Closure
      */
-    private function trace(string $type) : \Closure
+    private function trace(string $type): \Closure
     {
         $trace = function() use ($type) {
             switch ($type) {

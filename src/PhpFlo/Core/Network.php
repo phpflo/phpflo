@@ -81,7 +81,7 @@ class Network implements NetworkInterface
      * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
-    public function addNode(array $node) : NetworkInterface
+    public function addNode(array $node): NetworkInterface
     {
         if (isset($this->processes[$node[self::NODE_ID]])) {
             return $this;
@@ -103,7 +103,7 @@ class Network implements NetworkInterface
      * @param array $node
      * @return NetworkInterface
      */
-    public function removeNode(array $node) : NetworkInterface
+    public function removeNode(array $node): NetworkInterface
     {
         if (isset($this->processes[$node[self::NODE_ID]])) {
             unset($this->processes[$node[self::NODE_ID]]);
@@ -138,7 +138,7 @@ class Network implements NetworkInterface
      * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
-    public function addEdge(array $edge) : NetworkInterface
+    public function addEdge(array $edge): NetworkInterface
     {
         if (!isset($edge[self::SOURCE][self::NODE])) {
             return $this->addInitial(
@@ -172,7 +172,7 @@ class Network implements NetworkInterface
      * @param array $edge
      * @return NetworkInterface
      */
-    public function removeEdge(array $edge) : NetworkInterface
+    public function removeEdge(array $edge): NetworkInterface
     {
         foreach ($this->connections as $index => $connection) {
             if ($edge[self::TARGET][self::NODE] == $connection->to[self::PROCESS][self::NODE_ID]
@@ -208,7 +208,7 @@ class Network implements NetworkInterface
      * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
-    protected function addInitial($data, string $node, string $port) : NetworkInterface
+    protected function addInitial($data, string $node, string $port): NetworkInterface
     {
         $initializer = [
             self::SOURCE => [
@@ -246,7 +246,7 @@ class Network implements NetworkInterface
      *
      * @return NetworkInterface
      */
-    public function shutdown() : NetworkInterface
+    public function shutdown(): NetworkInterface
     {
         foreach ($this->processes as $process) {
             $process[self::COMPONENT]->shutdown();
@@ -274,7 +274,7 @@ class Network implements NetworkInterface
      * @return NetworkInterface
      * @throws FlowException
      */
-    public function run($data, string $node, string $port) : NetworkInterface
+    public function run($data, string $node, string $port): NetworkInterface
     {
         if (empty($this->graph)) {
             throw new FlowException(
@@ -295,7 +295,7 @@ class Network implements NetworkInterface
      * @return NetworkInterface
      * @throws InvalidTypeException
      */
-    public function boot($graph) : NetworkInterface
+    public function boot($graph): NetworkInterface
     {
         switch (true) {
             case (is_a(Graph::class, $graph)):
@@ -390,7 +390,7 @@ class Network implements NetworkInterface
         array $to,
         string $edgeFrom,
         string $edgeTo
-    ) : NetworkInterface {
+    ): NetworkInterface {
         if (!$from[self::COMPONENT]->outPorts()->has($edgeFrom)) {
             throw new InvalidDefinitionException("No outport {$edgeFrom} defined for process {$from[self::NODE_ID]}");
         }
@@ -465,7 +465,7 @@ class Network implements NetworkInterface
      * @param string $type
      * @return bool
      */
-    private function hasValidPortType($type) : bool
+    private function hasValidPortType($type): bool
     {
         return in_array($type, Port::$datatypes);
     }

@@ -22,50 +22,50 @@ interface DefinitionInterface
      * @param array $definition
      * @return DefinitionInterface
      */
-    public function definition(array $definition) : DefinitionInterface;
+    public function definition(array $definition): DefinitionInterface;
 
     /**
      * @return array
      */
-    public function properties() : array;
+    public function properties(): array;
 
     /**
      * @return array
      */
-    public function initializers() : array;
+    public function initializers(): array;
 
     /**
      * @return array
      */
-    public function processes() : array;
+    public function processes(): array;
 
     /**
      * @return array
      */
-    public function connections() : array;
+    public function connections(): array;
 
     /**
      * @return array
      */
-    public function toArray() : array;
+    public function toArray(): array;
 
     /**
      * @return string
      */
-    public function toJson() : string;
+    public function toJson(): string;
 
     /**
      * @return string
      */
-    public function toYaml() : string;
+    public function toYaml(): string;
 
     /**
      * @return string
      */
-    public function toFbp() : string;
+    public function toFbp(): string;
 
     /**
      * @return string
      */
-    public function name() : string;
+    public function name(): string;
 }

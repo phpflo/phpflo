@@ -38,7 +38,7 @@ class ComponentRegistry implements ComponentRegistryInterface
      * @return ComponentInterface
      * @throws ComponentNotFoundException
      */
-    public function get(string $alias) : ComponentInterface
+    public function get(string $alias): ComponentInterface
     {
         if (array_key_exists($alias, $this->references)) {
             return $this->references[$alias];
@@ -53,7 +53,7 @@ class ComponentRegistry implements ComponentRegistryInterface
      * @return ComponentRegistryInterface
      * @throws ComponentException
      */
-    public function add(ComponentInterface $component, string $alias) : ComponentRegistryInterface
+    public function add(ComponentInterface $component, string $alias): ComponentRegistryInterface
     {
         if (!array_key_exists($alias, $this->references)) {
             $this->references[$alias] = $component;

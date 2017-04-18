@@ -31,7 +31,7 @@ final class FbpDumper implements FbpDefinitionsInterface
      * @param array $definition
      * @return string json
      */
-    public static function toJson(array $definition) : string
+    public static function toJson(array $definition): string
     {
         return json_encode($definition, JSON_PRETTY_PRINT);
     }
@@ -41,7 +41,7 @@ final class FbpDumper implements FbpDefinitionsInterface
      * @param int $inline level until inlining starts
      * @return string yaml
      */
-    public static function toYaml(array $definition, int $inline = 3) : string
+    public static function toYaml(array $definition, int $inline = 3): string
     {
         return Yaml::dump($definition, $inline);
     }
@@ -50,7 +50,7 @@ final class FbpDumper implements FbpDefinitionsInterface
      * @param array $definition
      * @return string
      */
-    public static function toFbp(array $definition) : string
+    public static function toFbp(array $definition): string
     {
         return self::createFbp($definition);
     }
@@ -60,7 +60,7 @@ final class FbpDumper implements FbpDefinitionsInterface
      * @return string
      * @throws DumperException
      */
-    private static function createFbp(array $definition) : string
+    private static function createFbp(array $definition): string
     {
         $fbp = [];
 
@@ -116,7 +116,7 @@ final class FbpDumper implements FbpDefinitionsInterface
      * @param array $connectionTouple
      * @return string
      */
-    private static function examineConnectionTouple(array $connectionTouple) : string
+    private static function examineConnectionTouple(array $connectionTouple): string
     {
         self::hasElement(self::SOURCE_LABEL, $connectionTouple);
         self::hasElement(self::TARGET_LABEL, $connectionTouple);
@@ -133,7 +133,7 @@ final class FbpDumper implements FbpDefinitionsInterface
      * @throws DumperException
      * @return string
      */
-    private static function examineProcess(string $type, array $processPart) : string
+    private static function examineProcess(string $type, array $processPart): string
     {
         self::hasElement(self::PROCESS_LABEL, $processPart);
         self::hasElement(self::PORT_LABEL, $processPart);
@@ -168,7 +168,7 @@ final class FbpDumper implements FbpDefinitionsInterface
         string $needle,
         array $haystack,
         bool $triggerException = true
-    ) : bool {
+    ): bool {
         if (empty($haystack[$needle])) {
             if ($triggerException) {
                 self::throwDumperException('elmeent', $needle);
@@ -185,7 +185,7 @@ final class FbpDumper implements FbpDefinitionsInterface
      * @param string $targetPort
      * @return string
      */
-    private static function connectPorts(string $sourcePort, string $targetPort) : string
+    private static function connectPorts(string $sourcePort, string $targetPort): string
     {
         return implode(
             " " . self::SOURCE_TARGET_SEPARATOR . " ",

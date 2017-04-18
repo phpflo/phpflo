@@ -46,14 +46,14 @@ interface NetworkInterface extends HookableNetworkInterface
      * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
-    public function addEdge(array $edge) : NetworkInterface;
+    public function addEdge(array $edge): NetworkInterface;
 
     /**
      * @param array $node
      * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
-    public function addNode(array $node) : NetworkInterface;
+    public function addNode(array $node): NetworkInterface;
 
     /**
      * Add a flow definition as Graph object or definition file/string
@@ -63,7 +63,7 @@ interface NetworkInterface extends HookableNetworkInterface
      * @return NetworkInterface
      * @throws InvalidDefinitionException
      */
-    public function boot($graph) : NetworkInterface;
+    public function boot($graph): NetworkInterface;
 
     /**
      * @return null|Graph
@@ -80,13 +80,13 @@ interface NetworkInterface extends HookableNetworkInterface
      * @param array $edge
      * @return NetworkInterface
      */
-    public function removeEdge(array $edge) : NetworkInterface;
+    public function removeEdge(array $edge): NetworkInterface;
 
     /**
      * @param array $node
      * @return NetworkInterface
      */
-    public function removeNode(array $node) : NetworkInterface;
+    public function removeNode(array $node): NetworkInterface;
 
     /**
      * Add initialization data
@@ -97,14 +97,14 @@ interface NetworkInterface extends HookableNetworkInterface
      * @return NetworkInterface
      * @throws FlowException
      */
-    public function run($data, string $node, string $port) : NetworkInterface;
+    public function run($data, string $node, string $port): NetworkInterface;
 
     /**
      * Cleanup network state after runs.
      *
      * @return NetworkInterface
      */
-    public function shutdown() : NetworkInterface;
+    public function shutdown(): NetworkInterface;
 
     /**
      * @return bool|\DateInterval

@@ -40,7 +40,7 @@ final class Loader implements LoaderInterface
      * @return DefinitionInterface
      * @throws LoaderException
      */
-    public static function load(string $file) : DefinitionInterface
+    public static function load(string $file): DefinitionInterface
     {
         $type = self::$types[self::checkType($file)];
         $content = self::loadFile($file);
@@ -78,7 +78,7 @@ final class Loader implements LoaderInterface
      * @return string
      * @throws LoaderException
      */
-    private static function checkType(string $file) : string
+    private static function checkType(string $file): string
     {
         $parts = explode('.', $file);
         $type = array_pop($parts);
@@ -95,7 +95,7 @@ final class Loader implements LoaderInterface
      * @return string
      * @throws LoaderException
      */
-    private static function loadFile(string $file) : string
+    private static function loadFile(string $file): string
     {
         if (file_exists($file) && is_readable($file)) {
             $content = file_get_contents($file);

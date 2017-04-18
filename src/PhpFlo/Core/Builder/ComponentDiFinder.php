@@ -45,7 +45,7 @@ class ComponentDiFinder implements ComponentBuilderInterface
      * @return ComponentInterface
      * @throws InvalidDefinitionException
      */
-    public function build(string $component) : ComponentInterface
+    public function build(string $component): ComponentInterface
     {
         $instance = $this->container->get($component);
 

@@ -32,7 +32,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param SocketInterface $socket
      * @return PortInterface
      */
-    public function attach(SocketInterface $socket) : PortInterface
+    public function attach(SocketInterface $socket): PortInterface
     {
         $this->sockets[] = $socket;
         $this->attachSocket($socket);
@@ -144,7 +144,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param int $socketId
      * @return bool
      */
-    public function isConnected(int $socketId = 0) : bool
+    public function isConnected(int $socketId = 0): bool
     {
         if (!isset($this->sockets[$socketId])) {
             return false;
@@ -159,7 +159,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param int $socketId
      * @return bool
      */
-    public function isAttached(int $socketId = 0) : bool
+    public function isAttached(int $socketId = 0): bool
     {
         if (!isset($this->sockets[$socketId])) {
             return false;
@@ -171,7 +171,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
     /**
      * return int[]
      */
-    public function listAttached() : array
+    public function listAttached(): array
     {
         return array_keys($this->sockets);
     }
@@ -218,7 +218,7 @@ final class ArrayPort extends AbstractPort implements PortInterface
      * @param SocketInterface $socket
      * @return int
      */
-    protected function getSocketIndex(SocketInterface $socket) : int
+    protected function getSocketIndex(SocketInterface $socket): int
     {
         $index = 0;
         foreach ($this->sockets as $subSocket) {

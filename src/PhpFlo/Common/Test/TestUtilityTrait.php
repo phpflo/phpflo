@@ -41,7 +41,7 @@ trait TestUtilityTrait
         array $methods = [],
         string $className = '',
         bool $forceMethods = false
-    ) : \PHPUnit_Framework_MockObject_MockObject {
+    ): \PHPUnit_Framework_MockObject_MockObject {
         $builder = $this->getMockBuilder($class)
             ->disableOriginalConstructor();
 
@@ -76,7 +76,7 @@ trait TestUtilityTrait
      * @param ComponentInterface $component
      * @return ComponentInterface
      */
-    protected function connectInPorts(ComponentInterface $component) : ComponentInterface
+    protected function connectInPorts(ComponentInterface $component): ComponentInterface
     {
         foreach ($component->inPorts() as $alias => $inPort) {
             $inPort->attach($this->stub(InternalSocket::class));
@@ -91,7 +91,7 @@ trait TestUtilityTrait
      * @param ComponentInterface $component
      * @return ComponentInterface
      */
-    protected function connectOutPorts(ComponentInterface $component) : ComponentInterface
+    protected function connectOutPorts(ComponentInterface $component): ComponentInterface
     {
         $this->outPortSockets = [];
         foreach ($component->outPorts() as $port) {
@@ -124,7 +124,7 @@ trait TestUtilityTrait
      * @param ComponentInterface $component
      * @return ComponentInterface
      */
-    public function connectPorts(ComponentInterface $component) : ComponentInterface
+    public function connectPorts(ComponentInterface $component): ComponentInterface
     {
         $this->connectInPorts($component);
         $this->connectOutPorts($component);
@@ -151,7 +151,7 @@ trait TestUtilityTrait
      * @param string $port
      * @return bool
      */
-    protected function wasCalled(string $port) : bool
+    protected function wasCalled(string $port): bool
     {
         return !empty($this->outPortSockets[$port]);
     }

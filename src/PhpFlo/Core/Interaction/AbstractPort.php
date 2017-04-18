@@ -86,7 +86,7 @@ class AbstractPort extends EventEmitter
      * @param string $toType
      * @return bool
      */
-    public static function isCompatible(string $fromType, string $toType) : bool
+    public static function isCompatible(string $fromType, string $toType): bool
     {
         switch (true) {
             case (($fromType == $toType) || ($toType == 'all' || $toType == 'bang')):
@@ -126,7 +126,7 @@ class AbstractPort extends EventEmitter
     /**
      * @return array
      */
-    public function getAttributes() : array
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -149,7 +149,7 @@ class AbstractPort extends EventEmitter
     /**
      * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         return (string)$this->name;
     }

@@ -67,7 +67,7 @@ class Graph extends EventEmitter
      * @param string $component
      * @return Graph
      */
-    public function addNode(string $id, string $component) : Graph
+    public function addNode(string $id, string $component): Graph
     {
         $node = [
             Net::NODE_ID => $id,
@@ -84,7 +84,7 @@ class Graph extends EventEmitter
      * @param string $id
      * @return Graph
      */
-    public function removeNode(string $id) : Graph
+    public function removeNode(string $id): Graph
     {
         foreach ($this->edges as $edge) {
             if ($edge[Net::SOURCE][Net::NODE] == $id) {
@@ -133,7 +133,7 @@ class Graph extends EventEmitter
         string $outPort,
         string $inNode,
         string $inPort
-    ) : Graph {
+    ): Graph {
         $edge = [
             Net::SOURCE => [
                 Net::NODE => $outNode,
@@ -156,7 +156,7 @@ class Graph extends EventEmitter
      * @param string $port
      * @return Graph
      */
-    public function removeEdge(string $node, string $port) : Graph
+    public function removeEdge(string $node, string $port): Graph
     {
         foreach ($this->edges as $index => $edge) {
             if ($edge[Net::SOURCE][Net::NODE] == $node
@@ -192,7 +192,7 @@ class Graph extends EventEmitter
      * @param string $port
      * @return Graph
      */
-    public function addInitial($data, string $node, string $port) : Graph
+    public function addInitial($data, string $node, string $port): Graph
     {
         $initializer = [
             Net::SOURCE => [
@@ -213,7 +213,7 @@ class Graph extends EventEmitter
     /**
      * @return string
      */
-    public function toFbp() : string
+    public function toFbp(): string
     {
         return $this->definition->toFbp();
     }
@@ -221,7 +221,7 @@ class Graph extends EventEmitter
     /**
      * @return string
      */
-    public function toYaml() : string
+    public function toYaml(): string
     {
         return $this->definition->toYaml();
     }
@@ -229,7 +229,7 @@ class Graph extends EventEmitter
     /**
      * @return string
      */
-    public function toJson() : string
+    public function toJson(): string
     {
         return $this->definition->toJson();
     }
@@ -240,7 +240,7 @@ class Graph extends EventEmitter
      * @param string $file
      * @return bool
      */
-    public function save(string $file) : bool
+    public function save(string $file): bool
     {
         $stat = file_put_contents($file, $this->definition->toFbp());
 
@@ -258,7 +258,7 @@ class Graph extends EventEmitter
      * @throws InvalidDefinitionException
      * @return Graph
      */
-    public static function loadString(string $string) : Graph
+    public static function loadString(string $string): Graph
     {
         $loader = new FbpParser($string);
         $definition = $loader->run();
@@ -273,7 +273,7 @@ class Graph extends EventEmitter
      * @throws InvalidDefinitionException
      * @return Graph
      */
-    public static function loadFile(string $file) : Graph
+    public static function loadFile(string $file): Graph
     {
         return self::loadDefinition(
             Loader::load($file)
@@ -286,7 +286,7 @@ class Graph extends EventEmitter
      * @param DefinitionInterface $definition
      * @return Graph
      */
-    public static function loadDefinition(DefinitionInterface $definition) : Graph
+    public static function loadDefinition(DefinitionInterface $definition): Graph
     {
         $graph = new Graph($definition);
 

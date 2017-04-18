@@ -49,7 +49,7 @@ class FbpDefinition implements DefinitionInterface, FbpDefinitionsInterface
      * @param array $definition
      * @return DefinitionInterface
      */
-    public function definition(array $definition) : DefinitionInterface
+    public function definition(array $definition): DefinitionInterface
     {
         $this->schema = array_replace_recursive(
             $this->schema,
@@ -62,7 +62,7 @@ class FbpDefinition implements DefinitionInterface, FbpDefinitionsInterface
     /**
      * @return array
      */
-    public function properties() : array
+    public function properties(): array
     {
         return $this->schema[self::PROPERTIES_LABEL];
     }
@@ -70,7 +70,7 @@ class FbpDefinition implements DefinitionInterface, FbpDefinitionsInterface
     /**
      * @return array
      */
-    public function initializers() : array
+    public function initializers(): array
     {
         return $this->schema[self::INITIALIZERS_LABEL];
     }
@@ -78,7 +78,7 @@ class FbpDefinition implements DefinitionInterface, FbpDefinitionsInterface
     /**
      * @return array
      */
-    public function processes() : array
+    public function processes(): array
     {
         return $this->schema[self::PROCESSES_LABEL];
     }
@@ -86,7 +86,7 @@ class FbpDefinition implements DefinitionInterface, FbpDefinitionsInterface
     /**
      * @return array
      */
-    public function connections() : array
+    public function connections(): array
     {
         return $this->schema[self::CONNECTIONS_LABEL];
     }
@@ -94,7 +94,7 @@ class FbpDefinition implements DefinitionInterface, FbpDefinitionsInterface
     /**
      * @return string
      */
-    public function name() : string
+    public function name(): string
     {
         return $this->schema[self::PROPERTIES_LABEL]['name'];
     }
@@ -102,7 +102,7 @@ class FbpDefinition implements DefinitionInterface, FbpDefinitionsInterface
     /**
      * @return array
      */
-    public function toArray() : array
+    public function toArray(): array
     {
         return $this->schema;
     }
@@ -110,7 +110,7 @@ class FbpDefinition implements DefinitionInterface, FbpDefinitionsInterface
     /**
      * @return string
      */
-    public function toJson() : string
+    public function toJson(): string
     {
         return FbpDumper::toJson($this->schema);
     }
@@ -118,7 +118,7 @@ class FbpDefinition implements DefinitionInterface, FbpDefinitionsInterface
     /**
      * @return string
      */
-    public function toYaml() : string
+    public function toYaml(): string
     {
         return FbpDumper::toYaml($this->schema);
     }
@@ -126,7 +126,7 @@ class FbpDefinition implements DefinitionInterface, FbpDefinitionsInterface
     /**
      * @return string
      */
-    public function toFbp() : string
+    public function toFbp(): string
     {
         return FbpDumper::toFbp($this->schema);
     }

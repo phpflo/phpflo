@@ -85,7 +85,7 @@ final class FbpParser implements FbpDefinitionsInterface
      * @return DefinitionInterface
      * @throws ParserException
      */
-    public function run(string $source = '') : DefinitionInterface
+    public function run(string $source = ''): DefinitionInterface
     {
         if ('' != $source) {
             $this->source = $source;
@@ -126,7 +126,7 @@ final class FbpParser implements FbpDefinitionsInterface
      * @return array
      * @throws ParserDefinitionException
      */
-    private function examineSubset(string $line) : array
+    private function examineSubset(string $line): array
     {
         $subset = [];
         $step = [];
@@ -219,7 +219,7 @@ final class FbpParser implements FbpDefinitionsInterface
      * @param string $value
      * @return bool
      */
-    private function hasValue(array $check, string $value) : bool
+    private function hasValue(array $check, string $value): bool
     {
         if (empty($check[$value])) {
             return false;
@@ -233,7 +233,7 @@ final class FbpParser implements FbpDefinitionsInterface
      * @param string $label
      * @return array
      */
-    private function addPort(array $definition, string $label) : array
+    private function addPort(array $definition, string $label): array
     {
         return [
             self::PROCESS_LABEL => $definition[self::PROCESS_LABEL],
@@ -246,7 +246,7 @@ final class FbpParser implements FbpDefinitionsInterface
      * @return array
      * @throws ParserDefinitionException
      */
-    private function examineDefinition(string $line) : array
+    private function examineDefinition(string $line): array
     {
         preg_match('/' . self::PROCESS_DEFINITION . '/', $line, $matches);
         foreach ($matches as $key => $value) {
@@ -309,7 +309,7 @@ final class FbpParser implements FbpDefinitionsInterface
      * @param string $line
      * @return bool
      */
-    private function doSkip(string $line) : bool
+    private function doSkip(string $line): bool
     {
         switch (true) {
             case (empty(trim($line))):
