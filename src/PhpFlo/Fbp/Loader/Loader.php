@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 declare(strict_types=1);
+
 namespace PhpFlo\Fbp\Loader;
 
 use PhpFlo\Common\DefinitionInterface;

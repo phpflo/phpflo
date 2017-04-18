@@ -30,7 +30,8 @@ PhpFlo can be installed from [Packagist.org](http://packagist.org/view/PhpFlo/Ph
 php composer.phar require phpflo/phpflo
 ```
 
-This gives you phpflo, common, fbp and flowtrace packages. 
+This gives you phpflo, [common](https://github.com/phpflo/phpflo-common), [fbp](https://github.com/phpflo/phpflo-fbp) and [flowtrace](https://github.com/phpflo/phpflo-flowtrace) packages, provided by a [monorepository](https://developer.atlassian.com/blog/2015/10/monorepos-in-git/). This helps us to manage the code in a easier way.
+Every package is also split as a separate repository on github and is installable by itself via packagist.
 
 ## Autoloading
 
@@ -335,25 +336,22 @@ $network
 ```
 
 As you can see, there's a lot of potential in the callbacks, since they can also use object references to store and/or manipulate data, but natively receive socket and data from the supported events.
-This feature is also used in the upcoming [phpflo/flowtrace](https://github.com/phpflo/flowtrace) library, which decorates the ```Network``` class and adds PSR-3 compatible logging.
+This feature is also used in [phpflo/flowtrace](https://github.com/phpflo/flowtrace) library, which decorates the ```Network``` class and adds PSR-3 compatible logging.
 
 ## Testing
 
-To be able to test your components, two traits are provided in [phpflo-core](https://github.com/phpflo/phpflo-core) which is automatically included as a dependency for phpflo. 
+To be able to test your components, a trait is provided in [phpflo-common](https://github.com/phpflo/phpflo-core) which is automatically included as a dependency for phpflo. 
 ```PhpFlo\Test\ComponentTestTrait``` and ```PhpFlo\Test\Stub\Trait``` contain the necessary tools to make testing easier.
 
 ```php
 <?php
 namespace Tests\PhpFlo\Component;
 
-use PhpFlo\Component\Counter;
-use PhpFlo\Test\ComponentTestHelperTrait;
-use PhpFlo\Test\StubTrait;
+use PhpFlo\Common\Test\TestUtilityTrait;
 
 class CounterTest extends \PHPUnit_Framework_TestCase
 {
-    use StubTrait;
-    use ComponentTestHelperTrait;
+    use TestUtilityTrait;
 
     public function testBehavior()
     {
