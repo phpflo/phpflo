@@ -109,6 +109,8 @@ trait TestUtilityTrait
                     \Closure::bind(
                         function ($data) {
                             $this->data[] = $data;
+
+                            return $this;
                         },
                         $socket
                     )
