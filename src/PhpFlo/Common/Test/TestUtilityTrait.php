@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace PhpFlo\Common\Test;
 
 use PhpFlo\Common\ComponentInterface;
+use PhpFlo\Common\SocketInterface;
 use PhpFlo\Core\Interaction\InternalSocket;
 
 /**
@@ -154,6 +155,6 @@ trait TestUtilityTrait
      */
     protected function wasCalled(string $port): bool
     {
-        return !empty($this->outPortSockets[$port]);
+        return (!empty($this->outPortSockets[$port]) && count($this->outPortSockets[$port]->data) > 0);
     }
 }
