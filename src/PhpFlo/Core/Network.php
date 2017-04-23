@@ -299,7 +299,7 @@ class Network implements NetworkInterface
     public function boot($graph): NetworkInterface
     {
         switch (true) {
-            case (is_a(Graph::class, $graph)):
+            case (is_a($graph, Graph::class)):
                 break;
             case (is_file($graph)):
                 $graph = Graph::loadFile($graph);
