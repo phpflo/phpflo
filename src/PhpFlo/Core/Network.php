@@ -304,6 +304,9 @@ class Network implements NetworkInterface
             case (is_file($graph)):
                 $graph = Graph::loadFile($graph);
                 break;
+            case is_string($graph) && is_file($graph):
+                $graph = Graph::loadFile($graph);
+                break;
             case (is_string($graph)):
                 $graph = Graph::loadString($graph);
                 break;
