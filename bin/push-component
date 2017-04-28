@@ -1,0 +1,29 @@
+#!/bin/bash
+# ------------------------------------------------------------------------------
+# this script pushes subtrees to their respective remote repos
+# use with care, since this directly targets master branch
+# ------------------------------------------------------------------------------
+
+GIT_URL="git@github.com:phpflo"
+
+declare -A SUBTREES
+SUBTREES[phpflo-flowtrace]="src/FlowTrace"
+SUBTREES[phpflo-fbp]="src/Fbp"
+SUBTREES[phpflo-common]="src/Common"
+
+if [ ! -z "$1" ]
+then
+    for i in "${!SUBTREES[@]}"
+    do
+        if [ "$i" == "${1,,}" ]
+        then
+            SUBTREE=$i
+            PREFIX=${SUBTREES[$i]}
+        fi
+    done
+else
+    echo "you need to provide a valid subtree name (${!SUBTREES[*]})!"
+    exit 1
+fi
+
+git subtree push --squash --prefix=$PREFIX ${GIT_URL}/${SUBTREE} master
