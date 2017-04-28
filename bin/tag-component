@@ -8,9 +8,9 @@
 GIT_URL="git@github.com:phpflo"
 
 declare -A SUBTREES
-SUBTREES[phpflo-flowtrace]="src/FlowTrace"
-SUBTREES[phpflo-fbp]="src/Fbp"
-SUBTREES[phpflo-common]="src/Common"
+SUBTREES[phpflo-flowtrace]="src/PhpFlo/FlowTrace"
+SUBTREES[phpflo-fbp]="src/PhpFlo/Fbp"
+SUBTREES[phpflo-common]="src/PhpFlo/Common"
 
 if [ ! -z "$1" ]
 then
