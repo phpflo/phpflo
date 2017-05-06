@@ -1,0 +1,4 @@
+#!/bin/bash
+git remote add -f -t master --no-tags phpflo-fbp git@github.com:phpflo/phpflo-fbp
+git remote add -f -t master --no-tags phpflo-common git@github.com:phpflo/phpflo-common
+git remote add -f -t master --no-tags phpflo-flowtrace git@github.com:phpflo/phpflo-flowtrace

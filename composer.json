@@ -1,37 +1,37 @@
 {
-    "name": "phpflo/phpflo",
-    "type": "library",
-    "description": "Flow-based programming for PHP",
-    "keywords": ["fbp", "flow", "flow based programming"],
-    "homepage": "https://github.com/bergie/phpflo",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Henri Bergius",
-            "email": "henri.bergius@iki.fi",
-            "homepage": "http://bergie.iki.fi/"
-        }
-    ],
-    "require": {
-        "php": ">=7.0.0",
-        "evenement/evenement": "^2.0",
-        "phpflo/phpflo-core": "^1.0",
-        "phpflo/phpflo-fbp": "^1.0",
-        "psr/container": "^1.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^5.0",
-        "mikey179/vfsStream": "^1.6"
-    },
-    "autoload": {
-        "psr-4": {
-            "": "lib/"
-        }
-    },
-    "config": {
-        "bin-dir": "bin"
-    },
-    "autoload-dev": {
-        "psr-4": { "Tests\\": "tests/" }
+  "name": "phpflo/phpflo",
+  "type": "library",
+  "description": "Flow-based programming for PHP",
+  "keywords": ["fbp", "flow", "flow based programming"],
+  "homepage": "https://github.com/bergie/phpflo",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Henri Bergius",
+      "email": "henri.bergius@iki.fi",
+      "homepage": "http://bergie.iki.fi/"
     }
+  ],
+  "require": {
+    "php": ">=7.0.0",
+    "evenement/evenement": "^2.0",
+    "psr/container": "^1.0",
+    "psr/log": "^1.0"
+  },
+  "replace": {
+    "phpflo/phpflo-fbp": "self.version",
+    "phpflo/phpflo-common": "self.version",
+    "phpflo/phpflo-flowtrace": "self.version"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.0",
+    "mikey179/vfsStream": "^1.6"
+  },
+  "autoload": {
+    "psr-4": { "PhpFlo\\": "src/PhpFlo/" },
+    "exclude-from-classmap": [ "**/Tests/" ]
+  },
+  "config": {
+    "bin-dir": "bin"
+  }
 }

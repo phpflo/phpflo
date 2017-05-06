@@ -1,0 +1,29 @@
+#!/bin/bash
+# ------------------------------------------------------------------------------
+# this script pulls subtree changes
+# ------------------------------------------------------------------------------
+
+GIT_URL="git@github.com:phpflo"
+
+declare -A SUBTREES
+SUBTREES[phpflo-flowtrace]="src/PhpFlo/FlowTrace"
+SUBTREES[phpflo-fbp]="src/PhpFlo/Fbp"
+SUBTREES[phpflo-common]="src/PhpFlo/Common"
+
+if [ ! -z "$1" ]
+then
+    for i in "${!SUBTREES[@]}"
+    do
+        if [ "$i" == "${1,,}" ]
+        then
+            SUBTREE=$i
+            PREFIX=${SUBTREES[$i]}
+        fi
+    done
+else
+    echo "you need to provide a valid subtree name (${!SUBTREES[*]})!"
+    exit 1
+fi
+
+git subtree pulli --squash --prefix=$PREFIX ${GIT_URL}/${SUBTREE} master
+

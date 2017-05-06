@@ -1,0 +1,27 @@
+{
+  "name": "phpflo/phpflo-common",
+  "description": "PhpFlo commonly used interfaces and exception classes",
+  "type": "library",
+  "keywords": ["fbp", "flow"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marc Aschmann",
+      "email": "maschmann@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.0",
+    "phpflo/phpflo": "^2.1.0"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": { "PhpFlo\\Common\\": "" },
+    "exclude-from-classmap": [ "/Tests/" ]
+  }
+}

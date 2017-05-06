@@ -1,0 +1,34 @@
+{
+  "name": "phpflo/phpflo-fbp",
+  "description": "fbp implementation for php",
+  "type": "library",
+  "keywords": ["fbp", "flow"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Henri Bergius",
+      "email": "henri.bergius@iki.fi",
+      "homepage": "http://bergie.iki.fi/"
+    },
+    {
+      "name": "Marc Aschmann",
+      "email": "maschmann@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0",
+    "symfony/yaml": ">=2.7 <=4.0",
+    "phpflo/phpflo-common": "^2.0.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.0",
+    "mikey179/vfsStream": "^1.6"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": { "PhpFlo\\Fbp\\": "" },
+    "exclude-from-classmap": [ "/Tests/" ]
+  }
+}
